@@ -121,6 +121,7 @@
 #else
 #define SDL_VIDEO_DRIVER_QUARTZ	1
 #endif
+/*
 #define SDL_VIDEO_DRIVER_DGA 1
 #define SDL_VIDEO_DRIVER_X11 1
 #define SDL_VIDEO_DRIVER_X11_DGAMOUSE 1
@@ -133,6 +134,7 @@
 #define SDL_VIDEO_DRIVER_X11_XME 1
 #define SDL_VIDEO_DRIVER_X11_XRANDR 1
 #define SDL_VIDEO_DRIVER_X11_XV 1
+*/
 
 /* Enable OpenGL support */
 #define SDL_VIDEO_OPENGL	1
