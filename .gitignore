@@ -27,5 +27,6 @@
 /wadsrc*/*.pk3
 
 # OS X
+/.deploy_image
 xcuserdata/
 DerivedData/
