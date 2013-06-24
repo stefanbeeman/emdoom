@@ -34,8 +34,8 @@ strip ${DEPLOY_IMAGE_DIR}/${SOURCE_BUNDLE_NAME}/${BUNDLE_EXECUTABLE_PATH}
 echo "Copying supplementary files..."
 mkdir ${DEPLOY_IMAGE_DIR}/Documentation
 cp -R docs/ ${DEPLOY_IMAGE_DIR}/Documentation
-cp ReadMe.rtf ${DEPLOY_IMAGE_DIR}
-cp homepage.webloc ${DEPLOY_IMAGE_DIR}/"Visit GZDoom for OS X Homepage.webloc"
+cp misc/resources/ReadMe.rtf ${DEPLOY_IMAGE_DIR}
+cp misc/resources/homepage.webloc ${DEPLOY_IMAGE_DIR}/"Visit GZDoom for OS X Homepage.webloc"
 
 USER_FOLDER_CONTENTS_PATH="${DEPLOY_IMAGE_DIR}/Open GZDoom User Folder.app/Contents"
 SOURCE_USER_FOLDER_PATH=misc/open_user_folder
