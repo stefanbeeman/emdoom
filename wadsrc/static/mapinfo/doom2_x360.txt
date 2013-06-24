@@ -1,0 +1,29 @@
+// MAPINFO for Doom 2
+include "mapinfo/doom2.txt"
+
+gameinfo
+{
+	titlepage = "DMENUPIC"
+}
+
+map MAP02 lookup "HUSTR_2"
+{
+	titlepatch = "CWILV01"
+	next = "MAP03"
+	secretnext = "MAP33"
+	sky1 = "SKY1"
+	cluster = 5
+	par = 90
+	music = "$MUSIC_STALKS"
+}
+
+map MAP33 lookup "HUSTR_33"
+{
+	titlepatch = "CWILV32"
+	next = "MAP03"
+	secretnext = "MAP03"
+	sky1 = "SKY1"
+	cluster = 5
+	par = 0
+	music = "$MUSIC_READ_M"
+}

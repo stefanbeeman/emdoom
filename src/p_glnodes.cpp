@@ -1067,7 +1067,7 @@ static FString GetCachePath()
 	char pathstr[PATH_MAX];
 	FSRef folder;
 
-	if (noErr == FSFindFolder(kLocalDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)pathstr, PATH_MAX))
 	{
 		path = pathstr;
@@ -1076,7 +1076,7 @@ static FString GetCachePath()
 	{
 		path = progdir;
 	}
-	path += "/zdoom/cache";
+	path += "/" GAMENAME "/cache";
 #else
 	// Don't use GAME_DIR and such so that ZDoom and its child ports can share the node cache.
 	path = NicePath("~/.config/zdoom/cache");
@@ -1212,8 +1212,11 @@ static void CreateCachedNodes(MapData *map)
 
 	FString path = CreateCacheName(map, true);
 	FILE *f = fopen(path, "wb");
-	fwrite(compressed, 1, outlen+offset, f);
-	fclose(f);
+	if ( NULL != f )
+	{
+		fwrite(compressed, 1, outlen+offset, f);
+		fclose(f);
+	}
 	delete [] compressed;
 }
 

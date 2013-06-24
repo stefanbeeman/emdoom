@@ -66,7 +66,7 @@
 IMPLEMENT_CLASS(OpenGLFrameBuffer)
 EXTERN_CVAR (Float, vid_brightness)
 EXTERN_CVAR (Float, vid_contrast)
-EXTERN_CVAR (Bool, vid_vsync)
+EXTERN_CVAR (Int, vid_vsync)
 
 CVAR(Bool, gl_aalines, false, CVAR_ARCHIVE)
 
@@ -121,7 +121,7 @@ void OpenGLFrameBuffer::InitializeState()
 	{
 		first=false;
 		// [BB] For some reason this crashes, if compiled with MinGW and optimization. Has to be investigated.
-#ifdef _MSC_VER
+#if defined _MSC_VER || defined __APPLE__
 		gl.PrintStartupLog();
 #endif
 

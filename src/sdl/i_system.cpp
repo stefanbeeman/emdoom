@@ -38,6 +38,18 @@
 #include <gdk/gdkkeysyms.h>
 #endif
 
+#ifdef __APPLE__
+#include <ApplicationServices/ApplicationServices.h>
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
+#include <CoreGraphics/CoreGraphics.h>
+#endif // MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
+#include <mach/mach_init.h>
+#include <mach/semaphore.h>
+#include <mach/task.h>
+#else
+#include <semaphore.h>
+#endif
+
 #include "doomerrors.h"
 #include <math.h>
 
@@ -70,6 +82,7 @@
 
 #include "m_fixed.h"
 #include "g_level.h"
+#include "v_text.h"
 
 #ifdef USE_XCURSOR
 // Xlib has its own GC, so don't let it interfere.
@@ -129,6 +142,14 @@ void I_EndRead(void)
 {
 }
 
+
+#ifdef COCOA_NO_SDL
+
+int I_GetTimeSelect( bool saveMS );
+int I_WaitForTicSelect( int prevtic );
+void I_FreezeTimeSelect( bool frozen );
+
+#else // !COCOA_NO_SDL
 
 static DWORD TicStart;
 static DWORD TicNext;
@@ -314,6 +335,8 @@ fixed_t I_GetTimeFrac (uint32 *ms)
 	}
 }
 
+#endif // COCOA_NO_SDL
+
 void I_WaitVBL (int count)
 {
     // I_WaitVBL is never used to actually synchronize to the
@@ -422,7 +445,27 @@ void I_SetIWADInfo ()
 
 void I_PrintStr (const char *cp)
 {
-	fputs (cp, stdout);
+	const size_t stringLength = strlen( cp );
+	
+	char* cleanString = static_cast< char* >( alloca( stringLength + 1 ) );
+	char* cleanPos = cleanString;
+	
+	for ( const char* pos = cp; '\0' != *pos; ++pos )
+	{
+		if ( TEXTCOLOR_ESCAPE == *pos )
+		{
+			// Skip next character
+			++pos;
+		}
+		else
+		{
+			*cleanPos++ = *pos;
+		}
+	}
+	
+	*cleanPos = '\0';
+	
+	fputs (cleanString, stdout);
 	fflush (stdout);
 }
 
@@ -699,7 +742,7 @@ bool I_WriteIniFailed ()
 
 static const char *pattern;
 
-#ifdef __APPLE__
+#if defined __APPLE__ && !defined __MAC_10_8
 static int matchfile (struct dirent *ent)
 #else
 static int matchfile (const struct dirent *ent)
@@ -768,6 +811,10 @@ int I_FindAttr (findstate_t *fileinfo)
 	return 0;
 }
 
+#ifdef __APPLE__
+static PasteboardRef s_clipboard;
+#endif // __APPLE__
+
 // Clipboard support requires GTK+
 // TODO: GTK+ uses UTF-8. We don't, so some conversions would be appropriate.
 void I_PutInClipboard (const char *str)
@@ -788,6 +835,25 @@ void I_PutInClipboard (const char *str)
 		}
 		*/
 	}
+#elif defined __APPLE__
+	
+	if ( NULL == s_clipboard )
+	{
+		PasteboardCreate( kPasteboardClipboard, &s_clipboard );
+	}
+	
+	PasteboardClear( s_clipboard );
+	PasteboardSynchronize( s_clipboard );
+	
+	const CFDataRef textData = CFDataCreate( kCFAllocatorDefault, 
+		reinterpret_cast< const UInt8* >( str ), strlen( str ) );
+
+	if ( NULL != textData )
+	{
+		PasteboardPutItemFlavor( s_clipboard, PasteboardItemID(1), 
+			CFSTR( "public.utf8-plain-text" ), textData, 0 );
+	}
+	
 #endif
 }
 
@@ -809,6 +875,58 @@ FString I_GetFromClipboard (bool use_primary_selection)
 			}
 		}
 	}
+#elif defined __APPLE__
+	
+	FString result;
+	
+	if ( NULL == s_clipboard )
+	{
+		PasteboardCreate( kPasteboardClipboard, &s_clipboard );
+	}
+
+	PasteboardSynchronize( s_clipboard );
+
+	ItemCount itemCount = 0;
+	PasteboardGetItemCount( s_clipboard, &itemCount );
+
+	if ( itemCount > 0 )
+	{
+		PasteboardItemID itemID;
+		
+		if ( 0 == PasteboardGetItemIdentifier( s_clipboard, 1, &itemID ) )
+		{
+			CFArrayRef flavorTypeArray;
+			
+			if ( 0 == PasteboardCopyItemFlavors( s_clipboard, itemID, &flavorTypeArray ) )
+			{
+				const CFIndex flavorCount = CFArrayGetCount( flavorTypeArray );
+				
+				for ( CFIndex flavorIndex = 0; flavorIndex < flavorCount; ++flavorIndex )
+				{
+					const CFStringRef flavorType = static_cast< const CFStringRef >( 
+						CFArrayGetValueAtIndex( flavorTypeArray, flavorIndex ) );
+					
+					if ( UTTypeConformsTo( flavorType, CFSTR( "public.utf8-plain-text" ) ) )
+					{
+						CFDataRef flavorData;
+						
+						if ( 0 == PasteboardCopyItemFlavorData( s_clipboard, itemID, flavorType, &flavorData ) )
+						{
+							result = reinterpret_cast< const char* >( CFDataGetBytePtr( flavorData ) );
+							break;
+						}
+						
+						CFRelease( flavorData );
+					}
+				}
+			}
+			
+			CFRelease( flavorTypeArray );
+		}
+    }
+	
+	return result;
+		
 #endif
 	return "";
 }
@@ -878,6 +996,9 @@ SDL_Cursor *CreateColorCursor(FTexture *cursorpic)
 
 SDL_Surface *cursorSurface = NULL;
 SDL_Rect cursorBlit = {0, 0, 32, 32};
+
+#ifndef COCOA_NO_SDL
+
 bool I_SetCursor(FTexture *cursorpic)
 {
 	if (cursorpic != NULL && cursorpic->UseType != FTexture::TEX_Null)
@@ -935,3 +1056,40 @@ bool I_SetCursor(FTexture *cursorpic)
 	}
 	return true;
 }
+
+#endif // !COCOA_NO_SDL
+
+#ifdef __APPLE__
+
+bool I_ForcePickIWAD()
+{
+	const CGEventFlags modifiers  = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
+
+	return modifiers & kCGEventFlagMaskShift
+		|| modifiers & kCGEventFlagMaskControl
+		|| modifiers & kCGEventFlagMaskCommand;
+}
+
+
+void I_EnableApplicationEvents( bool on )
+{
+	static const char* const ENABLE_APP_EVENTS = "SDL_ENABLEAPPEVENTS";
+
+	if ( on )
+	{
+		setenv( ENABLE_APP_EVENTS, "1", 1 );
+	}
+	else
+	{
+		unsetenv( ENABLE_APP_EVENTS );
+	}
+}
+
+#else // !__APPLE__
+
+bool I_ForcePickIWAD()
+{
+	return false;
+}
+
+#endif // __APPLE__

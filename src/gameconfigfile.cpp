@@ -655,15 +655,19 @@ FString FGameConfigFile::GetConfigPath (bool tryProg)
 	char cpath[PATH_MAX];
 	FSRef folder;
 	
-	if (noErr == FSFindFolder(kUserDomain, kPreferencesFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		path = cpath;
-		path += "/zdoom.ini";
+		path += "/" GAMENAME;
+		
+		CreatePath( path );
+		
+		path += "/" GAMENAME ".ini";
 		return path;
 	}
 	// Ungh.
-	return "zdoom.ini";
+	return "GZDoom.ini";
 #else
 	return GetUserFile ("zdoom.ini");
 #endif
@@ -678,7 +682,7 @@ void FGameConfigFile::CreateStandardAutoExec(const char *section, bool start)
 		char cpath[PATH_MAX];
 		FSRef folder;
 		
-		if (noErr == FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &folder) &&
+		if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 			noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 		{
 			path << cpath << "/" GAME_DIR "/autoexec.cfg";

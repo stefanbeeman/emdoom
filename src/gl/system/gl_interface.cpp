@@ -45,6 +45,7 @@
 #include "gl/system/gl_cvars.h"
 
 #if defined (unix) || defined (__APPLE__)
+#include "v_text.h"
 #include <SDL.h>
 #define wglGetProcAddress(x) (*SDL_GL_GetProcAddress)(x)
 #endif
@@ -214,6 +215,7 @@ static bool ReadInitExtensions()
 // 
 //
 //==========================================================================
+const char *wgl_extensions;
 
 static void CollectExtensions()
 {
@@ -429,6 +431,7 @@ static void APIENTRY LoadExtensions()
 		gl->DeleteFramebuffers		= (PFNGLDELETEFRAMEBUFFERSPROC)wglGetProcAddress("glDeleteFramebuffers");
 		gl->BindFramebuffer			= (PFNGLBINDFRAMEBUFFERPROC)wglGetProcAddress("glBindFramebuffer");
 		gl->FramebufferTexture2D	= (PFNGLFRAMEBUFFERTEXTURE2DPROC)wglGetProcAddress("glFramebufferTexture2D");
+		gl->CheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSPROC)wglGetProcAddress("glCheckFramebufferStatus");
 		gl->GenRenderbuffers		= (PFNGLGENRENDERBUFFERSPROC)wglGetProcAddress("glGenRenderbuffers");
 		gl->DeleteRenderbuffers		= (PFNGLDELETERENDERBUFFERSPROC)wglGetProcAddress("glDeleteRenderbuffers");
 		gl->BindRenderbuffer		= (PFNGLBINDRENDERBUFFERPROC)wglGetProcAddress("glBindRenderbuffer");
@@ -862,6 +865,7 @@ static void APIENTRY iSwapBuffers()
 static BOOL APIENTRY SetVSync( int vsync )
 {
 #if defined (__APPLE__)
+	DPrintf(TEXTCOLOR_CYAN "Vertical synchronization is turned %s\n", vsync > 0 ? "on" : "off");
 	return kCGLNoError == CGLSetParameter( CGLGetCurrentContext(), kCGLCPSwapInterval, &vsync );
 #else // !__APPLE__
 	// empty placeholder
@@ -1056,6 +1060,7 @@ void APIENTRY GetContext(RenderContext & gl)
 	gl.DeleteTextures = glDeleteTextures;
 	gl.GenTextures = glGenTextures;
 	gl.BindTexture = glBindTexture;
+	gl.TexImage1D = glTexImage1D;
 	gl.TexImage2D = glTexImage2D;
 	gl.TexParameterf = glTexParameterf;
 	gl.TexParameteri = glTexParameteri;

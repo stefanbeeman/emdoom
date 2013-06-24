@@ -219,7 +219,19 @@ IWad
 	MustContain = "E1M1", "FREEDOOM"
 	BannerColors = "32 54 43", "c6 dc d1"
 }
-	
+
+IWad
+{
+	Name = "DOOM (XBLA/Xbox 360)"
+	Autoname = "Doom1"
+	Game = "Doom"
+	Config = "Doom"
+	Mapinfo = "mapinfo/ultdoom_x360.txt"
+	Compatibility = "Shorttex"
+	MustContain = "GAME:\assets\w\DOOM.WAD"
+	BannerColors = "54 54 54", "a8 a8 a8"
+}
+
 IWad
 {
 	Name = "DOOM 1: BFG Edition"
@@ -284,6 +296,7 @@ IWad
 	Compatibility = "Shorttex", "Stairs"
 	MustContain = "MAP01", "REDTNT2"
 	BannerColors = "a8 00 00", "a8 a8 a8"
+	Load = "tnt31.wad"
 }
 
 IWad
@@ -300,6 +313,18 @@ IWad
 
 IWad
 {
+	Name = "DOOM II (XBLA/Xbox 360)"
+	Autoname = "Doom2"
+	Game = "Doom"
+	Config = "Doom"
+	Mapinfo = "mapinfo/doom2_x360.txt"
+	Compatibility = "Shorttex"
+	MustContain = "GAME:\assets\w\DOOM2.WAD", "GAME:\assets\w\mission1\Nerve_demo.wad"
+	BannerColors = "a8 00 00", "a8 a8 a8"
+}
+
+IWad
+{
 	Name = "DOOM 2: BFG Edition"
 	Autoname = "Doom2BFG"
 	Game = "Doom"
@@ -308,6 +333,7 @@ IWad
 	Compatibility = "Shorttex"
 	MustContain = "MAP01", "DMENUPIC", "M_ACPT", "M_CAN", "M_EXITO", "M_CHG"
 	BannerColors = "a8 00 00", "a8 a8 a8"
+	Load = "masterlevels.wad"
 	Load = "nerve.wad"
 }
 
@@ -322,6 +348,8 @@ IWad
 	Compatibility = "Shorttex"
 	MustContain = "MAP01"
 	BannerColors = "a8 00 00", "a8 a8 a8"
+	Load = "masterlevels.wad"
+	Load = "nerve.wad"
 }
 	
 
@@ -360,4 +388,10 @@ Names
 	"harm1.wad"
 	"hacx.wad"
 	"hacx2.wad"
+	"doom.disk"
+	"doom2.disk"
+	"doom_x360.disk"
+	"doom2_x360.disk"
+	"doom_xbla.disk"
+	"doom2_xbla.disk"
 }

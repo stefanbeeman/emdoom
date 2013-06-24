@@ -33,9 +33,17 @@
  **
  */
 
+#include "cmdlib.h"
 #include "d_main.h"
 #include "version.h"
+#include "c_cvars.h"
+#include "m_argv.h"
+#include "m_misc.h"
+#include "gameconfigfile.h"
 #include <Cocoa/Cocoa.h>
+#include <wordexp.h>
+
+CVAR( String, macosx_additional_parameters, "", CVAR_ARCHIVE | CVAR_NOSET | CVAR_GLOBALCONFIG );
 
 enum
 {
@@ -48,7 +56,10 @@ enum
 static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 
 // Class to convert the IWAD data into a form that Cocoa can use.
-@interface IWADTableData : NSObject// <NSTableViewDataSource>
+@interface IWADTableData : NSObject 
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
+<NSTableViewDataSource>
+#endif
 {
 	NSMutableArray *data;
 }
@@ -104,6 +115,39 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 
 @end
 
+static NSDictionary* s_knownFileTypes = [NSDictionary dictionaryWithObjectsAndKeys:
+	@"-file"    , @"wad",
+	@"-file"    , @"pk3",
+	@"-file"    , @"zip",
+	@"-file"    , @"pk7",
+	@"-file"    , @"7z",
+	@"-deh"     , @"deh",
+	@"-bex"     , @"bex",
+	@"-exec"    , @"cfg",
+	@"-playdemo", @"lmp",
+	nil];
+
+static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
+
+@interface NSMutableString(AppendKnownFileType)
+- (void)appendKnownFileType:(NSString *)filePath;
+@end
+
+@implementation NSMutableString(AppendKnownFileType)
+- (void)appendKnownFileType:(NSString *)filePath
+{
+	NSString* extension = [[filePath pathExtension] lowercaseString];
+	NSString* parameter = [s_knownFileTypes objectForKey:extension];
+	
+	if (nil == parameter)
+	{
+		return;
+	}
+
+	[self appendFormat:@"%@ \"%@\" ", parameter, filePath];
+}
+@end
+
 // So we can listen for button actions and such we need to have an Obj-C class.
 @interface IWADPicker : NSObject
 {
@@ -111,13 +155,18 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 	NSWindow *window;
 	NSButton *okButton;
 	NSButton *cancelButton;
+	NSButton *browseButton;
+	NSTextField *parametersTextField;
 	bool cancelled;
 }
 
 - (void)buttonPressed:(id) sender;
+- (void)browseButtonPressed:(id) sender;
 - (void)doubleClicked:(id) sender;
 - (void)makeLabel:(NSTextField *)label:(const char*) str;
 - (int)pickIWad:(WadStuff *)wads:(int) numwads:(bool) showwin:(int) defaultiwad;
+- (NSString*)commandLineParameters;
+- (void)menuActionSent:(NSNotification*)notification;
 @end
 
 @implementation IWADPicker
@@ -129,6 +178,42 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 
 	[window orderOut:self];
 	[app stopModal];
+}
+
+- (void)browseButtonPressed:(id) sender;
+{
+	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+	[openPanel setAllowsMultipleSelection:YES];
+	[openPanel setCanChooseFiles:YES];
+	[openPanel setResolvesAliases:YES];
+	[openPanel setAllowedFileTypes:s_knownExtensions];
+
+	if (NSOKButton == [openPanel runModal])
+	{
+		NSArray* files = [openPanel URLs];
+		NSMutableString* parameters = [NSMutableString string];
+		
+		for (NSUInteger i = 0, ei = [files count]; i < ei; ++i)
+		{
+			NSString* filePath = [[files objectAtIndex:i] path];
+			[parameters appendKnownFileType:filePath];
+		}
+
+		if ([parameters length] > 0)
+		{
+			NSString* newParameters = [parametersTextField stringValue];
+
+			if ([newParameters length] > 0
+				&& NO == [newParameters hasSuffix:@" "])
+			{
+				newParameters = [newParameters stringByAppendingString:@" "];
+			}
+			
+			newParameters = [newParameters stringByAppendingString:parameters];
+			
+			[parametersTextField setStringValue: newParameters];
+		}
+	}
 }
 
 - (void)doubleClicked:(id) sender;
@@ -156,20 +241,18 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 	cancelled = false;
 
 	app = [NSApplication sharedApplication];
-	id windowTitle = [NSString stringWithUTF8String:GAMESIG " " DOTVERSIONSTR ": Select an IWAD to use"];
+	id windowTitle = [NSString stringWithFormat:@"%s %s", GAMESIG, GetVersionString()];
 
 	NSRect frame = NSMakeRect(0, 0, 440, 450);
 	window = [[NSWindow alloc] initWithContentRect:frame styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:NO];
 	[window setTitle:windowTitle];
 
-	NSTextField *description = [[NSTextField alloc] initWithFrame:NSMakeRect(22, 379, 412, 50)];
-	[self makeLabel:description:"ZDoom found more than one IWAD\nSelect from the list below to determine which one to use:"];
+	NSTextField *description = [[NSTextField alloc] initWithFrame:NSMakeRect(18, 384, 402, 50)];
+	[self makeLabel:description:"GZDoom found more than one IWAD\nSelect from the list below to determine which one to use:"];
 	[[window contentView] addSubview:description];
 	[description release];
 
-	// Commented out version would account for an additional parameters box.
-	//NSScrollView *iwadScroller = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 103, 412, 288)];
-	NSScrollView *iwadScroller = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 50, 412, 341)];
+	NSScrollView *iwadScroller = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 135, 402, 256)];
 	NSTableView *iwadTable = [[NSTableView alloc] initWithFrame:[iwadScroller bounds]];
 	IWADTableData *tableData = [[IWADTableData alloc] init:wads:numwads];
 	for(int i = 0;i < NUM_COLUMNS;i++)
@@ -197,11 +280,12 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 	[iwadTable release];
 	[iwadScroller release];
 
-	/*NSTextField *additionalParametersLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(17, 78, 144, 17)];
-	[self makeLabel:additionalParametersLabel:"Additional Parameters"];
+	NSTextField *additionalParametersLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(18, 108, 144, 17)];
+	[self makeLabel:additionalParametersLabel:"Additional Parameters:"];
 	[[window contentView] addSubview:additionalParametersLabel];
-	NSTextField *additionalParameters = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 48, 360, 22)];
-	[[window contentView] addSubview:additionalParameters];*/
+	parametersTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 48, 402, 54)];
+	[parametersTextField setStringValue:[NSString stringWithUTF8String:macosx_additional_parameters]];
+	[[window contentView] addSubview:parametersTextField];
 
 	// Doesn't look like the SDL version implements this so lets not show it.
 	/*NSButton *dontAsk = [[NSButton alloc] initWithFrame:NSMakeRect(18, 18, 178, 18)];
@@ -210,39 +294,152 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 	[dontAsk setState:(showwin ? NSOffState : NSOnState)];
 	[[window contentView] addSubview:dontAsk];*/
 
-	okButton = [[NSButton alloc] initWithFrame:NSMakeRect(236, 12, 96, 32)];
-	[okButton setTitle:[NSString stringWithUTF8String:"OK"]];
+	okButton = [[NSButton alloc] initWithFrame:NSMakeRect(236, 8, 96, 32)];
+	[okButton setTitle:@"OK"];
 	[okButton setBezelStyle:NSRoundedBezelStyle];
 	[okButton setAction:@selector(buttonPressed:)];
 	[okButton setTarget:self];
 	[okButton setKeyEquivalent:@"\r"];
 	[[window contentView] addSubview:okButton];
 
-	cancelButton = [[NSButton alloc] initWithFrame:NSMakeRect(332, 12, 96, 32)];
-	[cancelButton setTitle:[NSString stringWithUTF8String:"Cancel"]];
+	cancelButton = [[NSButton alloc] initWithFrame:NSMakeRect(332, 8, 96, 32)];
+	[cancelButton setTitle:@"Cancel"];
 	[cancelButton setBezelStyle:NSRoundedBezelStyle];
 	[cancelButton setAction:@selector(buttonPressed:)];
 	[cancelButton setTarget:self];
 	[cancelButton setKeyEquivalent:@"\033"];
 	[[window contentView] addSubview:cancelButton];
+	
+	browseButton = [[NSButton alloc] initWithFrame:NSMakeRect(14, 8, 96, 32)];
+	[browseButton setTitle:@"Browse..."];
+	[browseButton setBezelStyle:NSRoundedBezelStyle];
+	[browseButton setAction:@selector(browseButtonPressed:)];
+	[browseButton setTarget:self];
+	[[window contentView] addSubview:browseButton];
 
-	[window center];
+	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+	[center addObserver:self selector:@selector(menuActionSent:) name:NSMenuDidSendActionNotification object:nil];
+
 	[app runModalForWindow:window];
+
+	[center removeObserver:self name:NSMenuDidSendActionNotification object:nil];
 
 	[window release];
 	[okButton release];
 	[cancelButton release];
+	[browseButton release];
 
 	return cancelled ? -1 : [iwadTable selectedRow];
 }
 
+- (NSString*)commandLineParameters
+{
+	return [parametersTextField stringValue];
+}
+
+- (void)menuActionSent:(NSNotification*)notification
+{
+	NSDictionary* userInfo = [notification userInfo];
+	NSMenuItem* menuItem = [userInfo valueForKey:@"MenuItem"];
+
+	if ( @selector(terminate:) == [menuItem action] )
+	{
+		exit(0);
+	}
+}
+
 @end
+
+
+EXTERN_CVAR( String, defaultiwad )
+
+static void RestartWithParameters( const char* iwadPath, NSString* parameters )
+{
+	assert( nil != parameters );
+	
+	defaultiwad = ExtractFileBase( iwadPath );
+	
+	GameConfig->DoGameSetup( "Doom" );
+	M_SaveDefaults( NULL );
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	@try
+	{
+		const int commandLineParametersCount = Args->NumArgs();
+		assert( commandLineParametersCount > 0 );
+		
+		NSString* executablePath = [NSString stringWithUTF8String:Args->GetArg(0)];
+		
+		NSMutableArray* arguments = [NSMutableArray arrayWithCapacity:commandLineParametersCount + 3];
+		[arguments addObject:@"-wad_picker_restart"];
+		[arguments addObject:@"-iwad"];
+		[arguments addObject:[NSString stringWithUTF8String:iwadPath]];
+
+		for ( int i = 1; i < commandLineParametersCount; ++i )
+		{
+			NSString* currentParameter = [NSString stringWithUTF8String:Args->GetArg(i)];
+			[arguments addObject:currentParameter];
+		}
+
+		wordexp_t expansion;
+
+		if (0 == wordexp([parameters UTF8String], &expansion, 0))
+		{
+			for (size_t i = 0; i < expansion.we_wordc; ++i)
+			{
+				NSString* argumentString = [NSString stringWithCString:expansion.we_wordv[i]
+															  encoding:NSUTF8StringEncoding];
+				[arguments addObject:argumentString];
+			}
+
+			wordfree(&expansion);
+		}
+
+		[NSTask launchedTaskWithLaunchPath:executablePath arguments:arguments];
+
+		_exit(0); // to avoid atexit()'s functions
+	}
+	@catch ( NSException* e )
+	{
+		NSLog( @"Cannot restart: %@", [e reason] );
+	}
+	
+	[pool release];
+}
+
+#ifdef COCOA_NO_SDL
+void I_SetMainWindowVisible( bool visible );
+#endif // COCOA_NO_SDL
 
 // Simple wrapper so we can call this from outside.
 int I_PickIWad_Cocoa (WadStuff *wads, int numwads, bool showwin, int defaultiwad)
 {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+#ifdef COCOA_NO_SDL
+	I_SetMainWindowVisible( false );
+#endif // COCOA_NO_SDL
+	
 	IWADPicker *picker = [IWADPicker alloc];
 	int ret = [picker pickIWad:wads:numwads:showwin:defaultiwad];
-	[picker release];
+	
+#ifdef COCOA_NO_SDL
+	I_SetMainWindowVisible( true );
+#endif // COCOA_NO_SDL
+	
+	NSString* parametersToAppend = [picker commandLineParameters];
+	macosx_additional_parameters = [parametersToAppend UTF8String];
+	
+	if ( ret >= 0 )
+	{
+		if ( 0 != [parametersToAppend length] )
+		{
+			RestartWithParameters( wads[ ret ].Path, parametersToAppend );
+		}
+	}
+
+	[pool release];
+	
 	return ret;
 }

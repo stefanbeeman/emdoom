@@ -285,8 +285,10 @@ public:
 
 class FWadFile : public FResourceFile
 {
+protected:
 	FWadFileLump *Lumps;
 
+private:
 	bool IsMarker(int lump, const char *marker);
 	void SetNamespace(const char *startmarker, const char *endmarker, namespace_t space, bool flathack=false);
 	void SkinHack ();
@@ -657,3 +659,142 @@ FResourceFile *CheckWad(const char *filename, FileReader *file, bool quiet)
 	return NULL;
 }
 
+
+
+//==========================================================================
+//
+// Disk file
+//
+//==========================================================================
+
+
+namespace
+{
+
+struct DiskEntry
+{
+	char  name[64];
+	DWORD offset;
+	DWORD size;
+};
+
+typedef TArray<DiskEntry> DiskEntryList;
+
+
+DWORD GetEntryCount(FileReader* file)
+{
+	DWORD result;
+	
+	file->Seek(0, SEEK_SET);
+	file->Read(&result, 4);
+	
+	return BigLong(result);
+}
+
+DWORD GetDataOffset(const DWORD entryCount)
+{
+	return 4 + sizeof(DiskEntry) * entryCount + 4;
+}
+
+} // unnamed namespace
+
+
+//==========================================================================
+
+
+class FDiskFile : public FUncompressedFile
+{
+public:
+	FDiskFile(const char* path, FileReader* file);
+	
+	bool Open(bool quiet);
+
+};
+
+
+FDiskFile::FDiskFile(const char* path, FileReader* file)
+: FUncompressedFile(path, file)
+{
+
+}
+
+bool FDiskFile::Open(bool quiet)
+{
+	const DWORD entryCount = GetEntryCount(Reader);
+	const DWORD dataOffest = GetDataOffset(entryCount);
+
+	DiskEntryList entries;
+
+	for (DWORD i = 0; i < entryCount; ++i)
+	{
+		DiskEntry entry;
+		Reader->Read(&entry, sizeof entry);
+
+		entry.offset = BigLong(entry.offset) + dataOffest;
+		entry.size   = BigLong(entry.size);
+
+		const char* const extension = strrchr(entry.name, '.');
+
+		if (NULL != extension && 0 == stricmp(extension, ".wad"))
+		{
+			entries.Push(entry);
+		}
+	}
+
+	NumLumps = entries.Size();
+
+	if (0 == NumLumps)
+	{
+		return false;
+	}
+
+	Lumps = new FUncompressedLump[NumLumps];
+
+	for (DWORD i = 0; i < NumLumps; ++i)
+	{
+		FUncompressedLump& lump = Lumps[i];
+		const DiskEntry& entry = entries[i];
+
+		char* const lumpName = new char[strlen(entry.name) + 1];
+		strcpy(lumpName, entry.name);
+
+		lump.Owner     = this;
+		lump.Position  = entry.offset;
+		lump.LumpSize  = entry.size;
+		lump.Flags     = LUMPF_EMBEDDED;
+		lump.FullName  = lumpName;
+	}
+
+	if (!quiet)
+	{
+		Printf(", %d lumps\n", NumLumps);
+	}
+
+	return true;
+}
+
+
+FResourceFile* CheckDisk( const char* filename, FileReader* file, bool quiet )
+{
+	const DWORD fileSize = static_cast<DWORD>(file->GetLength());
+	
+	if ( fileSize >= 4 )
+	{
+		const DWORD entryCount = GetEntryCount( file );
+		
+		if ( entryCount > 0 && entryCount < 4096
+			&& fileSize > GetDataOffset( entryCount ) ) // sanity check
+		{
+			FResourceFile* result = new FDiskFile( filename, file );
+			
+			if ( result->Open( quiet ) )
+			{
+				return result;
+			}
+			
+			delete result;
+		}
+	}
+	
+	return NULL;
+}

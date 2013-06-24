@@ -1,0 +1,69 @@
+
+// This file contains sizes, MD5 checksums and special tokens for PWADs with compatibility issues
+// or some specific improvements available like episode selection for Master Levels and
+// No Rest for the Living and possibility to play along with regular Doom II maps
+
+// Note about script_scanner_signed_ctype keyword:
+// If one of the matching file is found during loading of PWADs
+// and the automatic script scanner version detection is enabled
+// (script_scanner_version must be set to 0 which is default)
+// the game will automatically switch to the signed character type
+
+
+// Master Levels from PSN Doom Classic Complete
+3479715	   84cb8640f599c4a17c8eb526f90d2b7a    master_levels    // masterlevels.wad
+
+// No Rest for the Living (nerve.wad or nerve_demo.wad)
+3819855    967d5ae23daf45196212ae1b605da3b0    nerve    // XBLA Doom II or Doom 3: BFG Edition for PC
+3786293    4f47bb32bf5fd06bc1cc0b4a2e8e3910    nerve    // Doom 3: BFG Edition for Xbox 360
+
+// Mordeth Episode 1, New WAD Tool (NWT) version 
+// NWT does not use namespace markers to group sprites and flats together;
+// and indeed replacement flats are sprinkled over the sprites which constitute the bulk of MORGRAP0.WAD.
+// The flats are GATE4, GRNLITE1, MFLR8_1, BLOOD1, BLOOD2, BLOOD3, CEIL3_1, GATE2, GATE3, and GATE1,
+// in that order (but with many sprites interspersed). All remaining lumps are sprites.
+// Information from http://doomwiki.org/wiki/Mordeth
+909841    bb63601a03f1f3720cdc6fcd333a16aa    mordeth    // morgrap0.wad
+
+// Knee-Deep in ZDoom version 1.0 and 1.1
+// Decorate/Decorations.txt file contains wrong character with code 0xB4
+// in floating point constant at line 996
+24607213    ca8a08f03444c3b815b2dfd1890efd28    script_scanner_signed_ctype    // kdizd.pk3
+24850946    67d07a7696044873124fe619c63420bc    script_scanner_signed_ctype    // kdizd_11.pk3
+
+// GZDoom model pack from http://www-personal.umich.edu/~jimw/ClassicFPS/index.htm
+// uses 'non-breaking space' character with code 0xA0 in several files
+80294447    9bc8c003857762e72f72db81754ec1f2    script_scanner_signed_ctype    // GZ-Models.pk3
+
+// Outdated Doom IWAD(s), see http://doomwiki.org/wiki/DOOM.WAD
+10396254    981b03e6d1dc033301aa3095acc437ce    outdated_iwad    // 1.1
+10399316    792fd1fea023d61210857089a7c1e351    outdated_iwad    // 1.2
+11159840    54978d12de87f162b9bcc011676cb3c0    outdated_iwad    // 1.666
+11159840    11e1cd216801ea2657723abc86ecb01f    outdated_iwad    // 1.8
+// [?] Notify about free update to Ultimate Doom
+//11159840    1cd63c5ddff1bf8ce844237f580e9cf3    outdated_iwad    // 1.9
+
+// Outdated Doom II IWAD(s), see http://doomwiki.org/wiki/DOOM2.WAD
+14824716    d9153ced9fd5b898b36cc5844e35b520    outdated_iwad    // 1.666g
+14943400    30e3c2d0350b67bfbf47271970b74b2f    outdated_iwad    // 1.666
+14612688    ea74a47a791fdef2e9f2ea8b8a9da13b    outdated_iwad    // 1.7
+14612688    d7a07e5d3f4625074312bc299d7ed33f    outdated_iwad    // 1.7a
+14612688    c236745bb01d89bbb866c8fed81b6f8c    outdated_iwad    // 1.8
+
+// Outdated Heretic IWAD(s), see http://doomwiki.org/wiki/HERETIC.WAD
+11096488    3117e399cdb4298eaa3941625f4b2923    outdated_iwad    // 1.0
+// [?] Notify about free update to Shadow of the Serpent Riders
+//11095516    1e4cb4ef075ad344dd63971637307e04    outdated_iwad    // 1.2
+
+// Outdated Hexen IWAD(s), see http://doomwiki.org/wiki/HEXEN.WAD
+20128392    b2543a03521365261d0a0f74d5dd90f0    outdated_iwad    // 1.0
+
+// Outdated Hexen: Deathkings of the Dark Citadel IWAD(s), see http://doomwiki.org/wiki/HEXDD.WAD
+4429700     1077432e2690d390c256ac908b5f4efa    outdated_iwad    // 1.0
+
+// Outdated Strife IWAD(s), see http://doomwiki.org/wiki/STRIFE1.WAD
+28372168    8f2d3a6a289f5d2f2f9c1eec02b47299    outdated_iwad    // 1.0
+
+// Outdated HACX PWAD(s), see http://doomwiki.org/wiki/HACX.WAD
+21951805    1511a7032ebc834a3884cf390d7f186e    outdated_iwad    // 1.0
+22102300    b7fd2f43f3382cf012dc6b097a3cb182    outdated_iwad    // 1.1

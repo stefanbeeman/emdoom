@@ -46,6 +46,7 @@
 #include "m_argv.h"
 #include "i_system.h"
 #include "cmdlib.h"
+#include "c_cvars.h"
 #include "c_dispatch.h"
 #include "w_wad.h"
 #include "w_zip.h"
@@ -56,6 +57,8 @@
 #include "doomerrors.h"
 #include "resourcefiles/resourcefile.h"
 #include "md5.h"
+#include "compatibility.h"
+#include "sc_man.h"
 
 // MACROS ------------------------------------------------------------------
 
@@ -79,9 +82,17 @@ extern bool nospriterename;
 
 static void PrintLastError ();
 
+// EXTERNAL DATA DECLARATIONS ----------------------------------------------
+
+EXTERN_CVAR(Int, script_scanner_version);
+
+extern bool show_outdated_iwad_warning;
+
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
 FWadCollection Wads;
+
+CVAR(Bool, check_outdated_iwad, true, CVAR_ARCHIVE);
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -181,7 +192,8 @@ void FWadCollection::InitMultipleFiles (TArray<FString> &filenames)
 	{
 		I_FatalError ("W_InitMultipleFiles: no files found");
 	}
-	RenameNerve();
+
+	ApplyWadSpecials();
 	RenameSprites();
 
 	// [RH] Set up hash table
@@ -814,66 +826,309 @@ void FWadCollection::RenameSprites ()
 
 //==========================================================================
 //
-// RenameNerve
+// ApplyWadSpecials
 //
-// Renames map headers and map name pictures in nerve.wad so as to load it
-// alongside Doom II and offer both episodes without causing conflicts.
-// MD5 checksum for NERVE.WAD: 967d5ae23daf45196212ae1b605da3b0
+// Applies various compatibility fixes and other special actions
+// for WAD files
+// Also it adds handling for Master Levels and No Rest for the Living
+// as episodes of Doom II
 //
 //==========================================================================
-void FWadCollection::RenameNerve ()
-{
-	if (gameinfo.gametype != GAME_Doom)
-		return;
 
-	bool found = false;
-	BYTE cksum[16];
-	static const BYTE nerve[16] = { 0x96, 0x7d, 0x5a, 0xe2, 0x3d, 0xaf, 0x45, 0x19,
-		0x62, 0x12, 0xae, 0x1b, 0x60, 0x5d, 0xa3, 0xb0 };
-	size_t nervesize = 3819855; // NERVE.WAD's file size
-	int w = IWAD_FILENUM;
-	while (++w < GetNumWads())
+namespace {
+
+typedef void (*WadSpecialFunction)(const int wadIndex);
+
+struct WadSpecial
+{
+	long size;
+	FMD5Holder checksum;
+
+	WadSpecialFunction function;
+};
+
+typedef TArray<WadSpecial> WadSpecialList;
+
+
+void RenameMasterLevels(const int wadIndex)
+{
+	// CWILV?? -> MWILV??
+	// MAP??   -> MASTER??
+
+	for (int i = Wads.GetFirstLump(wadIndex), ei = Wads.GetLastLump(wadIndex); i <= ei; ++i)
 	{
-		FileReader *fr = GetFileReader(w);
-		if (fr == NULL)
+		FResourceLump* const lump = Wads.GetResourceLump(i);
+
+		if (lump->dwName == MAKE_ID('C', 'W', 'I', 'L'))
+		{
+			lump->Name[0] = 'M';
+		}
+		else if ( (lump->dwName & 0x00FFFFFF) == (MAKE_ID('M', 'A', 'P', '?') & 0x00FFFFFF) )
+		{
+			lump->Name[7] = lump->Name[4];
+			lump->Name[6] = lump->Name[3];
+			lump->Name[5] = 'R';
+			lump->Name[4] = 'E';
+			lump->dwName = MAKE_ID('M', 'A', 'S', 'T');
+		}
+	}
+}
+
+void RenameNerve(const int wadIndex)
+{
+	// CWILV?? -> NWILV??
+	// MAP??   -> NERVE??
+
+	for (int i = Wads.GetFirstLump(wadIndex), ei = Wads.GetLastLump(wadIndex); i <= ei; ++i)
+	{
+		FResourceLump* const lump = Wads.GetResourceLump(i);
+
+		if (lump->dwName == MAKE_ID('C', 'W', 'I', 'L'))
+		{
+			lump->Name[0] = 'N';
+		}
+		else if (lump->dwName == MAKE_ID('M', 'A', 'P', '0'))
+		{
+			lump->Name[6] = lump->Name[4];
+			lump->Name[5] = '0';
+			lump->Name[4] = 'E';
+			lump->dwName = MAKE_ID('N', 'E', 'R', 'V');
+		}
+	}
+}
+
+void FixMordethNamespace(const int wadIndex)
+{
+	// The flats are GATE4, GRNLITE1, MFLR8_1, BLOOD1, BLOOD2, BLOOD3, CEIL3_1, GATE2, GATE3, and GATE1,
+	// in that order (but with many sprites interspersed). All remaining lumps are sprites.
+	// Information from http://doomwiki.org/wiki/Mordeth
+
+	static const DWORD MORGRAP0_FLATS[] =
+	{
+		MAKE_ID('C','E','I','L'), MAKE_ID('3', '_', '1','\0'),
+		MAKE_ID('B','L','O','O'), MAKE_ID('D', '1','\0','\0'),
+		MAKE_ID('B','L','O','O'), MAKE_ID('D', '2','\0','\0'),
+		MAKE_ID('B','L','O','O'), MAKE_ID('D', '3','\0','\0'),
+		MAKE_ID('G','A','T','E'), MAKE_ID('1','\0','\0','\0'),
+		MAKE_ID('G','A','T','E'), MAKE_ID('2','\0','\0','\0'),
+		MAKE_ID('G','A','T','E'), MAKE_ID('3','\0','\0','\0'),
+		MAKE_ID('G','A','T','E'), MAKE_ID('4','\0','\0','\0'),
+		MAKE_ID('G','R','N','L'), MAKE_ID('I', 'T', 'E', '1'),
+		MAKE_ID('M','F','L','R'), MAKE_ID('8', '_', '1','\0')
+	};
+
+	// Name of each flat occupies two DWORDs
+	static const size_t MORGRAP0_FLATS_COUNT = sizeof(MORGRAP0_FLATS) / (sizeof(DWORD) * 2);
+
+	for (int i = Wads.GetFirstLump(wadIndex), ei = Wads.GetLastLump(wadIndex); i <= ei; ++i)
+	{
+		FResourceLump* const lump = Wads.GetResourceLump(i);
+
+		for (size_t j = 0; j < MORGRAP0_FLATS_COUNT; ++j)
+		{
+			if (MORGRAP0_FLATS[j * 2] == lump->dwName)
+			{
+				const DWORD secondPart = static_cast<DWORD>(lump->qwName >> 32);
+
+				if (secondPart == MORGRAP0_FLATS[j * 2 + 1])
+				{
+					lump->Namespace = ns_flats;
+					break;
+				}
+			}
+		}
+
+		if (ns_global == lump->Namespace)
+		{
+			lump->Namespace = ns_sprites;
+		}
+	}
+}
+
+void UseSignedCTypeScriptScanner(const int)
+{
+	// Use old script parser with signed character type
+	script_scanner_version = 1;
+}
+
+void IssueOutdatedIWADWarning(const int)
+{
+	show_outdated_iwad_warning = true;
+}
+
+void ParseMD5Checksum(FScanner& sc, WadSpecial& special)
+{
+	sc.MustGetString();
+
+	if (32 != strlen(sc.String))
+	{
+		sc.ScriptError("MD5 signature must be exactly 32 characters long");
+	}
+
+	for (size_t i = 0; i < 32; ++i)
+	{
+		int x = 0;
+
+		if (sc.String[i] >= '0' && sc.String[i] <= '9')
+		{
+			x = sc.String[i] - '0';
+		}
+		else
+		{
+			sc.String[i] |= 'a' ^ 'A';
+
+			if (sc.String[i] >= 'a' && sc.String[i] <= 'f')
+			{
+				x = sc.String[i] - 'a' + 10;
+			}
+			else
+			{
+				sc.ScriptError("MD5 signature must be a hexadecimal value");
+			}
+		}
+
+		if (!(i & 1))
+		{
+			special.checksum.Bytes[i / 2] = x << 4;
+		}
+		else
+		{
+			special.checksum.Bytes[i / 2] |= x;
+		}
+	}
+}
+
+void ParseSpecialToken(FScanner& sc, WadSpecial& special)
+{
+	sc.MustGetString();
+
+	if (0 == stricmp(sc.String, "master_levels"))
+	{
+		special.function = RenameMasterLevels;
+	}
+	else if (0 == stricmp(sc.String, "nerve"))
+	{
+		special.function = RenameNerve;
+	}
+	else if (0 == stricmp(sc.String, "mordeth"))
+	{
+		special.function = FixMordethNamespace;
+	}
+	else if (0 == stricmp(sc.String, "script_scanner_signed_ctype"))
+	{
+		// Use this fix only if automatic script scanner version detection is on
+
+		special.function = 0 == script_scanner_version ?
+			UseSignedCTypeScriptScanner
+			: NULL;
+	}
+	else if (0 == stricmp(sc.String, "outdated_iwad"))
+	{
+		special.function = check_outdated_iwad ?
+			IssueOutdatedIWADWarning
+			: NULL;
+	}
+	else
+	{
+		sc.ScriptError("Unknown WAD special token found");
+	}
+}
+
+WadSpecialList PrepareWadSpecials()
+{
+	WadSpecialList result;
+
+	// Cannot use FWadCollection::GetNumForFullName() here
+	// as it requires lump hashing which is not initialized yet at this point
+
+	int compLump = -1;
+
+	for (int i = 0, ei = Wads.GetNumLumps(); i < ei; ++i)
+	{
+		FResourceLump* lump = Wads.GetResourceLump(i);
+
+		if (NULL == lump || NULL == lump->FullName)
 		{
 			continue;
 		}
-		if (fr->GetLength() != (long)nervesize)
+
+		if (0 == stricmp(lump->FullName, "wadspecials.txt"))
 		{
-			// Skip MD5 computation when there is a
-			// cheaper way to know this is not the file
-			continue;
-		}
-		fr->Seek(0, SEEK_SET);
-		MD5Context md5;
-		md5.Update(fr, fr->GetLength());
-		md5.Final(cksum);
-		if (memcmp(nerve, cksum, 16) == 0)
-		{
-			found = true;
+			compLump = i;
 			break;
 		}
 	}
 
-	if (!found)
-		return;
+	FScanner sc(compLump);
 
-	for (int i = GetFirstLump(w); i <= GetLastLump(w); i++)
+	while (sc.GetNumber())
 	{
-		// Only rename the maps from NERVE.WAD
-		assert(LumpInfo[i].wadnum == w);
-		if (LumpInfo[i].lump->dwName == MAKE_ID('C', 'W', 'I', 'L'))
+		WadSpecial special = { sc.Number, {}, NULL };
+
+		ParseMD5Checksum(sc, special);
+		ParseSpecialToken(sc, special);
+
+		if (NULL != special.function)
 		{
-			LumpInfo[i].lump->Name[0] = 'N';
+			result.Push(special);
 		}
-		else if (LumpInfo[i].lump->dwName == MAKE_ID('M', 'A', 'P', '0'))
+	}
+
+	return result;
+}
+
+} // unnamed namespace
+
+void FWadCollection::ApplyWadSpecials()
+{
+	const WadSpecialList specials = PrepareWadSpecials();
+
+	for (unsigned int wadIndex = 0, wadCount = Files.Size();
+		 wadIndex < wadCount;
+		 ++wadIndex)
+	{
+		FileReader* const fileFeader = GetFileReader(wadIndex);
+
+		if (fileFeader == NULL)
 		{
-			LumpInfo[i].lump->Name[6] = LumpInfo[i].lump->Name[4];
-			LumpInfo[i].lump->Name[5] = '0';
-			LumpInfo[i].lump->Name[4] = 'L';
-			LumpInfo[i].lump->dwName = MAKE_ID('L', 'E', 'V', 'E');
+			continue;
 		}
+
+		const long fileSize = fileFeader->GetLength();
+		const WadSpecial* special = NULL;
+
+		for (unsigned int specialIndex = 0, specialCount = specials.Size();
+			 specialIndex < specialCount;
+			 ++specialIndex)
+		{
+			if (fileSize == specials[specialIndex].size)
+			{
+				special = &specials[specialIndex];
+				break;
+			}
+		}
+
+		if (NULL == special)
+		{
+			continue;
+		}
+
+		fileFeader->Seek(0, SEEK_SET);
+
+		BYTE fileChecksum[16];
+
+		MD5Context md5;
+		md5.Update(fileFeader, fileFeader->GetLength());
+		md5.Final(fileChecksum);
+
+		const bool isChecksumDifferent = 0 != memcmp(&special->checksum, fileChecksum, sizeof(special->checksum));
+
+		if (isChecksumDifferent)
+		{
+			continue;
+		}
+
+		special->function(wadIndex);
 	}
 }
 
@@ -1155,6 +1410,21 @@ FileReader *FWadCollection::GetFileReader(int wadnum)
 		return NULL;
 	}
 	return Files[wadnum]->GetReader();
+}
+
+//==========================================================================
+//
+// GetResourceLump
+//
+// Retrieves the FResourceLump object for the given lump index
+//
+//==========================================================================
+
+FResourceLump *FWadCollection::GetResourceLump(int lump)
+{
+	return lump >= 0 && lump < LumpInfo.Size()
+		? LumpInfo[lump].lump
+		: NULL;
 }
 
 //==========================================================================
