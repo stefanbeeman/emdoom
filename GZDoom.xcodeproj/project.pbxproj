@@ -6207,6 +6207,7 @@
 				8AF3DF561778323600474776 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8AF3DF651778359500474776 /* Build configuration list for PBXAggregateTarget "gitinfo.h" */ = {
 			isa = XCConfigurationList;
