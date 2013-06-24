@@ -4567,7 +4567,6 @@
 			);
 			name = "Generate gitinfo.h";
 			outputPaths = (
-				"$(SRCROOT)/src/gitinfo.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
