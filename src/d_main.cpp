@@ -643,6 +643,28 @@ CVAR (Flag, compat_maskedmidtex,		compatflags,  COMPATF_MASKEDMIDTEX);
 CVAR (Flag, compat_badangles,			compatflags2, COMPATF2_BADANGLES);
 CVAR (Flag, compat_floormove,			compatflags2, COMPATF2_FLOORMOVE);
 
+CUSTOM_CVAR(Int, texture_browse, -1, 0)
+{
+	if (self < -1)
+	{
+		self = -1;
+	}
+	else if (self >= TexMan.NumTextures())
+	{
+		self = TexMan.NumTextures() - 1;
+	}
+}
+
+CCMD(texture_browse_prev)
+{
+	texture_browse = texture_browse - 1;
+}
+
+CCMD(texture_browse_next)
+{
+	texture_browse = texture_browse + 1;
+}
+
 //==========================================================================
 //
 // D_Display
@@ -886,6 +908,14 @@ void D_Display ()
 				DTA_320x200, true, TAG_DONE);
 		}
 		NoWipe = 10;
+	}
+
+	if (-1 != texture_browse && texture_browse < TexMan.NumTextures())
+	{
+		FTexture* const texture = TexMan.ByIndex(texture_browse);
+
+		screen->DrawTexture (texture, 0, 0, 
+			DTA_320x200, true, DTA_TopOffset, 0, DTA_LeftOffset, 0, TAG_DONE);
 	}
 
 	if (snd_drawoutput)
