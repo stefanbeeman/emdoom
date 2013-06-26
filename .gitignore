@@ -27,6 +27,9 @@
 /tools/re2c/build
 /wadsrc*/*.pk3
 
+# Visual Studio 2010
+*.vcxproj.filters
+
 # OS X
 /.deploy_image
 xcuserdata/
