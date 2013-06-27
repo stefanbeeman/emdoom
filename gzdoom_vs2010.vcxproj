@@ -456,6 +456,7 @@
     <ClCompile Include="src\tables.cpp" />
     <ClCompile Include="src\teaminfo.cpp" />
     <ClCompile Include="src\tempfiles.cpp" />
+    <ClCompile Include="src\textures\celtexture.cpp" />
     <ClCompile Include="src\v_blend.cpp" />
     <ClCompile Include="src\v_collection.cpp" />
     <ClCompile Include="src\v_draw.cpp" />
