@@ -440,6 +440,7 @@
     <ClCompile Include="src\p_xlat.cpp" />
     <ClCompile Include="src\parsecontext.cpp" />
     <ClCompile Include="src\po_man.cpp" />
+    <ClCompile Include="src\resourcefiles\file_chasm_bin.cpp" />
     <ClCompile Include="src\s_advsound.cpp" />
     <ClCompile Include="src\s_environment.cpp" />
     <ClCompile Include="src\s_playlist.cpp" />
