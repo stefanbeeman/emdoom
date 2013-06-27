@@ -6,6 +6,11 @@
 #define APIENTRYP *
 #endif // __APPLE__
 
+#include "basictypes.h"
+#ifndef _WIN32
+typedef bool BOOL;
+#endif
+
 #ifndef PFNGLMULTITEXCOORD2FPROC
 typedef void (APIENTRYP PFNGLMULTITEXCOORD2FPROC) (GLenum target, GLfloat s, GLfloat t);
 #endif
