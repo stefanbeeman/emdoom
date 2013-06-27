@@ -643,7 +643,7 @@ CVAR (Flag, compat_maskedmidtex,		compatflags,  COMPATF_MASKEDMIDTEX);
 CVAR (Flag, compat_badangles,			compatflags2, COMPATF2_BADANGLES);
 CVAR (Flag, compat_floormove,			compatflags2, COMPATF2_FLOORMOVE);
 
-CUSTOM_CVAR(Int, texture_browse, -1, 0)
+CUSTOM_CVAR(Int, texture_browse_index, -1, 0)
 {
 	if (self < -1)
 	{
@@ -655,14 +655,33 @@ CUSTOM_CVAR(Int, texture_browse, -1, 0)
 	}
 }
 
+CCMD(texture_browse)
+{
+	if (argv.argc() > 1)
+	{
+		const int index = TexMan.CheckForTexture(argv[1], FTexture::TEX_Any).GetIndex();
+
+		if (-1 == index)
+		{
+			Printf("Texture %s not found\n", argv[1]);
+		}
+
+		texture_browse_index = index;
+	}
+	else
+	{
+		Printf("Usage: texture_browse <name>\n");
+	}
+}
+
 CCMD(texture_browse_prev)
 {
-	texture_browse = texture_browse - 1;
+	texture_browse_index = texture_browse_index - 1;
 }
 
 CCMD(texture_browse_next)
 {
-	texture_browse = texture_browse + 1;
+	texture_browse_index = texture_browse_index + 1;
 }
 
 //==========================================================================
@@ -910,12 +929,13 @@ void D_Display ()
 		NoWipe = 10;
 	}
 
-	if (-1 != texture_browse && texture_browse < TexMan.NumTextures())
+	if (-1 != texture_browse_index && texture_browse_index < TexMan.NumTextures())
 	{
-		FTexture* const texture = TexMan.ByIndex(texture_browse);
+		FTexture* const texture = TexMan.ByIndex(texture_browse_index);
 
-		screen->DrawTexture (texture, 0, 0, 
+		screen->DrawTexture(texture, 0, 0, 
 			DTA_320x200, true, DTA_TopOffset, 0, DTA_LeftOffset, 0, TAG_DONE);
+		screen->DrawText(ConFont, CR_WHITE, 0, SCREENHEIGHT - ConFont->GetHeight(), texture->Name, TAG_DONE);
 	}
 
 	if (snd_drawoutput)
