@@ -32,6 +32,9 @@
 
 # OS X
 /.deploy_image
-xcuserdata/
+build/
 DerivedData/
+xcuserdata/
+*.mode1v3
+*.pbxuser
 *.xccheckout
