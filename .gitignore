@@ -34,3 +34,4 @@
 /.deploy_image
 xcuserdata/
 DerivedData/
+*.xccheckout
