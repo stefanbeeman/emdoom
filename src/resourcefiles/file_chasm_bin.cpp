@@ -33,7 +33,6 @@
 
 #include "resourcefile.h"
 
-#include <cstdint>
 #include <cstdio>
 
 #include "cmdlib.h"
@@ -52,22 +51,22 @@ namespace
 
 	struct ChasmBinHeader
 	{
-		uint32_t magic;
-		uint16_t entryCount;
+		DWORD magic;
+		WORD entryCount;
 	};
 
 	struct ChasmBinEntry
 	{
-		uint8_t nameSize;
+		BYTE nameSize;
 		char name[12];
 
-		uint32_t size;
-		uint32_t offset;
+		DWORD size;
+		DWORD offset;
 	};
 
 #pragma pack()
 
-	const uint32_t CHASM_BIN_MAGIC = MAKE_ID('C', 'S', 'i', 'd');
+	const DWORD CHASM_BIN_MAGIC = MAKE_ID('C', 'S', 'i', 'd');
 
 }
 
@@ -192,7 +191,7 @@ FResourceFile *CheckChasmBin(const char *filename, FileReader *file, bool quiet)
 {
 	if (file->GetLength() > 4)
 	{
-		uint32_t magic;
+		DWORD magic;
 
 		file->Seek(0, SEEK_SET);
 		file->Read(&magic, 4);

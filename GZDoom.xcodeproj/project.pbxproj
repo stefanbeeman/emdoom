@@ -54,6 +54,10 @@
 		497C93F013C5A6F800E6B4A8 /* voxels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497C93E913C5A6F800E6B4A8 /* voxels.cpp */; };
 		49A94D1614F4FCC8008312F3 /* gl_auxilium.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49A94D1414F4FCC8008312F3 /* gl_auxilium.cpp */; };
 		49E9287913978BF600CCEBBC /* doom.icns in Resources */ = {isa = PBXBuildFile; fileRef = 49E9287713978BF600CCEBBC /* doom.icns */; };
+		8A12DD10177D63F1006EE538 /* file_chasm_bin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */; };
+		8A12DD11177D6434006EE538 /* celtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD0E177D638D006EE538 /* celtexture.cpp */; };
+		8A12DD12177D6456006EE538 /* celtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD0E177D638D006EE538 /* celtexture.cpp */; };
+		8A12DD13177D6460006EE538 /* file_chasm_bin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */; };
 		8A19382C150A5F38003ED92C /* HID_Name_Lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A422113150A0478001D28A0 /* HID_Name_Lookup.c */; };
 		8A19382D150A5F3B003ED92C /* HID_Error_Handler.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A422112150A0478001D28A0 /* HID_Error_Handler.c */; };
 		8A1C9C6B16AE86B9009CC54F /* nodebuild_classify_sse2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27EA9139126C00095D9A0 /* nodebuild_classify_sse2.cpp */; };
@@ -1312,6 +1316,8 @@
 		49A94D1414F4FCC8008312F3 /* gl_auxilium.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_auxilium.cpp; sourceTree = "<group>"; };
 		49A94D1514F4FCC8008312F3 /* gl_auxilium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_auxilium.h; sourceTree = "<group>"; };
 		49E9287713978BF600CCEBBC /* doom.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = doom.icns; path = misc/resources/doom.icns; sourceTree = "<group>"; };
+		8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = file_chasm_bin.cpp; sourceTree = "<group>"; };
+		8A12DD0E177D638D006EE538 /* celtexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = celtexture.cpp; sourceTree = "<group>"; };
 		8A1D337D154D6E0700BA2C16 /* libfluidsynth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfluidsynth.a; path = thirdparty/fluidsynth/lib/libfluidsynth.a; sourceTree = "<group>"; };
 		8A1D33A7154D6EC000BA2C16 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		8A1D33B2154D6EEF00BA2C16 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -2058,7 +2064,6 @@
 		8AF27E71139126C00095D9A0 /* intermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intermission.h; sourceTree = "<group>"; };
 		8AF27E72139126C00095D9A0 /* intermission_parse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = intermission_parse.cpp; sourceTree = "<group>"; };
 		8AF27E73139126C00095D9A0 /* keysections.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = keysections.cpp; sourceTree = "<group>"; };
-		8AF27E75139126C00095D9A0 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		8AF27E76139126C00095D9A0 /* lists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lists.h; sourceTree = "<group>"; };
 		8AF27E77139126C00095D9A0 /* lumpconfigfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lumpconfigfile.cpp; sourceTree = "<group>"; };
 		8AF27E78139126C00095D9A0 /* lumpconfigfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lumpconfigfile.h; sourceTree = "<group>"; };
@@ -3151,7 +3156,6 @@
 				8AF27DDF139126C00095D9A0 /* g_strife */,
 				8AF27DFB139126C00095D9A0 /* gl */,
 				8AF27E6F139126C00095D9A0 /* intermission */,
-				8AF27E74139126C00095D9A0 /* Linux */,
 				8AF27E90139126C00095D9A0 /* menu */,
 				8AF27EAE139126C00095D9A0 /* oplsynth */,
 				497C93DE13C5A6F800E6B4A8 /* r_data */,
@@ -3872,14 +3876,6 @@
 			path = intermission;
 			sourceTree = "<group>";
 		};
-		8AF27E74139126C00095D9A0 /* Linux */ = {
-			isa = PBXGroup;
-			children = (
-				8AF27E75139126C00095D9A0 /* platform.h */,
-			);
-			path = Linux;
-			sourceTree = "<group>";
-		};
 		8AF27E90139126C00095D9A0 /* menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -3927,6 +3923,7 @@
 				8AF27F13139126C00095D9A0 /* ancientzip.cpp */,
 				8AF27F14139126C00095D9A0 /* ancientzip.h */,
 				8AF27F15139126C00095D9A0 /* file_7z.cpp */,
+				8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */,
 				8AF27F16139126C00095D9A0 /* file_directory.cpp */,
 				8AF27F17139126C00095D9A0 /* file_grp.cpp */,
 				8AF27F18139126C00095D9A0 /* file_lump.cpp */,
@@ -4036,6 +4033,7 @@
 				8AF27F8A139126C00095D9A0 /* bitmap.h */,
 				8AF27F8B139126C00095D9A0 /* buildtexture.cpp */,
 				8AF27F8C139126C00095D9A0 /* canvastexture.cpp */,
+				8A12DD0E177D638D006EE538 /* celtexture.cpp */,
 				8AF27F8D139126C00095D9A0 /* ddstexture.cpp */,
 				8AF27F8E139126C00095D9A0 /* emptytexture.cpp */,
 				8AF27F8F139126C00095D9A0 /* flattexture.cpp */,
@@ -4570,7 +4568,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\necho \"Generating gitinfo.h...\"\n\ncd \"${SRCROOT}/src\"\n\"${CONFIGURATION_BUILD_DIR}/updaterevision\" \"${SRCROOT}\" \"${SRCROOT}/src/gitinfo.h\"\n";
+			shellScript = "\necho \"Generating gitinfo.h...\"\n\ncd \"${SRCROOT}/src\"\n\"${CONFIGURATION_BUILD_DIR}/updaterevision\" \"${SRCROOT}/src/gitinfo.h\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4836,6 +4834,7 @@
 				8A9F53F814BB0F2900F3369B /* r_things.cpp in Sources */,
 				8A9F53F914BB0F2900F3369B /* ancientzip.cpp in Sources */,
 				8A9F53FA14BB0F2900F3369B /* file_7z.cpp in Sources */,
+				8A12DD10177D63F1006EE538 /* file_chasm_bin.cpp in Sources */,
 				8A9F53FB14BB0F2900F3369B /* file_directory.cpp in Sources */,
 				8A9F53FC14BB0F2900F3369B /* file_grp.cpp in Sources */,
 				8A9F53FD14BB0F2900F3369B /* file_lump.cpp in Sources */,
@@ -4892,6 +4891,7 @@
 				8A9F543514BB0F2900F3369B /* bitmap.cpp in Sources */,
 				8A9F543614BB0F2900F3369B /* buildtexture.cpp in Sources */,
 				8A9F543714BB0F2900F3369B /* canvastexture.cpp in Sources */,
+				8A12DD11177D6434006EE538 /* celtexture.cpp in Sources */,
 				8A9F543814BB0F2900F3369B /* ddstexture.cpp in Sources */,
 				8A9F543914BB0F2900F3369B /* emptytexture.cpp in Sources */,
 				8A9F543A14BB0F2900F3369B /* flattexture.cpp in Sources */,
@@ -5484,6 +5484,7 @@
 				8AF2815C139126C10095D9A0 /* ancientzip.cpp in Sources */,
 				8AF2815D139126C10095D9A0 /* file_7z.cpp in Sources */,
 				8AF2815E139126C10095D9A0 /* file_directory.cpp in Sources */,
+				8A12DD13177D6460006EE538 /* file_chasm_bin.cpp in Sources */,
 				8AF2815F139126C10095D9A0 /* file_grp.cpp in Sources */,
 				8AF28160139126C10095D9A0 /* file_lump.cpp in Sources */,
 				8AF28161139126C10095D9A0 /* file_pak.cpp in Sources */,
@@ -5541,6 +5542,7 @@
 				8AF2819C139126C10095D9A0 /* bitmap.cpp in Sources */,
 				8AF2819D139126C10095D9A0 /* buildtexture.cpp in Sources */,
 				8AF2819E139126C10095D9A0 /* canvastexture.cpp in Sources */,
+				8A12DD12177D6456006EE538 /* celtexture.cpp in Sources */,
 				8AF2819F139126C10095D9A0 /* ddstexture.cpp in Sources */,
 				8AF281A0139126C10095D9A0 /* emptytexture.cpp in Sources */,
 				8AF281A1139126C10095D9A0 /* flattexture.cpp in Sources */,

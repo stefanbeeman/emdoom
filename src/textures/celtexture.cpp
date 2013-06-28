@@ -261,7 +261,7 @@ void FCELTexture::MakeTexture()
 	m_pixels = new BYTE[Width * Height];
 
 	FWadLump lump = Wads.OpenLumpNum(SourceLump);
-	lump.Seek(sizeof CELHeader, SEEK_SET);
+	lump.Seek(sizeof(CELHeader), SEEK_SET);
 	lump.Read(m_palette, sizeof m_palette);
 	lump.Read(m_pixels, Width * Height);
 
