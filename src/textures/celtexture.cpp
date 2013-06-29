@@ -1,6 +1,13 @@
 /*
 ** celtexture.cpp
+**
 ** Texture class for Chasm: The Rift CEL texture
+**
+** This format is also called OPIC (old PIC)
+** and it is produced by Autodesk Animator Pro
+**
+** See http://www.animatorpro.org/ 
+** and https://github.com/AnimatorPro/Animator-Pro
 **
 **---------------------------------------------------------------------------
 ** Copyright 2013 Alexey Lysiuk
@@ -35,13 +42,10 @@
 #include "textures/textures.h"
 
 #include "bitmap.h"
+#include "colormatcher.h"
 #include "files.h"
 #include "w_wad.h"
 
-//==========================================================================
-//
-// CEL file header
-//
 //==========================================================================
 
 namespace
@@ -67,12 +71,81 @@ namespace
 	};
 
 #pragma pack()
+
+	typedef BYTE CELPalette[3 * 256];
+
+	bool LoadCELHeader(FileReader& file, CELHeader& header)
+	{
+		if (sizeof header != file.Read(&header, sizeof header))
+		{
+			return false;
+		}
+
+		header.magic  = LittleShort(header.magic);
+		header.width  = LittleShort(header.width);
+		header.height = LittleShort(header.height);
+		header.x      = LittleShort(header.x);
+		header.y      = LittleShort(header.y);
+		header.size   = LittleLong (header.size);
+
+		if (0x9119 != header.magic
+			|| 0 == header.width
+			|| 0 == header.height
+			|| 0 == header.size
+			|| header.width * header.height != header.size
+			|| 8 != header.depth
+			|| 0 != header.compress)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool LoadCELLump(const int lumpnum, CELPalette& palette, BYTE*& pixels)
+	{
+		FWadLump lump = Wads.OpenLumpNum(lumpnum);
+
+		// Read header
+
+		CELHeader header;
+
+		if (!LoadCELHeader(lump, header))
+		{
+			return false;
+		}
+
+		// Read palette
+		// and convert from its resolution from 0..63 to 0..255
+
+		if (sizeof palette != lump.Read(&palette, sizeof palette))
+		{
+			return false;
+		}
+
+		for (size_t i = 0; i < 256; ++i)
+		{
+			BYTE* color = &palette[3 * i];
+			color[0] *= 4;
+			color[1] *= 4;
+			color[2] *= 4;
+		}
+
+		// Read pixels
+
+		pixels = new BYTE[header.size];
+
+		if (header.size != lump.Read(pixels, header.size))
+		{
+			delete[] pixels;
+			return false;
+		}
+
+		return true;
+	}
+
 }
 
-//==========================================================================
-//
-// CEL texture
-//
 //==========================================================================
 
 class FCELTexture : public FTexture
@@ -100,45 +173,23 @@ public:
 		return false;
 	}
 
-protected:
-	BYTE* m_pixels;
-	BYTE m_palette[3 * 256];
-
+private:
+	BYTE*  m_pixels;
 	Span** m_spans;
 
 	void MakeTexture();
 
 };
 
-
-//==========================================================================
-//
-//
-//
 //==========================================================================
 
 FTexture* CELTexture_TryCreate(FileReader& file, int lumpnum)
 {
-	CELHeader header;
-
 	file.Seek(0, SEEK_SET);
 
-	if (sizeof header != file.Read(&header, sizeof header))
-	{
-		return NULL;
-	}
+	CELHeader header;
 
-	header.magic  = LittleShort(header.magic);
-	header.width  = LittleShort(header.width);
-	header.height = LittleShort(header.height);
-	header.x      = LittleShort(header.x);
-	header.y      = LittleShort(header.y);
-	header.size   = LittleLong (header.size);
-
-	if (0x9119 != header.magic
-		|| header.width * header.height != header.size
-		|| 8 != header.depth
-		|| 0 != header.compress)
+	if (!LoadCELHeader(file, header))
 	{
 		return NULL;
 	}
@@ -146,10 +197,6 @@ FTexture* CELTexture_TryCreate(FileReader& file, int lumpnum)
 	return new FCELTexture(lumpnum, header);
 }
 
-//==========================================================================
-//
-//
-//
 //==========================================================================
 
 FCELTexture::FCELTexture(int lumpnum, const CELHeader& header)
@@ -160,15 +207,11 @@ FCELTexture::FCELTexture(int lumpnum, const CELHeader& header)
 	Width  = header.width;
 	Height = header.height;
 
-	bMasked = true;
+	bMasked = true; // TODO: need to read pixel data to set correct value
 
 	CalcBitSize();
 }
 
-//==========================================================================
-//
-//
-//
 //==========================================================================
 
 FCELTexture::~FCELTexture()
@@ -182,10 +225,6 @@ FCELTexture::~FCELTexture()
 }
 
 //==========================================================================
-//
-//
-//
-//==========================================================================
 
 void FCELTexture::Unload()
 {
@@ -196,10 +235,6 @@ void FCELTexture::Unload()
 	}
 }
 
-//==========================================================================
-//
-//
-//
 //==========================================================================
 
 const BYTE* FCELTexture::GetColumn(unsigned int column, const Span** spans)
@@ -235,10 +270,6 @@ const BYTE* FCELTexture::GetColumn(unsigned int column, const Span** spans)
 }
 
 //==========================================================================
-//
-//
-//
-//==========================================================================
 
 const BYTE* FCELTexture::GetPixels()
 {
@@ -251,29 +282,30 @@ const BYTE* FCELTexture::GetPixels()
 }
 
 //==========================================================================
-//
-//
-//
-//==========================================================================
 
 void FCELTexture::MakeTexture()
 {
-	m_pixels = new BYTE[Width * Height];
+	CELPalette celPalette;
 
-	FWadLump lump = Wads.OpenLumpNum(SourceLump);
-	lump.Seek(sizeof(CELHeader), SEEK_SET);
-	lump.Read(m_palette, sizeof m_palette);
-	lump.Read(m_pixels, Width * Height);
+	LoadCELLump(SourceLump, celPalette, m_pixels);
 
-	for (size_t i = 0; i < 256; ++i)
+	BYTE palette[256];
+
+	for (size_t i = 0; i < 255; ++i)
 	{
-		BYTE* color = &m_palette[3 * i];
-		color[0] *= 4;
-		color[1] *= 4;
-		color[2] *= 4;
+		const BYTE* const color = &celPalette[3 * i];
+		palette[i] = ColorMatcher.Pick(color[0], color[1], color[2]);
 	}
 
-	// TODO: apply palette
+	// The last palette entry is an alpha mask
+	palette[255] = 0;
+
+	const BYTE* const oldPixels = m_pixels;
+
+	m_pixels = new BYTE[Width * Height];
+	FlipNonSquareBlockRemap(m_pixels, oldPixels, Width, Height, Width, palette);
+
+	delete[] oldPixels;
 }
 
 //===========================================================================
@@ -286,25 +318,25 @@ void FCELTexture::MakeTexture()
 
 int FCELTexture::CopyTrueColorPixels(FBitmap* bitmap, int x, int y, int rotate, FCopyInfo* info)
 {
-	// TODO: implement without MakeTexture()
+	CELPalette celPalette = {};
+	BYTE* pixels = NULL;
 
-	if (NULL == m_pixels)
-	{
-		MakeTexture();
-	}
+	LoadCELLump(SourceLump, celPalette, pixels);
 
 	PalEntry palette[256];
 
 	for (size_t i = 0; i < 256; ++i)
 	{
-		const BYTE* color = &m_palette[3 * i];
+		const BYTE* const color = &celPalette[3 * i];
 		palette[i] = PalEntry(255, color[0], color[1], color[2]);
 	}
 
-	// Looks like the last palette entry is used as alpha mask color
+	// The last palette entry is an alpha mask
 	palette[255].a = 0;
 
-	bitmap->CopyPixelData(x, y, m_pixels, Width, Height, 1, Width, rotate, palette, info);
+	bitmap->CopyPixelData(x, y, pixels, Width, Height, 1, Width, rotate, palette, info);
 
-	return 0;
+	delete[] pixels;
+
+	return 1;
 }
