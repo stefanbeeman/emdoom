@@ -932,6 +932,10 @@ add_executable( zdoom WIN32
 	gl/models/gl_models_md2.cpp
 	gl/models/gl_models.cpp
 	gl/models/gl_voxels.cpp
+	gl/hqnx/hq2x.cpp
+	gl/hqnx/hq3x.cpp
+	gl/hqnx/hq4x.cpp
+	gl/hqnx/Image.cpp
 	oplsynth/fmopl.cpp
 	oplsynth/mlopl.cpp
 	oplsynth/mlopl_io.cpp
@@ -942,6 +946,7 @@ add_executable( zdoom WIN32
 	oplsynth/OPL3.cpp
 	resourcefiles/ancientzip.cpp
 	resourcefiles/file_7z.cpp
+	resourcefiles/file_chasm_bin.cpp
 	resourcefiles/file_grp.cpp
 	resourcefiles/file_lump.cpp
 	resourcefiles/file_rff.cpp
@@ -977,6 +982,7 @@ add_executable( zdoom WIN32
 	textures/bitmap.cpp
 	textures/buildtexture.cpp
 	textures/canvastexture.cpp
+	textures/celtexture.cpp
 	textures/ddstexture.cpp
 	textures/flattexture.cpp
 	textures/imgztexture.cpp
