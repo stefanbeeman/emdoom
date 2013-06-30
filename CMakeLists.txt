@@ -16,6 +16,10 @@ endif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" S
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
 
+if( APPLE )
+	SET( CMAKE_OSX_ARCHITECTURES "i386" CACHE STRING "OX Architectures" FORCE)
+endif( APPLE )
+
 find_package( BZip2 )
 find_package( JPEG )
 find_package( ZLIB )
