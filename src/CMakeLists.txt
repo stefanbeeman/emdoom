@@ -237,7 +237,8 @@ endif( NOT FMOD_LIB_NAME )
 
 if( NOT WIN32 )
 	find_path( FMOD_INCLUDE_DIR fmod.hpp
-		PATHS ${FMOD_LOCAL_INC_DIRS} )
+		PATHS ${FMOD_LOCAL_INC_DIRS}
+		"../thirdparty/FMOD/inc" )
 endif( NOT WIN32 )
 
 if( NOT FMOD_INCLUDE_DIR )
@@ -264,6 +265,10 @@ else( WIN32 OR APPLE )
 		NAMES ${FMOD_VERSIONS}
 		PATHS ${FMOD_LOCAL_LIB_DIRS} )
 endif( WIN32 OR APPLE )
+
+if( APPLE AND NOT FMOD_LIBRARY )
+	find_library( FMOD_LIBRARY "libfmodex.dylib" "../thirdparty/FMOD/lib" )
+endif( APPLE AND NOT FMOD_LIBRARY )
 
 if( FMOD_LIBRARY )
 	message( STATUS "FMOD library found at ${FMOD_LIBRARY}" )
@@ -376,7 +381,8 @@ endif( NOT NO_ASM )
 if( APPLE )
 	find_path( GLEW_INCLUDE_DIR GL/glew.h
 		PATHS "/usr/include"
-		"/usr/local/include" )
+		"/usr/local/include"
+		"../thirdparty/glew/include" )
 
 	if( GLEW_INCLUDE_DIR )
 		message( STATUS "GLEW include files found at ${GLEW_INCLUDE_DIR}" )
