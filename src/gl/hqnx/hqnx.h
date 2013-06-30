@@ -26,15 +26,6 @@
 
 #include <mmintrin.h>
 
-#if defined _WIN32 || defined __APPLE__ && !defined __x86_64__ && !defined __clang__
-// Visual Studio 2010 has no _mm_cvtsi64_m64() intrinsic
-// LLVM GCC defines _mm_cvtsi64_m64() intrinsic for x64 only
-static inline __m64 _mm_cvtsi64_m64(long long number)
-{
-  return *reinterpret_cast<__m64*>(&number);
-}
-#endif // _WIN32 || __APPLE__ && !__x86_64__ && !__clang__
-
 class hq_vec
 {
   // IMPORTANT NOTE!
@@ -50,23 +41,19 @@ public:
   }
 
   hq_vec(const long long value)
-  : m_value(_mm_cvtsi64_m64(value))
+  : m_value(*reinterpret_cast<const __m64*>(&value))
   {
   }
 
-#define HQ_VEC_MM_ZERO _mm_cvtsi32_si64(0)
-
   static hq_vec load(const int source)
   {
-    return _mm_unpacklo_pi8(_mm_cvtsi32_si64(source), HQ_VEC_MM_ZERO);
+    return _mm_unpacklo_pi8(_mm_cvtsi32_si64(source), _mm_cvtsi32_si64(0));
   }
 
   void store(unsigned char* const destination) const
   {
-    *reinterpret_cast<int*>(destination) = _mm_cvtsi64_si32(_mm_packs_pu16(m_value, HQ_VEC_MM_ZERO));
+    *reinterpret_cast<int*>(destination) = _mm_cvtsi64_si32(_mm_packs_pu16(m_value, _mm_cvtsi32_si64(0)));
   }
-
-#undef HQ_VEC_MM_ZERO
 
   static void reset()
   {
