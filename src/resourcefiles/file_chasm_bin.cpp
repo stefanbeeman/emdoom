@@ -38,6 +38,8 @@
 #include "cmdlib.h"
 #include "doomdef.h"
 #include "templates.h"
+#include "w_wad.h"
+
 
 //==========================================================================
 //
@@ -68,6 +70,37 @@ namespace
 
 	const DWORD CHASM_BIN_MAGIC = MAKE_ID('C', 'S', 'i', 'd');
 
+	class MemoryLump : public FResourceLump
+	{
+	public:
+		MemoryLump(const FString& buffer)
+		: m_buffer(buffer)
+		, m_reader(m_buffer.GetChars(), m_buffer.Len())
+		{
+
+		}
+
+		virtual FileReader* GetReader()
+		{
+			return &m_reader;
+		}
+
+		virtual int FillCache()
+		{
+			Cache    = const_cast<char*>(m_reader.GetBuffer());
+			RefCount = -1;
+			
+			return -1;
+		}
+
+		virtual int GetFileOffset() { return 0; }
+
+	private:
+		FString      m_buffer;
+		MemoryReader m_reader;
+
+	};
+
 }
 
 
@@ -81,7 +114,20 @@ class FChasmBinFile : public FUncompressedFile
 {
 public:
 	FChasmBinFile(const char * filename, FileReader *file);
-	bool Open(bool quiet);
+	~FChasmBinFile();
+
+	virtual bool Open(bool quiet);
+
+	virtual FResourceLump* GetLump(int no);
+
+private:
+	DWORD m_fileLumpCount;
+
+	TArray<MemoryLump*> m_specialLumps;
+
+	bool ReadNextEntry(const DWORD index);
+
+	void AddSoundInfoLump();
 
 	void DumpFiles(const char* const path);
 
@@ -98,8 +144,17 @@ public:
 
 FChasmBinFile::FChasmBinFile(const char *filename, FileReader *file)
 : FUncompressedFile(filename, file)
+, m_fileLumpCount(0)
 {
-	Lumps = NULL;
+
+}
+
+FChasmBinFile::~FChasmBinFile()
+{
+	for (unsigned int i = 0, count = m_specialLumps.Size(); i < count; ++i)
+	{
+		delete m_specialLumps[i];
+	}
 }
 
 //==========================================================================
@@ -113,31 +168,20 @@ bool FChasmBinFile::Open(bool quiet)
 	ChasmBinHeader header;
 	Reader->Read(&header, sizeof header);
 
-	NumLumps = LittleLong(header.entryCount);
-	Lumps = new FUncompressedLump[NumLumps];
+	m_fileLumpCount = LittleLong(header.entryCount);
+	Lumps = new FUncompressedLump[m_fileLumpCount];
 
-	for (DWORD i = 0; i < NumLumps; ++i)
+	for (DWORD i = 0; i < m_fileLumpCount; ++i)
 	{
-		ChasmBinEntry entry;
-
-		const long bytesRead =  Reader->Read(&entry, long(sizeof entry));
-		if (size_t(bytesRead) != sizeof entry)
+		if (!ReadNextEntry(i))
 		{
 			return false;
 		}
-
-		char name[sizeof entry.name + 1];
-		memcpy(name, entry.name, sizeof entry.name);
-		name[sizeof name - 1] = '\0';
-
-		FUncompressedLump& lump = Lumps[i];
-		lump.Owner = this;
-		lump.Position = LittleLong(entry.offset);
-		lump.LumpSize = LittleLong(entry.size);
-		lump.LumpNameSetup(name);
-
-		// TODO: namespace
 	}
+
+	AddSoundInfoLump();
+
+	NumLumps = m_fileLumpCount + m_specialLumps.Size();
 
 	if (!quiet)
 	{
@@ -145,6 +189,98 @@ bool FChasmBinFile::Open(bool quiet)
 	}
 
 	return true;
+}
+
+FResourceLump* FChasmBinFile::GetLump(int no)
+{
+	const DWORD lump = static_cast<DWORD>(no);
+
+	if (lump < m_fileLumpCount)
+	{
+		return &Lumps[lump];
+	}
+	else if (lump < m_fileLumpCount + m_specialLumps.Size())
+	{
+		return m_specialLumps[m_fileLumpCount - lump];
+	}
+
+	return NULL;
+}
+
+bool FChasmBinFile::ReadNextEntry(const DWORD index)
+{
+	ChasmBinEntry entry;
+
+	const long bytesRead = Reader->Read(&entry, long(sizeof entry));
+	if (size_t(bytesRead) != sizeof entry)
+	{
+		return false;
+	}
+
+	char name[sizeof entry.name + 1];
+	memcpy(name, entry.name, sizeof entry.name);
+	name[sizeof name - 1] = '\0';
+
+	FUncompressedLump& lump = Lumps[index];
+	lump.Owner    = this;
+	lump.Position = LittleLong(entry.offset);
+	lump.LumpSize = LittleLong(entry.size);
+	lump.FullName = copystring(name);
+	
+	// TODO: namespace
+
+	memset(lump.Name, 0, sizeof lump.Name);
+
+	const char* const extension = strrchr(name, '.');
+	if (NULL == extension)
+	{
+		return true;
+	}
+
+	// Assign short name for supported files only
+
+	if (   0 == stricmp(extension, ".cel")
+		|| 0 == stricmp(extension, ".wav"))
+	{
+		strncpy(lump.Name, name, extension - name);
+	}
+
+	return true;
+}
+
+void FChasmBinFile::AddSoundInfoLump()
+{
+	FString soundInfo;
+
+	for (DWORD i = 0; i < m_fileLumpCount; ++i)
+	{
+		const FResourceLump& lump = Lumps[i];
+
+		const char* const fullName = lump.FullName;
+		const char* const extension = strrchr(fullName, '.');
+
+		if (NULL == extension)
+		{
+			continue;
+		}
+
+		if (0 == stricmp(extension, ".wav"))
+		{
+			soundInfo += "chasm/";
+			soundInfo += lump.Name;
+			soundInfo += " ";
+			soundInfo += lump.Name;
+			soundInfo += "\n";
+		}
+	}
+
+	MemoryLump* lump = new MemoryLump(soundInfo);
+	lump->Owner    = this;
+	lump->LumpSize = soundInfo.Len();
+	lump->FullName = copystring("sndinfo.txt");
+	strcpy(lump->Name, "SNDINFO");
+
+	m_specialLumps.Push(lump);
 }
 
 void FChasmBinFile::DumpFiles(const char* const path)
