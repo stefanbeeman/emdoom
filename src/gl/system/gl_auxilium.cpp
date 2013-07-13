@@ -292,36 +292,55 @@ GLuint RenderTarget::GetBoundName()
 // ---------------------------------------------------------------------------
 
 
-static GLuint CreateShader( const GLenum type, const char* name )
+static GLuint CreateShader(const GLenum type, const char* name)
 {
-	const int shaderLumpID = Wads.CheckNumForFullName( name );
-	
-	if ( -1 == shaderLumpID )
+	FString shaderString;
+
+	const int shaderLumpID = Wads.CheckNumForFullName(name);
+
+	if (-1 == shaderLumpID)
 	{
-		Printf( "Unable to load shader \"%s\"\n", name );
+		FileReader reader;
+
+		if (!reader.Open(name))
+		{
+			Printf("Unable to load shader \"%s\"\n", name);
+
+			return 0;
+		}
+
+		const long length = reader.GetLength();
+
+		char* const buffer = shaderString.LockNewBuffer(length);
+		buffer[length] = '\0';
+
+		reader.Read(buffer, length);
 		
-		return 0;
+		shaderString.UnlockBuffer();
+	}
+	else
+	{
+		FMemLump shaderLump = Wads.ReadLump(shaderLumpID);
+
+		shaderString = shaderLump.GetString();
 	}
 
-	FMemLump shaderLump = Wads.ReadLump( shaderLumpID );
-	
-	const char* shaderString = shaderLump.GetString().GetChars();
-	GLint shaderSize = strlen( shaderString );
-	
-	static char errorBuffer[ 8 * 1024 ];
-	memset( errorBuffer, 0, sizeof ( errorBuffer ) );
-	
-	const GLuint result = gl.CreateShader( type );
-	
-	gl.ShaderSource( result, 1, &shaderString, &shaderSize );
-	gl.CompileShader( result );
-	gl.GetShaderInfoLog( result, sizeof( errorBuffer ), NULL, errorBuffer );
-	
-	if ( '\0' != *errorBuffer )
+	const char* shader = shaderString.GetChars();
+
+	const GLuint result = gl.CreateShader(type);
+	GLint shaderSize = strlen(shaderString);
+
+	static char errorBuffer[8 * 1024] = {};
+
+	gl.ShaderSource(result, 1, &shader, &shaderSize);
+	gl.CompileShader(result);
+	gl.GetShaderInfoLog(result, sizeof(errorBuffer), NULL, errorBuffer);
+
+	if ('\0' != *errorBuffer)
 	{
-		Printf( "Shader \"%s\" compilation failed:\n%s\n", name, errorBuffer );
+		Printf("Shader \"%s\" compilation failed:\n%s\n", name, errorBuffer);
 	}
-	
+
 	return result;
 }
 

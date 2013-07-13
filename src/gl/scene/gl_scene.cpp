@@ -901,38 +901,71 @@ sector_t * FGLRenderer::RenderViewpoint (AActor * camera, GL_IRECT * bounds, flo
 
 #include "gl/system/gl_auxilium.h"
 
-CVAR( Int, gl_postprocess, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG )
+static GLAuxilium::PostProcess* GetPostProcess()
+{
+	GLAuxilium::BackBuffer* backBuffer = GLAuxilium::BackBuffer::GetInstance();
+
+	return NULL == backBuffer
+		? NULL
+		: &backBuffer->GetPostProcess();
+}
+
+static void ReleasePostProcess()
+{
+	GLAuxilium::PostProcess* const postProcess = GetPostProcess();
+
+	if (NULL != postProcess)
+	{
+		postProcess->Release();
+	}
+}
+
+CUSTOM_CVAR(Int, gl_postprocess, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	ReleasePostProcess();
+}
+
+CUSTOM_CVAR(String, gl_postprocess_shader, "", CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	ReleasePostProcess();
+}
 
 #endif // COCOA_NO_SDL
 
 void FGLRenderer::RenderView (player_t* player)
 {
 #ifdef COCOA_NO_SDL
-	GLAuxilium::BackBuffer*  backBuffer = GLAuxilium::BackBuffer::GetInstance();
-	GLAuxilium::PostProcess* postProcess = NULL == backBuffer 
-		? NULL 
-		: &backBuffer->GetPostProcess();
+	GLAuxilium::PostProcess* const postProcess = GetPostProcess();
+
+	const bool isPostProcessActive = (NULL != postProcess) && (gl_postprocess > 0);
 	
-	const bool isPostProcessActive = ( NULL != postProcess ) && ( gl_postprocess > 0 );
-	
-	if ( NULL != postProcess )
+	if (isPostProcessActive)
 	{
-		const bool isPostProcessInitialized = postProcess->IsInitialized();
-		
-		if ( !isPostProcessActive && isPostProcessInitialized )
+		if (!postProcess->IsInitialized())
 		{
-			postProcess->Release();
+			const char* shaderPath;
+
+			switch (gl_postprocess)
+			{
+			case 1:
+				shaderPath = "shaders/glsl/fxaa.fp";
+				break;
+
+			default:
+				shaderPath = gl_postprocess_shader;
+
+				if (0 == strlen(shaderPath))
+				{
+					Printf("No post-processing shader file is set, use gl_postprocess_shader CVAR to specify path to it\n");
+				}
+				break;
+			}
+
+			postProcess->Init(shaderPath, SCREENWIDTH, SCREENHEIGHT);
 		}
-		else if ( isPostProcessActive && !isPostProcessInitialized )
-		{
-			postProcess->Init( "shaders/glsl/fxaa.fp", framebuffer->GetWidth(), framebuffer->GetHeight() );
-		}
-	}
-	
-	if ( isPostProcessActive )
-	{
+
 		postProcess->Start();
-	}	
+	}
 #endif // COCOA_NO_SDL
 	
 	OpenGLFrameBuffer* GLTarget = static_cast<OpenGLFrameBuffer*>(screen);
@@ -989,7 +1022,7 @@ void FGLRenderer::RenderView (player_t* player)
 	EndDrawScene(viewsector);
 
 #ifdef COCOA_NO_SDL
-	if ( isPostProcessActive )
+	if (isPostProcessActive)
 	{
 		postProcess->Finish();
 	}
