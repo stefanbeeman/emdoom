@@ -875,6 +875,20 @@ static ApplicationDelegate* s_applicationDelegate;
 		return FALSE;
 	}
 
+	// Some parameters from command line are passed to this function
+	// These parameters need to be skipped to avoid duplication
+	// Note: SDL has different approach to fix this issue, see the same method in SDLMain.m
+
+	const char* const charFileName = [filename UTF8String];
+
+	for (int i = 0; i < s_argc; ++i)
+	{
+		if (0 == strcmp(s_argv[i], charFileName))
+		{
+			return FALSE;
+		}
+	}
+
 	s_argvStorage.Push( "-file" );
 	s_argv[s_argc++] = s_argvStorage.Last().LockBuffer();
 
