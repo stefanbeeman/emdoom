@@ -1659,6 +1659,10 @@ MNU_EPISODE			= "Select Episode";
 WI_FINISHED			= "finished";
 WI_ENTERING			= "Now entering:";
 
+AM_MONSTERS			= "Monsters:";
+AM_SECRETS			= "Secrets:";
+AM_ITEMS			= "Items:";
+
 MNU_OUTDATED_IWAD	= "You are using an outdated IWAD file!";
 
 // Bloodbath announcer

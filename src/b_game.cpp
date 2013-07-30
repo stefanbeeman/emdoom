@@ -517,7 +517,7 @@ bool FCajunMaster::LoadBots ()
 		DPrintf ("No " BOTFILENAME ", so no bots\n");
 		return false;
 	}
-#elif !defined unix
+#elif !defined __unix__
 	tmp = progdir;
 	tmp += "zcajun/" BOTFILENAME;
 	if (!FileExists (tmp))
