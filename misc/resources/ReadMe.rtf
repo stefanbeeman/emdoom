@@ -14,7 +14,7 @@
 
 \b0\fs28 \cf0 \ul \ulc0 \
 \pard\pardeftab720\qc
-{\field{\*\fldinst{HYPERLINK "https://code.google.com/p/gzdoom-macosx/"}}{\fldrslt \cf2 \ulnone https://code.google.com/p/gzdoom-macosx/}}\ulnone \
+{\field{\*\fldinst{HYPERLINK "https://code.google.com/p/gzdoom-macosx/"}}{\fldrslt \cf2 \ulnone http://alexey-lysiuk.github.io/gzdoom/}}\ulnone \
 \pard\pardeftab720
 
 \b \cf0 \
@@ -57,13 +57,18 @@ ZDoom homepage:	{\field{\*\fldinst{HYPERLINK "http://zdoom.org/"}}{\fldrslt \cf2
 
 \fs28 \
 The following list describes changes done in OS X version only.\
-All recent changes in main GZDoom SVN repository can be seen {\field{\*\fldinst{HYPERLINK "http://mancubus.net/svn/gzdoom/"}}{\fldrslt here}}.\
+All recent changes in main GZDoom Git repository can be seen {\field{\*\fldinst{HYPERLINK "https://github.com/coelckers/gzdoom/commits/master"}}{\fldrslt here}}.\
+\
+\ul 0.2.1\
+\ulnone + Added check for outdated IWAD version with the corresponding message on top of the screen. Added menu option and check_outdated_iwad CVAR to control this feature.\
++ Added brightmaps and lights .pk3 files into the application bundle.\
+* Fixed command line parameters duplication.\
++ Added experimental support for Chasm: The Rift resource files. Textures and sounds are loaded at the moment.\
++ Added debug texture viewer with texture_browse_index CVAR and texture_browse[_prev|_next] CCMDs to lookup textures by index or by name.\
 \
 \ul 0.2.0\
-\pard\pardeftab720
-\cf0 \ulnone * Updated to GZDoom 1.8.0 and ZDoom 2.7.0\
-\pard\pardeftab720
-\cf0 + Added ability to toggle vertical synchronization state automatically depending on current performance\
+\ulnone * Updated to GZDoom 1.8.0 and ZDoom 2.7.0\
++ Added ability to toggle vertical synchronization state automatically depending on current performance\
 + Added separate menu for vertical synchronization options\
 + Added support for file paths with special characters (quotes, spaces, escape sequences etc) in additional parameters field of IWAD selection window\
 + Added support for old script scanner with signed character type. This improves compatibility with some PWADs like Knee-Deep in ZDoom is playable again\
