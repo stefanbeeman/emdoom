@@ -60,11 +60,12 @@ The following list describes changes done in OS X version only.\
 All recent changes in main GZDoom Git repository can be seen {\field{\*\fldinst{HYPERLINK "https://github.com/coelckers/gzdoom/commits/master"}}{\fldrslt here}}.\
 \
 \ul 0.2.1\
-\ulnone + Added check for outdated IWAD version with the corresponding message on top of the screen. Added menu option and check_outdated_iwad CVAR to control this feature.\
-+ Added brightmaps and lights .pk3 files into the application bundle.\
-* Fixed command line parameters duplication.\
-+ Added experimental support for Chasm: The Rift resource files. Textures and sounds are loaded at the moment.\
-+ Added debug texture viewer with texture_browse_index CVAR and texture_browse[_prev|_next] CCMDs to lookup textures by index or by name.\
+\ulnone + Added support for user-defined post-proprocessing fragment shaders. Set path to a shader file gl_postprocess_shader via gl_postprocess_shader CVAR. Sample shader files can be found in Extra/Post-Processing Shaders folder on the GZDoom disk image\ul \
+\ulnone + Added check for outdated IWAD version with the corresponding message on top of the screen. Added menu option and check_outdated_iwad CVAR to control this feature\
++ Added brightmaps and lights .pk3 files into the application bundle\
+* Fixed command line parameters duplication\
++ Added experimental support for Chasm: The Rift resource files. Textures and sounds are loaded at the moment\
++ Added debug texture viewer with texture_browse_index CVAR and texture_browse[_prev|_next] CCMDs to lookup textures by index or by name\
 \
 \ul 0.2.0\
 \ulnone * Updated to GZDoom 1.8.0 and ZDoom 2.7.0\
