@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>doom.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.googlecode.gzdoom</string>
+	<string>com.github.alexey-lysiuk.gzdoom</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
