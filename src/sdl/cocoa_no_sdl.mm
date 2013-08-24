@@ -970,9 +970,6 @@ static ApplicationDelegate* s_applicationDelegate;
 	[m_window setContentView:glView];
 	
 	m_openGLInitialized = true;
-	
-	GetContext( gl );
-	gl.LoadExtensions();
 }
 
 - (void)changeVideoResolution:(bool)fullscreen width:(int)width height:(int)height
@@ -1025,9 +1022,9 @@ static ApplicationDelegate* s_applicationDelegate;
 	
 	const NSRect viewRect = [[m_window contentView] frame];
 	
-	gl.Viewport( 0, 0, viewRect.size.width, viewRect.size.height );
-	gl.ClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-	gl.Clear( GL_COLOR_BUFFER_BIT );
+	glViewport( 0, 0, viewRect.size.width, viewRect.size.height );
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+	glClear( GL_COLOR_BUFFER_BIT );
 	
 	CGLFlushDrawable( context );
 	

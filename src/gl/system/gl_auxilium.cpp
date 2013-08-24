@@ -692,11 +692,11 @@ void BackBuffer::UpdateAutomaticVSync()
 
 		if (0 == vid_vsync && isVSync)
 		{
-			gl.SetVSync(0);
+			SetVSync(0);
 		}
 		else if (vid_vsync > 0 && !isVSync)
 		{
-			gl.SetVSync(1);
+			SetVSync(1);
 		}
 
 		return;
@@ -734,7 +734,7 @@ void BackBuffer::UpdateAutomaticVSync()
 
 	if (m_framesToSwitchVSync >= vid_vsync_auto_switch_frames)
 	{
-		gl.SetVSync(isVSync ? 0 : 1);
+		SetVSync(isVSync ? 0 : 1);
 
 		m_framesToSwitchVSync = 0;
 	}

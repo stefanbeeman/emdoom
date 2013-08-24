@@ -64,8 +64,6 @@ CUSTOM_CVAR(Int, gl_vid_multisample, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_
 	Printf("This won't take effect until "GAMENAME" is restarted.\n");
 }
 
-RenderContext gl;
-
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 // Dummy screen sizes to pass when windowed
@@ -128,7 +126,6 @@ SDLGLVideo::SDLGLVideo (int parm)
         fprintf( stderr, "Video initialization failed: %s\n",
              SDL_GetError( ) );
     }
-	GetContext(gl);
 #if !defined _WIN32 && !defined __APPLE__
 	// mouse cursor is visible by default on linux systems, we disable it by default
 	SDL_ShowCursor (0);
@@ -289,6 +286,45 @@ bool SDLGLVideo::SetResolution (int width, int height, int bits)
 	return true;	// We must return true because the old video context no longer exists.
 }
 
+//==========================================================================
+//
+// 
+//
+//==========================================================================
+
+bool SDLGLVideo::SetupPixelFormat(bool allowsoftware, int multisample)
+{
+	SDL_GL_SetAttribute( SDL_GL_RED_SIZE,  8 );
+	SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE,  8 );
+	SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE,  8 );
+	SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE,  8 );
+	SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE,  24 );
+	SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE,  8 );
+//		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER,  1 );
+	if (multisample > 0) {
+		SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
+		SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, multisample );
+	}
+	return true;
+}
+
+//==========================================================================
+//
+// 
+//
+//==========================================================================
+
+bool SDLGLVideo::InitHardware (bool allowsoftware, int multisample)
+{
+	if (!SetupPixelFormat(allowsoftware, multisample))
+	{
+		Printf ("R_OPENGL: Reverting to software mode...\n");
+		return false;
+	}
+	return true;
+}
+
+
 // FrameBuffer implementation -----------------------------------------------
 
 SDLGLFB::SDLGLFB (void *, int width, int height, int, int, bool fullscreen)
@@ -304,23 +340,15 @@ SDLGLFB::SDLGLFB (void *, int width, int height, int, int, bool fullscreen)
 
 	UpdatePending = false;
 	
-	if (!gl.InitHardware(false, gl_vid_compatibility, localmultisample))
+	if (!static_cast<SDLGLVideo*>(Video)->InitHardware(false, localmultisample))
 	{
 		vid_renderer = 0;
 		return;
 	}
 
-	// Mac OS X version will crash when entering fullscreen mode with BPP <= 8
-	// Also it may crash with BPP == 16 on some configurations
-	// It seems 24 and 32 bits are safe values
-	// So value of vid_displaybits is ignored and hardcoded constant is used instead
 		
 	Screen = SDL_SetVideoMode (width, height,
-#if defined(__APPLE__)
 		32,
-#else // ! __APPLE__
-		vid_displaybits,
-#endif // __APPLE__
 		SDL_HWSURFACE|SDL_HWPALETTE|SDL_OPENGL | SDL_GL_DOUBLEBUFFER|SDL_ANYFORMAT|
 		(fullscreen ? SDL_FULLSCREEN : 0));
 
@@ -349,15 +377,11 @@ SDLGLFB::~SDLGLFB ()
 	}
 }
 
+
+
+
 void SDLGLFB::InitializeState() 
 {
-	int value = 0;
-	SDL_GL_GetAttribute( SDL_GL_STENCIL_SIZE, &value );
-	if (!value) 
-	{
-		Printf("Failed to use stencil buffer!\n");	//[C] is it needed to recreate buffer in "cheapest mode"?
-		gl.flags|=RFL_NOSTENCIL;
-	}
 }
 
 bool SDLGLFB::CanUpdate ()
@@ -429,5 +453,10 @@ void SDLGLFB::SetVSync( bool vsync )
 
 void SDLGLFB::NewRefreshRate ()
 {
+}
+
+void SDLGLFB::SwapBuffers()
+{
+	SDL_GL_SwapBuffers ();
 }
 

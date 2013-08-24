@@ -73,6 +73,8 @@ CVAR(Bool, gl_aalines, false, CVAR_ARCHIVE)
 FGLRenderer *GLRenderer;
 
 void gl_SetupMenu();
+void gl_LoadExtensions();
+void gl_PrintStartupLog();
 
 //==========================================================================
 //
@@ -96,7 +98,7 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(void *hMonitor, int width, int height, int 
 	needsetgamma = true;
 	swapped = false;
 	Accel2D = true;
-	if (gl.SetVSync!=NULL) gl.SetVSync(vid_vsync);
+	SetVSync(vid_vsync);
 }
 
 OpenGLFrameBuffer::~OpenGLFrameBuffer()
@@ -115,14 +117,14 @@ void OpenGLFrameBuffer::InitializeState()
 {
 	static bool first=true;
 
-	gl.LoadExtensions();
+	gl_LoadExtensions();
 	Super::InitializeState();
 	if (first)
 	{
 		first=false;
 		// [BB] For some reason this crashes, if compiled with MinGW and optimization. Has to be investigated.
 #if defined _MSC_VER || defined __APPLE__
-		gl.PrintStartupLog();
+		gl_PrintStartupLog();
 #endif
 
 		if (gl.flags&RFL_NPOT_TEXTURE)
@@ -228,7 +230,7 @@ void OpenGLFrameBuffer::Swap()
 		//DoSetGamma();
 		needsetgamma = false;
 	}
-	gl.SwapBuffers();
+	SwapBuffers();
 	Finish.Unclock();
 	swapped = true;
 	FHardwareTexture::UnbindAll();
