@@ -363,14 +363,14 @@ void GLWall::DrawDecal(DBaseDecal *decal)
 
 	if (loadAlpha)
 	{
-		gl.Color4f(red, green, blue, a);
+		glColor4f(red, green, blue, a);
 
 		if (glset.lightmode == 8)
 		{
 			if (gl_fixedcolormap)
-				gl.VertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
+				glVertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
 			else
-				gl.VertexAttrib1f(VATTR_LIGHTLEVEL, gl_CalcLightLevel(light, rel, false) / 255.0);
+				glVertexAttrib1f(VATTR_LIGHTLEVEL, gl_CalcLightLevel(light, rel, false) / 255.0);
 		}
 	}
 	else
@@ -399,13 +399,13 @@ void GLWall::DrawDecal(DBaseDecal *decal)
 	else gl_RenderState.AlphaFunc(GL_GREATER, 0.f);
 
 	gl_RenderState.Apply();
-	gl.Begin(GL_TRIANGLE_FAN);
+	glBegin(GL_TRIANGLE_FAN);
 	for(i=0;i<4;i++)
 	{
-		gl.TexCoord2f(dv[i].u,dv[i].v);
-		gl.Vertex3f(dv[i].x,dv[i].z,dv[i].y);
+		glTexCoord2f(dv[i].u,dv[i].v);
+		glVertex3f(dv[i].x,dv[i].z,dv[i].y);
 	}
-	gl.End();
+	glEnd();
 	rendered_decals++;
 	gl_RenderState.SetFog(fc,-1);
 	gl_RenderState.SetDynLight(0,0,0);

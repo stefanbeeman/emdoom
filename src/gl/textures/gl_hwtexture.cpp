@@ -46,6 +46,7 @@
 #include "c_dispatch.h"
 #include "v_palette.h"
 
+#include "gl/system/gl_interface.h"
 #include "gl/system/gl_cvars.h"
 #include "gl/renderer/gl_renderer.h"
 #include "gl/textures/gl_material.h"
@@ -96,8 +97,8 @@ void FHardwareTexture::LoadImage(unsigned char * buffer,int w, int h, unsigned i
 
 	if (alphatexture) texformat=GL_ALPHA8;
 	else if (forcenocompression) texformat = GL_RGBA8;
-	if (glTexID==0) gl.GenTextures(1,&glTexID);
-	gl.BindTexture(GL_TEXTURE_2D, glTexID);
+	if (glTexID==0) glGenTextures(1,&glTexID);
+	glBindTexture(GL_TEXTURE_2D, glTexID);
 	lastbound[texunit]=glTexID;
 
 	if (!buffer)
@@ -109,7 +110,7 @@ void FHardwareTexture::LoadImage(unsigned char * buffer,int w, int h, unsigned i
 
 		// The texture must at least be initialized if no data is present.
 		mipmap=false;
-		gl.TexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
+		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
 		buffer=(unsigned char *)calloc(4,rw * (rh+1));
 		deletebuffer=true;
 		//texheight=-h;	
@@ -119,7 +120,7 @@ void FHardwareTexture::LoadImage(unsigned char * buffer,int w, int h, unsigned i
 		rw = GetTexDimension (w);
 		rh = GetTexDimension (h);
 
-		gl.TexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, (mipmap && use_mipmapping && !forcenofiltering));
+		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, (mipmap && use_mipmapping && !forcenofiltering));
 
 		if (rw == w && rh == h)
 		{
@@ -157,38 +158,38 @@ void FHardwareTexture::LoadImage(unsigned char * buffer,int w, int h, unsigned i
 			}
 		}
 	}
-	gl.TexImage2D(GL_TEXTURE_2D, 0, texformat, rw, rh, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, texformat, rw, rh, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
 	if (deletebuffer) free(buffer);
 
 	// When using separate samplers the stuff below is not needed.
 	// if (gl.flags & RFL_SAMPLER_OBJECTS) return;
 
-	gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapparam==GL_CLAMP? GL_CLAMP_TO_EDGE : GL_REPEAT);
-	gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapparam==GL_CLAMP? GL_CLAMP_TO_EDGE : GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapparam==GL_CLAMP? GL_CLAMP_TO_EDGE : GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapparam==GL_CLAMP? GL_CLAMP_TO_EDGE : GL_REPEAT);
 	clampmode = wrapparam==GL_CLAMP? GLT_CLAMPX|GLT_CLAMPY : 0;
 
 	if (forcenofiltering)
 	{
-		gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.f);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.f);
 	}
 	else
 	{
 		if (mipmap && use_mipmapping)
 		{
-			gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, TexFilter[gl_texture_filter].minfilter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, TexFilter[gl_texture_filter].minfilter);
 			if (gl_texture_filter_anisotropic)
 			{
-				gl.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_filter_anisotropic);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_filter_anisotropic);
 			}
 		}
 		else
 		{
-			gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, TexFilter[gl_texture_filter].magfilter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, TexFilter[gl_texture_filter].magfilter);
 		}
-		gl.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, TexFilter[gl_texture_filter].magfilter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, TexFilter[gl_texture_filter].magfilter);
 	}
 }
 
@@ -230,7 +231,7 @@ void FHardwareTexture::DeleteTexture(unsigned int texid)
 				lastbound[i] = 0;
 			}
 		}
-		gl.DeleteTextures(1, &texid);
+		glDeleteTextures(1, &texid);
 	}
 }
 
@@ -249,7 +250,7 @@ void FHardwareTexture::Clean(bool all)
 		{
 			DeleteTexture(glTexID[i]);
 		}
-		//gl.DeleteTextures(cm_arraysize,glTexID);
+		//glDeleteTextures(cm_arraysize,glTexID);
 		memset(glTexID,0,sizeof(unsigned int)*cm_arraysize);
 	}
 	else
@@ -258,7 +259,7 @@ void FHardwareTexture::Clean(bool all)
 		{
 			DeleteTexture(glTexID[i]);
 		}
-		//gl.DeleteTextures(cm_arraysize-1,glTexID+1);
+		//glDeleteTextures(cm_arraysize-1,glTexID+1);
 		memset(glTexID+1,0,sizeof(unsigned int)*(cm_arraysize-1));
 	}
 	for(unsigned int i=0;i<glTexID_Translated.Size();i++)
@@ -266,7 +267,7 @@ void FHardwareTexture::Clean(bool all)
 		DeleteTexture(glTexID_Translated[i].glTexID);
 	}
 	glTexID_Translated.Clear();
-	if (glDepthID != 0) gl.DeleteRenderbuffers(1, &glDepthID);
+	if (glDepthID != 0) glDeleteRenderbuffers(1, &glDepthID);
 }
 
 //===========================================================================
@@ -327,9 +328,9 @@ unsigned int FHardwareTexture::Bind(int texunit, int cm,int translation)
 	{
 		if (lastbound[texunit]==*pTexID) return *pTexID;
 		lastbound[texunit]=*pTexID;
-		if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0+texunit);
-		gl.BindTexture(GL_TEXTURE_2D, *pTexID);
-		if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0);
+		if (texunit != 0) glActiveTexture(GL_TEXTURE0+texunit);
+		glBindTexture(GL_TEXTURE_2D, *pTexID);
+		if (texunit != 0) glActiveTexture(GL_TEXTURE0);
 		return *pTexID;
 	}
 	return 0;
@@ -340,9 +341,9 @@ void FHardwareTexture::Unbind(int texunit)
 {
 	if (lastbound[texunit] != 0)
 	{
-		if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0+texunit);
-		gl.BindTexture(GL_TEXTURE_2D, 0);
-		if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0);
+		if (texunit != 0) glActiveTexture(GL_TEXTURE0+texunit);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		if (texunit != 0) glActiveTexture(GL_TEXTURE0);
 		lastbound[texunit] = 0;
 	}
 }
@@ -367,11 +368,11 @@ int FHardwareTexture::GetDepthBuffer()
 	{
 		if (glDepthID == 0)
 		{
-			gl.GenRenderbuffers(1, &glDepthID);
-			gl.BindRenderbuffer(GL_RENDERBUFFER, glDepthID);
-			gl.RenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 
+			glGenRenderbuffers(1, &glDepthID);
+			glBindRenderbuffer(GL_RENDERBUFFER, glDepthID);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 
 				GetTexDimension(texwidth), GetTexDimension(texheight));
-			gl.BindRenderbuffer(GL_RENDERBUFFER, 0);
+			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		}
 		return glDepthID;
 	}
@@ -389,8 +390,8 @@ void FHardwareTexture::BindToFrameBuffer()
 {
 	if (gl.flags & RFL_FRAMEBUFFER)
 	{
-		gl.FramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexID[0], 0);
-		gl.FramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, GetDepthBuffer()); 
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexID[0], 0);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, GetDepthBuffer()); 
 	}
 }
 
@@ -407,9 +408,9 @@ unsigned int FHardwareTexture::CreateTexture(unsigned char * buffer, int w, int 
 
 	unsigned int * pTexID=GetTexID(cm, translation);
 
-	if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0+texunit);
+	if (texunit != 0) glActiveTexture(GL_TEXTURE0+texunit);
 	LoadImage(buffer, w, h, *pTexID, wrap? GL_REPEAT:GL_CLAMP, cm==CM_SHADE, texunit);
-	if (texunit != 0) gl.ActiveTexture(GL_TEXTURE0);
+	if (texunit != 0) glActiveTexture(GL_TEXTURE0);
 	return *pTexID;
 }
 

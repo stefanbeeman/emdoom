@@ -41,6 +41,7 @@
 #include "w_wad.h"
 
 #include "gl/renderer/gl_renderer.h"
+#include "gl/system/gl_interface.h"
 #include "gl/utility/gl_clock.h"
 
 
@@ -128,11 +129,11 @@ GLint GetFilter( const TextureFilter filter )
 
 void BoundTextureSetFilter( const GLenum target, const GLint filter )
 {
-	gl.TexParameteri( target, GL_TEXTURE_MIN_FILTER, filter );
-	gl.TexParameteri( target, GL_TEXTURE_MAG_FILTER, filter );
+	glTexParameteri( target, GL_TEXTURE_MIN_FILTER, filter );
+	glTexParameteri( target, GL_TEXTURE_MAG_FILTER, filter );
 	
-	gl.TexParameteri( target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	gl.TexParameteri( target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );		
+	glTexParameteri( target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri( target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );		
 }
 
 void BoundTextureDraw2D( const GLsizei width, const GLsizei height )
@@ -150,23 +151,23 @@ void BoundTextureDraw2D( const GLsizei width, const GLsizei height )
 	const float x2 = abs( width  );
 	const float y2 = abs( height );
 	
-	gl.Disable( GL_BLEND );
-	gl.Disable( GL_ALPHA_TEST );
+	glDisable( GL_BLEND );
+	glDisable( GL_ALPHA_TEST );
 	
-	gl.Begin( GL_QUADS );
-	gl.Color4f( 1.0f, 1.0f, 1.0f, 1.0f );
-	gl.TexCoord2f( u0, v1 );
-	gl.Vertex2f( x1, y1 );
-	gl.TexCoord2f( u1, v1 );
-	gl.Vertex2f( x2, y1 );
-	gl.TexCoord2f( u1, v0 );
-	gl.Vertex2f( x2, y2 );
-	gl.TexCoord2f( u0, v0 );
-	gl.Vertex2f( x1, y2 );
-	gl.End();
+	glBegin( GL_QUADS );
+	glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+	glTexCoord2f( u0, v1 );
+	glVertex2f( x1, y1 );
+	glTexCoord2f( u1, v1 );
+	glVertex2f( x2, y1 );
+	glTexCoord2f( u1, v0 );
+	glVertex2f( x2, y2 );
+	glTexCoord2f( u0, v0 );
+	glVertex2f( x1, y2 );
+	glEnd();
 	
-	gl.Enable( GL_ALPHA_TEST );
-	gl.Enable( GL_BLEND );
+	glEnable( GL_ALPHA_TEST );
+	glEnable( GL_BLEND );
 }
 
 bool BoundTextureSaveAsPNG( const GLenum target, const char* const path )
@@ -257,18 +258,18 @@ RenderTarget::RenderTarget( const GLsizei width, const GLsizei height, const Ren
 		? m_depthStencil.m_ID 
 		: sharedDepth->m_depthStencil.m_ID;
 	
-	gl.GenFramebuffers( 1, &m_ID );
-	gl.BindFramebuffer( GL_FRAMEBUFFER, m_ID );
+	glGenFramebuffers( 1, &m_ID );
+	glBindFramebuffer( GL_FRAMEBUFFER, m_ID );
 	
-	gl.FramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,        GL_TEXTURE_2D, m_color.m_ID,   0 );
-	gl.FramebufferTexture2D( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencilID, 0 );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,        GL_TEXTURE_2D, m_color.m_ID,   0 );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencilID, 0 );
 	
-	gl.BindFramebuffer( GL_FRAMEBUFFER, 0 );
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 	
 RenderTarget::~RenderTarget()
 {
-	gl.DeleteFramebuffers( 1, &m_ID );
+	glDeleteFramebuffers( 1, &m_ID );
 }
 
 
@@ -280,7 +281,7 @@ Texture2D& RenderTarget::GetColorTexture()
 
 void RenderTarget::DoBind( const GLuint resourceID )
 {
-	gl.BindFramebuffer( GL_FRAMEBUFFER, resourceID );
+	glBindFramebuffer( GL_FRAMEBUFFER, resourceID );
 }
 
 GLuint RenderTarget::GetBoundName()
@@ -327,14 +328,14 @@ static GLuint CreateShader(const GLenum type, const char* name)
 
 	const char* shader = shaderString.GetChars();
 
-	const GLuint result = gl.CreateShader(type);
+	const GLuint result = glCreateShader(type);
 	GLint shaderSize = strlen(shaderString);
 
 	static char errorBuffer[8 * 1024] = {};
 
-	gl.ShaderSource(result, 1, &shader, &shaderSize);
-	gl.CompileShader(result);
-	gl.GetShaderInfoLog(result, sizeof(errorBuffer), NULL, errorBuffer);
+	glShaderSource(result, 1, &shader, &shaderSize);
+	glCompileShader(result);
+	glGetShaderInfoLog(result, sizeof(errorBuffer), NULL, errorBuffer);
 
 	if ('\0' != *errorBuffer)
 	{
@@ -366,16 +367,16 @@ ShaderProgram::ShaderProgram( const char* const vertexName, const char* const fr
 		return;
 	}
 	
-	m_ID = gl.CreateProgram();
+	m_ID = glCreateProgram();
 	
-	gl.AttachShader( m_ID, m_vertexShaderID );
-	gl.AttachShader( m_ID, m_fragmentShaderID );
-	gl.LinkProgram ( m_ID );
+	glAttachShader( m_ID, m_vertexShaderID );
+	glAttachShader( m_ID, m_fragmentShaderID );
+	glLinkProgram ( m_ID );
 	
 	static char errorBuffer[ 8 * 1024 ];
 	memset( errorBuffer, 0, sizeof ( errorBuffer ) );
 	
-	gl.GetProgramInfoLog( m_ID, sizeof( errorBuffer ), NULL, errorBuffer );
+	glGetProgramInfoLog( m_ID, sizeof( errorBuffer ), NULL, errorBuffer );
 	
 	if ( '\0' != *errorBuffer )
 	{
@@ -387,16 +388,16 @@ ShaderProgram::ShaderProgram( const char* const vertexName, const char* const fr
 
 ShaderProgram::~ShaderProgram()
 {
-	gl.DeleteShader( m_fragmentShaderID );
-	gl.DeleteShader( m_vertexShaderID );
+	glDeleteShader( m_fragmentShaderID );
+	glDeleteShader( m_vertexShaderID );
 	
-	gl.DeleteProgram( m_ID );
+	glDeleteProgram( m_ID );
 }
 
 
 void ShaderProgram::DoBind( const GLuint resourceID )
 {
-	gl.UseProgram( resourceID );
+	glUseProgram( resourceID );
 }
 
 GLenum ShaderProgram::GetBoundName()
@@ -409,8 +410,8 @@ void ShaderProgram::SetUniform( const char* const name, const GLint value )
 {
 	Bind();
 	
-	const GLint location = gl.GetUniformLocation( m_ID, name );
-	gl.Uniform1i( location, value );
+	const GLint location = glGetUniformLocation( m_ID, name );
+	glUniform1i( location, value );
 	
 	Unbind();
 }
@@ -419,8 +420,8 @@ void ShaderProgram::SetUniform( const char* const name, const GLfloat value0, co
 {
 	Bind();
 	
-	const GLint location = gl.GetUniformLocation( m_ID, name );
-	gl.Uniform2f( location, value0, value1 );
+	const GLint location = glGetUniformLocation( m_ID, name );
+	glUniform2f( location, value0, value1 );
 	
 	Unbind();
 }
@@ -504,7 +505,7 @@ void PostProcess::Finish()
 	
 	Texture2D& colorTexture = m_renderTarget->GetColorTexture();
 	
-	gl.ActiveTexture( GL_TEXTURE0 );
+	glActiveTexture( GL_TEXTURE0 );
 	colorTexture.Bind();
 	
 	m_shader->Bind();
@@ -592,7 +593,7 @@ BackBuffer::BackBuffer( int width, int height, bool fullscreen )
 	// Fill render target with black color
 
 	m_renderTarget.Bind();
-	gl.Clear( GL_COLOR_BUFFER_BIT );
+	glClear( GL_COLOR_BUFFER_BIT );
 	m_renderTarget.Unbind();
 }
 
@@ -749,11 +750,11 @@ void BackBuffer::DrawRenderTarget()
 	
 	Texture2D& colorTexture = m_renderTarget.GetColorTexture();
 	
-	gl.ActiveTexture( GL_TEXTURE0 );
+	glActiveTexture( GL_TEXTURE0 );
 	colorTexture.Bind();
-	gl.ActiveTexture( GL_TEXTURE1 );
+	glActiveTexture( GL_TEXTURE1 );
 	m_gammaTexture.Bind();
-	gl.ActiveTexture( GL_TEXTURE0 );
+	glActiveTexture( GL_TEXTURE0 );
 	
 	GLint viewport[4] = {0};
 	glGetIntegerv( GL_VIEWPORT, viewport );
@@ -763,17 +764,17 @@ void BackBuffer::DrawRenderTarget()
 		// Clear whole screen if aspect ratio is different from native resolution
 		// to avoid drawing garbage instead of black bars
 
-		gl.Viewport( 0, 0, s_parameters.width + s_parameters.shiftX * 2, s_parameters.height + s_parameters.shiftY * 2 );
-		gl.Clear( GL_COLOR_BUFFER_BIT );
+		glViewport( 0, 0, s_parameters.width + s_parameters.shiftX * 2, s_parameters.height + s_parameters.shiftY * 2 );
+		glClear( GL_COLOR_BUFFER_BIT );
 	}
 
-	gl.Viewport( s_parameters.shiftX, s_parameters.shiftY, s_parameters.width, s_parameters.height );
+	glViewport( s_parameters.shiftX, s_parameters.shiftY, s_parameters.width, s_parameters.height );
 	
 	m_gammaProgram.Bind();
 	colorTexture.Draw2D( Width, Height );
 	m_gammaProgram.Unbind();
 	
-	gl.Viewport( viewport[0], viewport[1], viewport[2], viewport[3] );
+	glViewport( viewport[0], viewport[1], viewport[2], viewport[3] );
 }
 
 

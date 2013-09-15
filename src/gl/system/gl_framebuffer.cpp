@@ -51,6 +51,7 @@
 #include "templates.h"
 #include "farchive.h"
 
+#include "gl/system/gl_interface.h"
 #include "gl/system/gl_framebuffer.h"
 #include "gl/renderer/gl_renderer.h"
 #include "gl/renderer/gl_lightdata.h"
@@ -136,40 +137,40 @@ void OpenGLFrameBuffer::InitializeState()
 			Printf("Occlusion query enabled.\n");
 		}
 	}
-	gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	gl.ClearDepth(1.0f);
-	gl.DepthFunc(GL_LESS);
-	gl.ShadeModel(GL_SMOOTH);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0f);
+	glDepthFunc(GL_LESS);
+	glShadeModel(GL_SMOOTH);
 
-	gl.Enable(GL_DITHER);
-	gl.Enable(GL_ALPHA_TEST);
-	gl.Disable(GL_CULL_FACE);
-	gl.Disable(GL_POLYGON_OFFSET_FILL);
-	gl.Enable(GL_POLYGON_OFFSET_LINE);
-	gl.Enable(GL_BLEND);
-	gl.Enable(GL_DEPTH_CLAMP_NV);
-	gl.Disable(GL_DEPTH_TEST);
-	gl.Enable(GL_TEXTURE_2D);
-	gl.Disable(GL_LINE_SMOOTH);
+	glEnable(GL_DITHER);
+	glEnable(GL_ALPHA_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_POLYGON_OFFSET_FILL);
+	glEnable(GL_POLYGON_OFFSET_LINE);
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_CLAMP_NV);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LINE_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glAlphaFunc(GL_GEQUAL,0.5f);
-	gl.Hint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	gl.Hint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	gl.Hint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	// This was to work around a bug in some older driver. Probably doesn't make sense anymore.
-	gl.Enable(GL_FOG);
-	gl.Disable(GL_FOG);
+	glEnable(GL_FOG);
+	glDisable(GL_FOG);
 
-	gl.Hint(GL_FOG_HINT, GL_FASTEST);
-	gl.Fogi(GL_FOG_MODE, GL_EXP);
+	glHint(GL_FOG_HINT, GL_FASTEST);
+	glFogi(GL_FOG_MODE, GL_EXP);
 
 
-	gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	int trueH = GetTrueHeight();
 	int h = GetHeight();
-	gl.Viewport(0, (trueH - h)/2, GetWidth(), GetHeight()); 
+	glViewport(0, (trueH - h)/2, GetWidth(), GetHeight()); 
 
 	Begin2D(false);
 	GLRenderer->Initialize();
@@ -224,7 +225,7 @@ void OpenGLFrameBuffer::Swap()
 {
 	Finish.Reset();
 	Finish.Clock();
-	gl.Finish();
+	glFinish();
 	if (needsetgamma) 
 	{
 		//DoSetGamma();
@@ -388,11 +389,11 @@ FNativePalette *OpenGLFrameBuffer::CreatePalette(FRemapTable *remap)
 //==========================================================================
 bool OpenGLFrameBuffer::Begin2D(bool)
 {
-	gl.MatrixMode(GL_MODELVIEW);
-	gl.LoadIdentity();
-	gl.MatrixMode(GL_PROJECTION);
-	gl.LoadIdentity();
-	gl.Ortho(
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(
 		(GLdouble) 0,
 		(GLdouble) GetWidth(), 
 		(GLdouble) GetHeight(), 
@@ -400,15 +401,15 @@ bool OpenGLFrameBuffer::Begin2D(bool)
 		(GLdouble) -1.0, 
 		(GLdouble) 1.0 
 		);
-	gl.Disable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
 	// Korshun: ENABLE AUTOMAP ANTIALIASING!!!
 	if (gl_aalines)
-		gl.Enable(GL_LINE_SMOOTH);
+		glEnable(GL_LINE_SMOOTH);
 	else
 	{
-		gl.Disable(GL_MULTISAMPLE);
-		gl.Disable(GL_LINE_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		glDisable(GL_LINE_SMOOTH);
 		glLineWidth(1.0);
 	}
 
@@ -531,7 +532,7 @@ void OpenGLFrameBuffer::GetScreenshotBuffer(const BYTE *&buffer, int &pitch, ESS
 	ScreenshotBuffer = new BYTE[w * h * 3];
 
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-	gl.ReadPixels(0,(GetTrueHeight() - GetHeight()) / 2,w,h,GL_RGB,GL_UNSIGNED_BYTE,ScreenshotBuffer);
+	glReadPixels(0,(GetTrueHeight() - GetHeight()) / 2,w,h,GL_RGB,GL_UNSIGNED_BYTE,ScreenshotBuffer);
 	glPixelStorei(GL_PACK_ALIGNMENT, 4);
 	pitch = -w*3;
 	color_type = SS_RGB;

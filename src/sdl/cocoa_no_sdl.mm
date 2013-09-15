@@ -1742,11 +1742,11 @@ int SDL_BlitSurface( SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_
 
 static void SetupSoftwareRendering( SDL_Surface* screen )
 {
-	gl.MatrixMode( GL_MODELVIEW );
-	gl.LoadIdentity();
-	gl.MatrixMode( GL_PROJECTION );
-	gl.LoadIdentity();
-	gl.Ortho( 0.0, screen->w, screen->h, 0.0, -1.0, 1.0 );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( 0.0, screen->w, screen->h, 0.0, -1.0, 1.0 );
 	
 	// For an unknown reason the following call to glClear() is needed
 	// to avoid drawing of garbage in fullscreen mode 
@@ -1755,14 +1755,14 @@ static void SetupSoftwareRendering( SDL_Surface* screen )
 	GLint viewport[2];
 	glGetIntegerv( GL_MAX_VIEWPORT_DIMS, viewport );
 	
-	gl.Viewport( 0, 0, viewport[0], viewport[1] );
-	gl.Clear( GL_COLOR_BUFFER_BIT );
+	glViewport( 0, 0, viewport[0], viewport[1] );
+	glClear( GL_COLOR_BUFFER_BIT );
 
 	const GLAuxilium::BackBuffer::Parameters& viewportParameters = GLAuxilium::BackBuffer::GetParameters();
-	gl.Viewport( viewportParameters.shiftX, viewportParameters.shiftY, 
+	glViewport( viewportParameters.shiftX, viewportParameters.shiftY, 
 				 viewportParameters.width,  viewportParameters.height );
 	
-	gl.Enable( GL_TEXTURE_2D );
+	glEnable( GL_TEXTURE_2D );
 	
 	s_softwareTexture = new GLAuxilium::Texture2D;
 	s_softwareTexture->SetFilter( GLAuxilium::TEXTURE_FILTER_NEAREST );
@@ -1784,7 +1784,7 @@ int SDL_Flip( SDL_Surface* screen )
 	s_softwareTexture->SetImageData( GLAuxilium::TEXTURE_FORMAT_COLOR_RGBA, width, height, screen->pixels );
 	s_softwareTexture->Draw2D( width, -height ); // flipped vertically
 	
-	gl.Flush();
+	glFlush();
 	
 	SDL_GL_SwapBuffers();
 	

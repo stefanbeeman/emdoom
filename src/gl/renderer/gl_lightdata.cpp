@@ -40,6 +40,7 @@
 
 
 #include "gl/system/gl_system.h"
+#include "gl/system/gl_interface.h"
 #include "gl/system/gl_cvars.h"
 #include "gl/data/gl_data.h"
 #include "gl/renderer/gl_colormap.h"
@@ -331,20 +332,20 @@ void gl_SetColor(int light, int rellight, const FColormap * cm, float alpha, Pal
 
 	if (glset.lightmode != 8)
 	{
-		gl.Color4f(r * ThingColor.r/255.0f, g * ThingColor.g/255.0f, b * ThingColor.b/255.0f, alpha);
+		glColor4f(r * ThingColor.r/255.0f, g * ThingColor.g/255.0f, b * ThingColor.b/255.0f, alpha);
 	}
 	else
 	{ 
-		gl.Color4f(r, g, b, alpha);
+		glColor4f(r, g, b, alpha);
 
 		if (gl_fixedcolormap)
 		{
-			gl.VertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
+			glVertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
 		}
 		else
 		{
 			float lightlevel = gl_CalcLightLevel(light, rellight, weapon) / 255.0f;
-			gl.VertexAttrib1f(VATTR_LIGHTLEVEL, lightlevel); 
+			glVertexAttrib1f(VATTR_LIGHTLEVEL, lightlevel); 
 		}
 	}
 }
@@ -611,7 +612,7 @@ void gl_SetFog(int lightlevel, int rellight, const FColormap *cmap, bool isaddit
 
 		// Korshun: fullbright fog like in software renderer.
 		if (glset.brightfog && fogdensity != 0 && fogcolor != 0)
-			gl.VertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
+			glVertexAttrib1f(VATTR_LIGHTLEVEL, 1.0);
 	}
 }
 

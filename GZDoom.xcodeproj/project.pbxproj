@@ -103,6 +103,8 @@
 		8A422126150A0478001D28A0 /* IOHIDDevice_.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A422119150A0478001D28A0 /* IOHIDDevice_.c */; };
 		8A422128150A0478001D28A0 /* IOHIDElement_.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A42211B150A0478001D28A0 /* IOHIDElement_.c */; };
 		8A422139150A0578001D28A0 /* iokit_joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A422138150A0578001D28A0 /* iokit_joystick.cpp */; };
+		8A61707A17E5C5C60068A2B9 /* gl_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A61705C17E59AD10068A2B9 /* gl_api.cpp */; };
+		8A61707B17E5C6AA0068A2B9 /* gl_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A61705C17E59AD10068A2B9 /* gl_api.cpp */; };
 		8A74F2A2139235E0001F54B0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F2A1139235E0001F54B0 /* OpenGL.framework */; };
 		8A74F2BA1392360F001F54B0 /* libfmodex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F2B91392360F001F54B0 /* libfmodex.dylib */; };
 		8A74F38F13925284001F54B0 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F38E13925284001F54B0 /* IOKit.framework */; };
@@ -1369,6 +1371,10 @@
 		8A42211D150A0478001D28A0 /* IOHIDLib_.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDLib_.h; sourceTree = "<group>"; };
 		8A422138150A0578001D28A0 /* iokit_joystick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iokit_joystick.cpp; sourceTree = "<group>"; };
 		8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = gzdoom.xcconfig; path = misc/gzdoom.xcconfig; sourceTree = "<group>"; };
+		8A61705C17E59AD10068A2B9 /* gl_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_api.cpp; sourceTree = "<group>"; };
+		8A61705D17E59AD10068A2B9 /* gl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_api.h; sourceTree = "<group>"; };
+		8A61705E17E59AD10068A2B9 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
+		8A61705F17E59AD10068A2B9 /* wglext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wglext.h; sourceTree = "<group>"; };
 		8A6BE7BF142F539000AFCF10 /* make_backup */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = make_backup; sourceTree = "<group>"; };
 		8A6BE7C0142F539000AFCF10 /* make_image */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = make_image; sourceTree = "<group>"; };
 		8A74F2A1139235E0001F54B0 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -3689,6 +3695,17 @@
 			);
 			name = hid_utilities;
 			path = thirdparty/hid_utilities;
+			sourceTree = "<group>";
+		};
+		8A61705B17E59AD10068A2B9 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				8A61705C17E59AD10068A2B9 /* gl_api.cpp */,
+				8A61705D17E59AD10068A2B9 /* gl_api.h */,
+				8A61705E17E59AD10068A2B9 /* glext.h */,
+				8A61705F17E59AD10068A2B9 /* wglext.h */,
+			);
+			path = api;
 			sourceTree = "<group>";
 		};
 		8A6BE7B7142F539000AFCF10 /* misc */ = {
@@ -6015,6 +6032,7 @@
 		8AF27DFB139126C00095D9A0 /* gl */ = {
 			isa = PBXGroup;
 			children = (
+				8A61705B17E59AD10068A2B9 /* api */,
 				8AF27DFC139126C00095D9A0 /* data */,
 				8AF27E05139126C00095D9A0 /* dynlights */,
 				8AF27E0F139126C00095D9A0 /* hqnx */,
@@ -7032,6 +7050,7 @@
 				8A9F536314BB0F2900F3369B /* gameconfigfile.cpp in Sources */,
 				8A9F536414BB0F2900F3369B /* gi.cpp in Sources */,
 				8AF3DF4217782D9F00474776 /* gitinfo.cpp in Sources */,
+				8A61707A17E5C5C60068A2B9 /* gl_api.cpp in Sources */,
 				8A9F536514BB0F2900F3369B /* gl_data.cpp in Sources */,
 				8A9F536614BB0F2900F3369B /* gl_portaldata.cpp in Sources */,
 				8A9F536814BB0F2900F3369B /* gl_setup.cpp in Sources */,
@@ -7681,6 +7700,7 @@
 				8AF280BD139126C00095D9A0 /* gameconfigfile.cpp in Sources */,
 				8AF280BE139126C00095D9A0 /* gi.cpp in Sources */,
 				8AF3DF4317782DA900474776 /* gitinfo.cpp in Sources */,
+				8A61707B17E5C6AA0068A2B9 /* gl_api.cpp in Sources */,
 				8AF280BF139126C00095D9A0 /* gl_data.cpp in Sources */,
 				8AF280C0139126C00095D9A0 /* gl_portaldata.cpp in Sources */,
 				8AF280C2139126C00095D9A0 /* gl_setup.cpp in Sources */,
@@ -8159,7 +8179,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = hid_utilities_gzdoom;
 			};

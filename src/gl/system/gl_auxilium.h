@@ -235,7 +235,7 @@ struct TextureImageHandler< GL_TEXTURE_1D >
 {
 	static void DoSetImageData( const TextureFormat format, const GLsizei width, const GLsizei, const void* const data )
 	{
-		gl.TexImage1D( GL_TEXTURE_1D, 0, GetInternalFormat( format ), 
+		glTexImage1D( GL_TEXTURE_1D, 0, GetInternalFormat( format ), 
 			width, 0, GetFormat( format ), GetDataType( format ), data );
 	}
 };
@@ -245,7 +245,7 @@ struct TextureImageHandler< GL_TEXTURE_2D >
 {
 	static void DoSetImageData( const TextureFormat format, const GLsizei width, const GLsizei height, const void* const data )
 	{
-		gl.TexImage2D( GL_TEXTURE_2D, 0, GetInternalFormat( format ), 
+		glTexImage2D( GL_TEXTURE_2D, 0, GetInternalFormat( format ),
 			width, height, 0, GetFormat( format ), GetDataType( format ), data );
 	}
 };
@@ -260,18 +260,18 @@ class Texture : public Resource< Texture< target >, NoUnbind >,
 public:
 	Texture()
 	{
-		gl.GenTextures( 1, &this->m_ID );
+		glGenTextures( 1, &this->m_ID );
 	}
 	
 	~Texture()
 	{
-		gl.DeleteTextures( 1, &this->m_ID );
+		glDeleteTextures( 1, &this->m_ID );
 	}
 	
 	
 	static void DoBind( const GLuint resourceID )
 	{
-		gl.BindTexture( target, resourceID );
+		glBindTexture( target, resourceID );
 	}
 	
 	static GLenum GetBoundName()

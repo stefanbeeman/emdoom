@@ -49,6 +49,7 @@
 #include "textures/bitmap.h"
 //#include "gl/gl_intern.h"
 
+#include "gl/system/gl_interface.h"
 #include "gl/renderer/gl_renderer.h"
 #include "gl/data/gl_vertexbuffer.h"
 #include "gl/scene/gl_drawinfo.h"
@@ -189,14 +190,14 @@ FVoxelVertexBuffer::FVoxelVertexBuffer(TArray<FVoxelVertex> &verts, TArray<unsig
 	ibo_id = 0;
 	if (gl.flags&RFL_VBO)
 	{
-		gl.GenBuffers(1, &ibo_id);
+		glGenBuffers(1, &ibo_id);
 
-		gl.BindBuffer(GL_ARRAY_BUFFER, vbo_id);
-		gl.BufferData(GL_ARRAY_BUFFER, verts.Size() * sizeof(FVoxelVertex), &verts[0], GL_STATIC_DRAW);
-		gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+		glBufferData(GL_ARRAY_BUFFER, verts.Size() * sizeof(FVoxelVertex), &verts[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
 		if (verts.Size() > 65535)
 		{
-			gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.Size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.Size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 			isint = true;
 		}
 		else
@@ -206,7 +207,7 @@ FVoxelVertexBuffer::FVoxelVertexBuffer(TArray<FVoxelVertex> &verts, TArray<unsig
 			{
 				sbuffer[i] = (unsigned short)indices[i];
 			}
-			gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, indices.Size() * sizeof(unsigned short), sbuffer, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.Size() * sizeof(unsigned short), sbuffer, GL_STATIC_DRAW);
 			delete [] sbuffer;
 			isint = false;
 		}
@@ -223,7 +224,7 @@ FVoxelVertexBuffer::~FVoxelVertexBuffer()
 {
 	if (ibo_id != 0)
 	{
-		gl.DeleteBuffers(1, &ibo_id);
+		glDeleteBuffers(1, &ibo_id);
 	}
 }
 
@@ -236,13 +237,13 @@ FVoxelVertexBuffer::~FVoxelVertexBuffer()
 
 void FVoxelVertexBuffer::BindVBO()
 {
-	gl.BindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
 	glVertexPointer(3,GL_FLOAT, sizeof(FVoxelVertex), &VVO->x);
 	glTexCoordPointer(2,GL_FLOAT, sizeof(FVoxelVertex), &VVO->u);
-	gl.EnableClientState(GL_VERTEX_ARRAY);
-	gl.EnableClientState(GL_TEXTURE_COORD_ARRAY);
-	gl.EnableClientState(GL_INDEX_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_INDEX_ARRAY);
 }
 
 
@@ -481,14 +482,14 @@ void FVoxelModel::RenderFrame(FTexture * skin, int frame, int cm, int translatio
 		}
 	}
 
-	gl.Begin(GL_QUADS);
+	glBegin(GL_QUADS);
 	for(unsigned i=0;i < mIndices.Size(); i++)
 	{
 		FVoxelVertex *vert = &mVertices[mIndices[i]];
-		gl.TexCoord2fv(&vert->u);
-		gl.Vertex3fv(&vert->x);
+		glTexCoord2fv(&vert->u);
+		glVertex3fv(&vert->x);
 	}
-	gl.End();
+	glEnd();
 }
 
 //===========================================================================
