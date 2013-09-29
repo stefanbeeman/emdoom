@@ -344,7 +344,7 @@ FString M_GetCachePath(bool create)
 	{
 		path = progdir;
 	}
-	path += "/zdoom/cache";
+	path += "/" GAME_DIR "/cache";
 	return path;
 }
 
@@ -363,7 +363,7 @@ FString M_GetAutoexecPath()
 	char cpath[PATH_MAX];
 	FSRef folder;
 	
-	if (noErr == FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		path << cpath << "/" GAME_DIR "/autoexec.cfg";
@@ -379,6 +379,8 @@ FString M_GetAutoexecPath()
 //
 //===========================================================================
 
+#ifndef COCOA_NO_SDL
+
 FString M_GetCajunPath(const char *botfilename)
 {
 	FString path;
@@ -391,6 +393,8 @@ FString M_GetCajunPath(const char *botfilename)
 	}
 	return path;
 }
+
+#endif // !COCOA_NO_SDL
 
 //===========================================================================
 //
@@ -407,15 +411,15 @@ FString M_GetConfigPath(bool for_reading)
 	char cpath[PATH_MAX];
 	FSRef folder;
 	
-	if (noErr == FSFindFolder(kUserDomain, kPreferencesFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		FString path;
-		path << cpath << "/zdoom.ini";
+		path << cpath << "/" GAME_DIR "/GZDoom.ini";
 		return path;
 	}
 	// Ungh.
-	return "zdoom.ini";
+	return "GZDoom.ini";
 }
 
 //===========================================================================
@@ -432,7 +436,7 @@ FString M_GetScreenshotsPath()
 	char cpath[PATH_MAX];
 	FSRef folder;
 	
-	if (noErr == FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		path << cpath << "/" GAME_DIR "/Screenshots/";
@@ -458,7 +462,7 @@ FString M_GetSavegamesPath()
 	char cpath[PATH_MAX];
 	FSRef folder;
 
-	if (noErr == FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &folder) &&
+	if (noErr == FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &folder) &&
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		path << cpath << "/" GAME_DIR "/Savegames/";
