@@ -95,6 +95,8 @@
 		8A2C748116C66DBA00ABD7C8 /* readokt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C747816C66CB600ABD7C8 /* readokt.c */; };
 		8A2C748216C66DBA00ABD7C8 /* readokt2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C747916C66CB600ABD7C8 /* readokt2.c */; };
 		8A3AC15B14BE294E000D402B /* GZDoom.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A3AC15A14BE294E000D402B /* GZDoom.xib */; };
+		8A3ACEF417F833FC002E550F /* m_specialpaths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3ACEF317F833FC002E550F /* m_specialpaths.cpp */; };
+		8A3ACEF517F833FC002E550F /* m_specialpaths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3ACEF317F833FC002E550F /* m_specialpaths.cpp */; };
 		8A3DA66D1547DB5100D1302A /* thingdef_function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3DA66C1547DB5100D1302A /* thingdef_function.cpp */; };
 		8A3DA66E1547DB5100D1302A /* thingdef_function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3DA66C1547DB5100D1302A /* thingdef_function.cpp */; };
 		8A42210D150A0458001D28A0 /* libhid_utilities_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A422108150A0420001D28A0 /* libhid_utilities_gzdoom.a */; };
@@ -1353,6 +1355,7 @@
 		8A2C747816C66CB600ABD7C8 /* readokt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readokt.c; sourceTree = "<group>"; };
 		8A2C747916C66CB600ABD7C8 /* readokt2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readokt2.c; sourceTree = "<group>"; };
 		8A3AC15A14BE294E000D402B /* GZDoom.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GZDoom.xib; path = misc/resources/GZDoom.xib; sourceTree = "<group>"; };
+		8A3ACEF317F833FC002E550F /* m_specialpaths.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = m_specialpaths.cpp; sourceTree = "<group>"; };
 		8A3DA66C1547DB5100D1302A /* thingdef_function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thingdef_function.cpp; sourceTree = "<group>"; };
 		8A3DA6941547DC2A00D1302A /* gl_builddraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_builddraw.cpp; sourceTree = "<group>"; };
 		8A422108150A0420001D28A0 /* libhid_utilities_gzdoom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhid_utilities_gzdoom.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3301,7 +3304,6 @@
 		8AF27F37139126C00095D9A0 /* i_movie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = i_movie.cpp; sourceTree = "<group>"; };
 		8AF27F38139126C00095D9A0 /* i_system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = i_system.cpp; sourceTree = "<group>"; };
 		8AF27F39139126C00095D9A0 /* i_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = i_system.h; sourceTree = "<group>"; };
-		8AF27F3A139126C00095D9A0 /* i_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = i_video.h; sourceTree = "<group>"; };
 		8AF27F3B139126C00095D9A0 /* iwadpicker_cocoa.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iwadpicker_cocoa.mm; sourceTree = "<group>"; };
 		8AF27F3C139126C00095D9A0 /* sdlglvideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdlglvideo.cpp; sourceTree = "<group>"; };
 		8AF27F3D139126C00095D9A0 /* sdlglvideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdlglvideo.h; sourceTree = "<group>"; };
@@ -5642,6 +5644,7 @@
 				8AF27E88139126C00095D9A0 /* m_png.h */,
 				8AF27E89139126C00095D9A0 /* m_random.cpp */,
 				8AF27E8A139126C00095D9A0 /* m_random.h */,
+				8A3ACEF317F833FC002E550F /* m_specialpaths.cpp */,
 				8AF27E8B139126C00095D9A0 /* m_swap.h */,
 				8AF27E8C139126C00095D9A0 /* md5.cpp */,
 				8AF27E8D139126C00095D9A0 /* md5.h */,
@@ -6303,7 +6306,6 @@
 				8AF27F38139126C00095D9A0 /* i_system.cpp */,
 				8AF27F39139126C00095D9A0 /* i_system.h */,
 				8A9906AF172D349500B2B92B /* i_system_cocoa.mm */,
-				8AF27F3A139126C00095D9A0 /* i_video.h */,
 				8A422138150A0578001D28A0 /* iokit_joystick.cpp */,
 				8AF27F3B139126C00095D9A0 /* iwadpicker_cocoa.mm */,
 				8AF27F3C139126C00095D9A0 /* sdlglvideo.cpp */,
@@ -7114,6 +7116,7 @@
 				8A9F53A514BB0F2900F3369B /* m_misc.cpp in Sources */,
 				8A9F53A614BB0F2900F3369B /* m_png.cpp in Sources */,
 				8A9F53A714BB0F2900F3369B /* m_random.cpp in Sources */,
+				8A3ACEF417F833FC002E550F /* m_specialpaths.cpp in Sources */,
 				8A9F53A814BB0F2900F3369B /* md5.cpp in Sources */,
 				8A9F53A914BB0F2900F3369B /* memarena.cpp in Sources */,
 				8A9F53AA14BB0F2900F3369B /* colorpickermenu.cpp in Sources */,
@@ -7764,6 +7767,7 @@
 				8AF28105139126C00095D9A0 /* m_misc.cpp in Sources */,
 				8AF28106139126C00095D9A0 /* m_png.cpp in Sources */,
 				8AF28107139126C00095D9A0 /* m_random.cpp in Sources */,
+				8A3ACEF517F833FC002E550F /* m_specialpaths.cpp in Sources */,
 				8AF28108139126C00095D9A0 /* md5.cpp in Sources */,
 				8AF28109139126C00095D9A0 /* memarena.cpp in Sources */,
 				8AF2810A139126C00095D9A0 /* colorpickermenu.cpp in Sources */,

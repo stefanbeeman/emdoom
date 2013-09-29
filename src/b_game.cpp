@@ -60,10 +60,6 @@ Everything that is changed is marked (maybe commented) with "Added by MC"
 #include "d_net.h"
 #include "d_netinf.h"
 
-#ifdef COCOA_NO_SDL
-FString GetBotsConfigPath();
-#endif // COCOA_NO_SDL
-
 static FRandom pr_botspawn ("BotSpawn");
 
 //Externs
@@ -509,39 +505,13 @@ bool FCajunMaster::LoadBots ()
 	bool gotteam = false;
 
 	bglobal.ForgetBots ();
-
-#ifdef COCOA_NO_SDL
-	tmp = GetBotsConfigPath();
-	if (!FileExists (tmp))
+	tmp = M_GetCajunPath(BOTFILENAME);
+	if (tmp.IsEmpty())
 	{
 		DPrintf ("No " BOTFILENAME ", so no bots\n");
 		return false;
 	}
-#elif !defined __unix__
-	tmp = progdir;
-	tmp += "zcajun/" BOTFILENAME;
-	if (!FileExists (tmp))
-	{
-		DPrintf ("No " BOTFILENAME ", so no bots\n");
-		return false;
-	}
-#else
-	tmp = GetUserFile (BOTFILENAME);
-	if (!FileExists (tmp))
-	{
-		if (!FileExists (SHARE_DIR BOTFILENAME))
-		{
-			DPrintf ("No " BOTFILENAME ", so no bots\n");
-			return false;
-		}
-		else
-			sc.OpenFile (SHARE_DIR BOTFILENAME);
-	}
-#endif
-	else
-	{
-		sc.OpenFile (tmp);
-	}
+	sc.OpenFile(tmp);
 
 	while (sc.GetString ())
 	{
