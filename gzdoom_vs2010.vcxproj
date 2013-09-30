@@ -388,6 +388,7 @@
     <ClCompile Include="src\m_random.cpp" />
     <ClCompile Include="src\md5.cpp" />
     <ClCompile Include="src\memarena.cpp" />
+    <ClCompile Include="src\m_specialpaths.cpp" />
     <ClCompile Include="src\name.cpp" />
     <ClCompile Include="src\nodebuild.cpp" />
     <ClCompile Include="src\nodebuild_classify_nosse2.cpp" />
