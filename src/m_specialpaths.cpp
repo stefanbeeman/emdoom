@@ -345,6 +345,12 @@ FString M_GetCachePath(bool create)
 		path = progdir;
 	}
 	path += "/" GAME_DIR "/cache";
+
+	if (create)
+	{
+		CreatePath(path);
+	}
+
 	return path;
 }
 
@@ -415,7 +421,9 @@ FString M_GetConfigPath(bool for_reading)
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		FString path;
-		path << cpath << "/" GAME_DIR "/GZDoom.ini";
+		path << cpath << "/" GAME_DIR "/";
+		CreatePath(path);
+		path << "GZDoom.ini";
 		return path;
 	}
 	// Ungh.
@@ -445,6 +453,9 @@ FString M_GetScreenshotsPath()
 	{
 		path = "~/";
 	}
+
+	CreatePath(path);
+
 	return path;
 }
 
@@ -466,6 +477,7 @@ FString M_GetSavegamesPath()
 		noErr == FSRefMakePath(&folder, (UInt8*)cpath, PATH_MAX))
 	{
 		path << cpath << "/" GAME_DIR "/Savegames/";
+		CreatePath(path);
 	}
 	return path;
 }
