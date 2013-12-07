@@ -27,6 +27,7 @@
 /tools/lemon/build
 /tools/re2c/build
 /wadsrc*/*.pk3
+/build_vc2013
 
 # Visual Studio 2010
 *.vcxproj.filters
