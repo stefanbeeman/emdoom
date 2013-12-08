@@ -525,8 +525,8 @@ int FIWadManager::IdentifyVersion (TArray<FString> &wadfiles, const char *iwad, 
 					  "2. Edit your zdoom-username.ini and add the directories of your iwads\n"
 					  "to the list beneath [IWADSearch.Directories]");
 #elif defined(__APPLE__)
-					  "1. Place one or more of these wads in ~/Library/Application Support/zdoom/\n"
-					  "2. Edit your ~/Library/Preferences/zdoom.ini and add the directories\n"
+					  "1. Place one or more of these wads in ~/Library/Application Support/GZdoom/\n"
+					  "2. Edit your ~/Library/Application Support/GZdoom/GZdoom.ini and add the directories\n"
 					  "of your iwads to the list beneath [IWADSearch.Directories]");
 #else
 					  "1. Place one or more of these wads in ~/.config/zdoom/.\n"
