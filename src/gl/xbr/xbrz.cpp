@@ -14,8 +14,14 @@
 // ****************************************************************************
 
 #include "xbrz.h"
+
 #include <cassert>
+#include <cmath>
 #include <algorithm>
+
+#if __cplusplus > 199711
+#define XBRZ_CXX11
+#endif // __cplusplus > 199711
 
 namespace
 {
@@ -29,10 +35,13 @@ inline unsigned char getBlue (uint32_t val) { return getByte<0>(val); }
 template <class T> inline
 T abs(T value)
 {
+#ifdef XBRZ_CXX11
     static_assert(std::is_signed<T>::value, "");
+#endif // XBRZ_CXX11
     return value < 0 ? -value : value;
 }
 
+const uint32_t alphaMask = 0xff000000;
 const uint32_t redMask   = 0xff0000;
 const uint32_t greenMask = 0x00ff00;
 const uint32_t blueMask  = 0x0000ff;
@@ -40,12 +49,20 @@ const uint32_t blueMask  = 0x0000ff;
 template <unsigned int N, unsigned int M> inline
 void alphaBlend(uint32_t& dst, uint32_t col) //blend color over destination with opacity N / M
 {
+#ifdef XBRZ_CXX11
     static_assert(N < 256, "possible overflow of (col & redMask) * N");
     static_assert(M < 256, "possible overflow of (col & redMask  ) * N + (dst & redMask  ) * (M - N)");
     static_assert(0 < N && N < M, "");
+#endif // XBRZ_CXX11
+
+    const uint32_t alpha = (alphaMask == (col & alphaMask) && alphaMask == (dst & alphaMask))
+        ? alphaMask
+        : (alphaMask & ((col & alphaMask) * N + (dst & alphaMask) * (M - N)) / M);
+
     dst = (redMask   & ((col & redMask  ) * N + (dst & redMask  ) * (M - N)) / M) | //this works because 8 upper bits are free
           (greenMask & ((col & greenMask) * N + (dst & greenMask) * (M - N)) / M) |
-          (blueMask  & ((col & blueMask ) * N + (dst & blueMask ) * (M - N)) / M);
+          (blueMask  & ((col & blueMask ) * N + (dst & blueMask ) * (M - N)) / M) |
+          alpha;
 }
 
 
@@ -189,7 +206,7 @@ void rgbtoLuv(uint32_t c, double& L, double& u, double& v)
     if ( var_Y > 0.008856 ) var_Y = std::pow(var_Y , 1.0/3 );
     else                    var_Y =  7.787 * var_Y  +  16.0 / 116;
 
-    const double ref_X =  95.047;        //Observer= 2°, Illuminant= D65
+    const double ref_X =  95.047;        //Observer= 2 degree, Illuminant= D65
     const double ref_Y = 100.000;
     const double ref_Z = 108.883;
 
@@ -225,7 +242,7 @@ void rgbtoLab(uint32_t c, unsigned char& L, signed char& A, signed char& B)
     double z = 0.0193339 * r + 0.1191920 * g + 0.9503041 * b;
     //------XYZ to Lab------
     const double refX = 95.047;  //
-    const double refY = 100.000; //Observer= 2°, Illuminant= D65
+    const double refY = 100.000; //Observer= 2 degree, Illuminant= D65
     const double refZ = 108.883; //
     double var_X = x / refX;
     double var_Y = y / refY;
@@ -495,11 +512,19 @@ BlendResult preProcessCorners(const Kernel_4x4& ker, const xbrz::ScalerCfg& cfg)
          ker.g == ker.k))
         return result;
 
+#ifdef XBRZ_CXX11
     auto dist = [&](uint32_t col1, uint32_t col2) { return colorDist(col1, col2, cfg.luminanceWeight_); };
+#else // !XBRZ_CXX11
+#define dist(C1, C2) colorDist((C1), (C2), cfg.luminanceWeight_)
+#endif // XBRZ_CXX11
 
     const int weight = 4;
     double jg = dist(ker.i, ker.f) + dist(ker.f, ker.c) + dist(ker.n, ker.k) + dist(ker.k, ker.h) + weight * dist(ker.j, ker.g);
     double fk = dist(ker.e, ker.j) + dist(ker.j, ker.o) + dist(ker.b, ker.g) + dist(ker.g, ker.l) + weight * dist(ker.f, ker.k);
+
+#ifndef XBRZ_CXX11
+#undef dist
+#endif // !XBRZ_CXX11
 
     if (jg < fk) //test sample: 70% of values max(jg, fk) / min(jg, fk) are between 1.1 and 3.7 with median being 1.8
     {
@@ -582,6 +607,42 @@ int debugPixelY = 84;
 bool breakIntoDebugger = false;
 #endif
 
+#define a get_a<rotDeg>(ker)
+#define b get_b<rotDeg>(ker)
+#define c get_c<rotDeg>(ker)
+#define d get_d<rotDeg>(ker)
+#define e get_e<rotDeg>(ker)
+#define f get_f<rotDeg>(ker)
+#define g get_g<rotDeg>(ker)
+#define h get_h<rotDeg>(ker)
+#define i get_i<rotDeg>(ker)
+
+#ifndef XBRZ_CXX11
+
+template <RotationDegree rotDeg>
+bool doLineBlend(const Kernel_3x3& ker, const xbrz::ScalerCfg& cfg, const unsigned char blend)
+{
+    if (getBottomR(blend) >= BLEND_DOMINANT)
+        return true;
+
+#define eq(C1, C2) (colorDist((C1), (C2), cfg.luminanceWeight_) < cfg.equalColorTolerance_)
+
+    //make sure there is no second blending in an adjacent rotation for this pixel: handles insular pixels, mario eyes
+    if (getTopR(blend) != BLEND_NONE && !eq(e, g)) //but support double-blending for 90 degree corners
+        return false;
+    if (getBottomL(blend) != BLEND_NONE && !eq(e, c))
+        return false;
+
+    //no full blending for L-shapes; blend corner only (handles "mario mushroom eyes")
+    if (eq(g, h) &&  eq(h , i) && eq(i, f) && eq(f, c) && !eq(e, i))
+        return false;
+
+#undef eq
+
+    return true;
+};
+
+#endif // !XBRZ_CXX11
 
 /*
 input kernel area naming convention:
@@ -600,16 +661,6 @@ void scalePixel(const Kernel_3x3& ker,
                 unsigned char blendInfo, //result of preprocessing all four corners of pixel "e"
                 const xbrz::ScalerCfg& cfg)
 {
-#define a get_a<rotDeg>(ker)
-#define b get_b<rotDeg>(ker)
-#define c get_c<rotDeg>(ker)
-#define d get_d<rotDeg>(ker)
-#define e get_e<rotDeg>(ker)
-#define f get_f<rotDeg>(ker)
-#define g get_g<rotDeg>(ker)
-#define h get_h<rotDeg>(ker)
-#define i get_i<rotDeg>(ker)
-
 #ifndef NDEBUG
     if (breakIntoDebugger)
         __debugbreak(); //__asm int 3;
@@ -619,6 +670,7 @@ void scalePixel(const Kernel_3x3& ker,
 
     if (getBottomR(blend) >= BLEND_NORMAL)
     {
+#ifdef XBRZ_CXX11
         auto eq   = [&](uint32_t col1, uint32_t col2) { return colorDist(col1, col2, cfg.luminanceWeight_) < cfg.equalColorTolerance_; };
         auto dist = [&](uint32_t col1, uint32_t col2) { return colorDist(col1, col2, cfg.luminanceWeight_); };
 
@@ -628,7 +680,7 @@ void scalePixel(const Kernel_3x3& ker,
                 return true;
 
             //make sure there is no second blending in an adjacent rotation for this pixel: handles insular pixels, mario eyes
-            if (getTopR(blend) != BLEND_NONE && !eq(e, g)) //but support double-blending for 90° corners
+            if (getTopR(blend) != BLEND_NONE && !eq(e, g)) //but support double-blending for 90 degree corners
                 return false;
             if (getBottomL(blend) != BLEND_NONE && !eq(e, c))
                 return false;
@@ -639,12 +691,19 @@ void scalePixel(const Kernel_3x3& ker,
 
             return true;
         }();
+#else // !XBRZ_CXX11
+#define dist(C1, C2) colorDist((C1), (C2), cfg.luminanceWeight_)
+#endif // XBRZ_CXX11
 
         const uint32_t px = dist(e, f) <= dist(e, h) ? f : h; //choose most similar color
 
         OutputMatrix<Scaler::scale, rotDeg> out(target, trgWidth);
 
+#ifdef XBRZ_CXX11
         if (doLineBlend)
+#else // !XBRZ_CXX11
+		if (doLineBlend<rotDeg>(ker, cfg, blend))
+#endif // XBRZ_CXX11
         {
             const double fg = dist(f, g); //test sample: 70% of values max(fg, hc) / min(fg, hc) are between 1.1 and 3.7 with median being 1.9
             const double hc = dist(h, c); //
@@ -670,6 +729,10 @@ void scalePixel(const Kernel_3x3& ker,
         else
             Scaler::blendCorner(px, out);
     }
+
+#ifndef XBRZ_CXX11
+#undef dist
+#endif // XBRZ_CXX11
 
 #undef a
 #undef b
@@ -698,7 +761,9 @@ void scaleImage(const uint32_t* src, uint32_t* trg, int srcWidth, int srcHeight,
     const int bufferSize = srcWidth;
     unsigned char* preProcBuffer = reinterpret_cast<unsigned char*>(trg + yLast * Scaler::scale * trgWidth) - bufferSize;
     std::fill(preProcBuffer, preProcBuffer + bufferSize, 0);
+#ifdef XBRZ_CXX11
     static_assert(BLEND_NONE == 0, "");
+#endif // XBRZ_CXX11
 
     //initialize preprocessing buffer for first row: detect upper left and right corner blending
     //this cannot be optimized for adjacent processing stripes; we must not allow for a memory race condition!
