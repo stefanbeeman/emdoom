@@ -40,10 +40,11 @@
 #include "gl/textures/gl_texture.h"
 #include "c_cvars.h"
 #include "gl/hqnx/hqnx.h"
+#include "gl/xbr/xbrz.h"
 
 CUSTOM_CVAR(Int, gl_texture_hqresize, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_NOINITCALL)
 {
-	if (self < 0 || self > 6)
+	if (self < 0 || self > 10)
 		self = 0;
 	GLRenderer->FlushTextures();
 }
@@ -162,6 +163,27 @@ static void scale4x ( uint32* inputBuffer, uint32* outputBuffer, int inWidth, in
 }
 
 
+static void xbrz2x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+{
+	xbrz::scale(2, inputBuffer, outputBuffer, inWidth, inHeight);
+}
+
+static void xbrz3x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+{
+	xbrz::scale(3, inputBuffer, outputBuffer, inWidth, inHeight);
+}
+
+static void xbrz4x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+{
+	xbrz::scale(4, inputBuffer, outputBuffer, inWidth, inHeight);
+}
+
+static void xbrz5x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+{
+	xbrz::scale(5, inputBuffer, outputBuffer, inWidth, inHeight);
+}
+
+
 static unsigned char *scaleNxHelper( void (*scaleNxFunction) ( uint32* , uint32* , int , int),
 							  const int N,
 							  unsigned char *inputBuffer,
@@ -254,7 +276,7 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 		outHeight = inHeight;
 		int type = gl_texture_hqresize;
 		// hqNx does not preserve the alpha channel so fall back to ScaleNx for such textures
-		if (hasAlpha && type > 3)
+		if (hasAlpha && type > 3 && type < 7)
 		{
 			type -= 3;
 		}
@@ -273,6 +295,14 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 			return hqNxHelper( &hq3x_32, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight );
 		case 6:
 			return hqNxHelper( &hq4x_32, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight );
+		case 7:
+			return scaleNxHelper(&xbrz2x, 2, inputBuffer, inWidth, inHeight, outWidth, outHeight);
+		case 8:
+			return scaleNxHelper(&xbrz3x, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight);
+		case 9:
+			return scaleNxHelper(&xbrz4x, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight);
+		case 10:
+			return scaleNxHelper(&xbrz5x, 5, inputBuffer, inWidth, inHeight, outWidth, outHeight);
 		}
 	}
 	return inputBuffer;

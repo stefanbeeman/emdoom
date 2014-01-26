@@ -117,6 +117,10 @@ OptionValue "HqResizeModes"
    4, "hq2x"
    5, "hq3x"
    6, "hq4x"
+   7, "xBRZ2x"
+   8, "xBRZ3x"
+   9, "xBRZ4x"
+   10, "xBRZ5x"
 }
 
 OptionValue "HqResizeTargets"
