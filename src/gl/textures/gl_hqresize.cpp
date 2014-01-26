@@ -39,17 +39,11 @@
 #include "gl/renderer/gl_renderer.h"
 #include "gl/textures/gl_texture.h"
 #include "c_cvars.h"
-#if (defined _MSC_VER) && (!defined _WIN64) || (defined __APPLE__)
 #include "gl/hqnx/hqnx.h"
-#endif
 
 CUSTOM_CVAR(Int, gl_texture_hqresize, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_NOINITCALL)
 {
-#if defined _MSC_VER || defined __APPLE__
 	if (self < 0 || self > 6)
-#else
-	if (self < 0 || self > 3)
-#endif
 		self = 0;
 	GLRenderer->FlushTextures();
 }
@@ -185,7 +179,6 @@ static unsigned char *scaleNxHelper( void (*scaleNxFunction) ( uint32* , uint32*
 	return newBuffer;
 }
 
-#if (defined _MSC_VER) && (!defined _WIN64) || (defined __APPLE__)
 static unsigned char *hqNxHelper( void (*hqNxFunction) ( int*, unsigned char*, int, int, int ),
 							  const int N,
 							  unsigned char *inputBuffer,
@@ -213,7 +206,6 @@ static unsigned char *hqNxHelper( void (*hqNxFunction) ( int*, unsigned char*, i
 	delete[] inputBuffer;
 	return newBuffer;
 }
-#endif
 
 //===========================================================================
 // 
@@ -275,14 +267,12 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 			return scaleNxHelper( &scale3x, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight );
 		case 3:
 			return scaleNxHelper( &scale4x, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-#if (defined _MSC_VER) && (!defined _WIN64) || (defined __APPLE__)
 		case 4:
 			return hqNxHelper( &hq2x_32, 2, inputBuffer, inWidth, inHeight, outWidth, outHeight );
 		case 5:
 			return hqNxHelper( &hq3x_32, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight );
 		case 6:
 			return hqNxHelper( &hq4x_32, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-#endif
 		}
 	}
 	return inputBuffer;
