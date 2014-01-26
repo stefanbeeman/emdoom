@@ -325,16 +325,6 @@ const uint8_t KEYCODE_TO_ASCII[ TABLE_SIZE ] =
 };
 
 
-inline event_t EmptyEvent()
-{
-	event_t result;
-	
-	memset( &result, 0, sizeof( result ) );
-	
-	return result;
-}
-
-
 uint8_t ModifierToDIK( const uint32_t modifier )
 {
 	switch ( modifier )
@@ -381,7 +371,7 @@ void ProcessKeyboardFlagsEvent( NSEvent* theEvent )
 		return;
 	}
 	
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	event.type  = modifiers > oldModifiers ? EV_KeyDown : EV_KeyUp;
 	event.data1 = ModifierToDIK( deltaModifiers );
@@ -412,7 +402,7 @@ void ProcessKeyboardEventInMenu( NSEvent* theEvent )
 		? [characters characterAtIndex:0]
 		: '\0';
 
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	event.type    = EV_GUI_Event;
 	event.subtype = NSKeyDown == [theEvent type] ? EV_GUI_KeyDown : EV_GUI_KeyUp;
@@ -491,7 +481,7 @@ void ProcessKeyboardEvent( NSEvent* theEvent )
 	}
 	else
 	{
-		event_t event = EmptyEvent();
+		event_t event = {};
 		
 		event.type  = NSKeyDown == [theEvent type] ? EV_KeyDown : EV_KeyUp;
 		event.data1 = KEYCODE_TO_DIK[ keyCode ];
@@ -531,7 +521,7 @@ void NSEventToGameMousePosition( NSEvent* inEvent, event_t* outEvent )
 
 void ProcessMouseButtonEvent( NSEvent* theEvent )
 {
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	const NSEventType cocoaEventType = [theEvent type];
 	
@@ -579,7 +569,7 @@ void ProcessMouseButtonEvent( NSEvent* theEvent )
 
 void ProcessMouseMoveInMenu( NSEvent* theEvent )
 {
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	event.type    = EV_GUI_Event;
 	event.subtype = EV_GUI_MouseMove;
@@ -618,7 +608,7 @@ void ProcessMouseMoveInGame( NSEvent* theEvent )
 		y *= 2;
 	}	
 	
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	static int lastX = 0, lastY = 0;
 	
@@ -667,7 +657,7 @@ void ProcessMouseWheelEvent( NSEvent* theEvent )
 		return;
 	}
 	
-	event_t event = EmptyEvent();
+	event_t event = {};
 	
 	if ( GUICapture )
 	{
