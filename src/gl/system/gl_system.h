@@ -18,7 +18,14 @@
 #pragma warning(disable : 4995)     // MIPS
 #endif
 
+#ifdef NOMINMAX
 #include <windows.h>
+#else
+#define NOMINMAX
+#include <windows.h>
+#undef NOMINMAX
+#endif
+
 #include <mmsystem.h>
 #include <winsock.h>
 #ifndef __WINE__

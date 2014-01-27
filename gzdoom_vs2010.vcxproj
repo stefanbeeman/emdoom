@@ -365,6 +365,7 @@
     <ClCompile Include="src\f_wipe.cpp" />
     <ClCompile Include="src\farchive.cpp" />
     <ClCompile Include="src\files.cpp" />
+    <ClCompile Include="src\gl\xbr\xbrz.cpp" />
     <ClCompile Include="src\g_game.cpp" />
     <ClCompile Include="src\g_hub.cpp" />
     <ClCompile Include="src\g_level.cpp" />
@@ -1279,6 +1280,8 @@
     <ClCompile Include="src\r_utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\gl\xbr\config.h" />
+    <ClInclude Include="src\gl\xbr\xbrz.h" />
     <ClInclude Include="src\sc_man_scanner.h" />
     <ClInclude Include="src\actionspecials.h" />
     <ClInclude Include="src\actor.h" />
