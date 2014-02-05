@@ -29,9 +29,6 @@
 /wadsrc*/*.pk3
 /build_vc2013
 
-# Visual Studio 2010
-*.vcxproj.filters
-
 # OS X
 /.deploy_image
 build/
