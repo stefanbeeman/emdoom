@@ -65,173 +65,171 @@ CVAR (Flag, gl_texture_hqresize_sprites, gl_texture_hqresize_targets, 2);
 CVAR (Flag, gl_texture_hqresize_fonts, gl_texture_hqresize_targets, 4);
 
 
-static void scale2x ( uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight )
+static void scale2x(uint32* const input, uint32* const output, const size_t width, const size_t height)
 {
-	const int width = 2* inWidth;
-	const int height = 2 * inHeight;
+	const size_t scaledWidth = 2 * width;
 
-	for ( int i = 0; i < inWidth; ++i )
+	for (size_t i = 0; i < width; ++i)
 	{
-		const int iMinus = (i > 0) ? (i-1) : 0;
-		const int iPlus = (i < inWidth - 1 ) ? (i+1) : i;
-		for ( int j = 0; j < inHeight; ++j )
+		const size_t iMinus = (i > 0        ) ? (i - 1) : 0;
+		const size_t iPlus  = (i < width - 1) ? (i + 1) : i;
+
+		for (size_t j = 0; j < height; ++j)
 		{
-			const int jMinus = (j > 0) ? (j-1) : 0;
-			const int jPlus = (j < inHeight - 1 ) ? (j+1) : j;
-			const uint32 A = inputBuffer[ iMinus +inWidth*jMinus];
-			const uint32 B = inputBuffer[ iMinus +inWidth*j    ];
-			const uint32 C = inputBuffer[ iMinus +inWidth*jPlus];
-			const uint32 D = inputBuffer[ i     +inWidth*jMinus];
-			const uint32 E = inputBuffer[ i     +inWidth*j    ];
-			const uint32 F = inputBuffer[ i     +inWidth*jPlus];
-			const uint32 G = inputBuffer[ iPlus +inWidth*jMinus];
-			const uint32 H = inputBuffer[ iPlus +inWidth*j    ];
-			const uint32 I = inputBuffer[ iPlus +inWidth*jPlus];
-			if (B != H && D != F) {
-				outputBuffer[2*i   + width*2*j    ] = D == B ? D : E;
-				outputBuffer[2*i   + width*(2*j+1)] = B == F ? F : E;
-				outputBuffer[2*i+1 + width*2*j    ] = D == H ? D : E;
-				outputBuffer[2*i+1 + width*(2*j+1)] = H == F ? F : E;
-			} else {
-				outputBuffer[2*i   + width*2*j    ] = E;
-				outputBuffer[2*i   + width*(2*j+1)] = E;
-				outputBuffer[2*i+1 + width*2*j    ] = E;
-				outputBuffer[2*i+1 + width*(2*j+1)] = E;
+			const size_t jMinus = (j > 0         ) ? (j - 1) : 0;
+			const size_t jPlus  = (j < height - 1) ? (j + 1) : j;
+
+			const uint32 A = input[iMinus + width * jMinus];
+			const uint32 B = input[iMinus + width * j     ];
+			const uint32 C = input[iMinus + width * jPlus ];
+			const uint32 D = input[i      + width * jMinus];
+			const uint32 E = input[i      + width * j     ];
+			const uint32 F = input[i      + width * jPlus ];
+			const uint32 G = input[iPlus  + width * jMinus];
+			const uint32 H = input[iPlus  + width * j     ];
+			const uint32 I = input[iPlus  + width * jPlus ];
+
+			if (B != H && D != F)
+			{
+				output[2 * i     + scaledWidth *  2 * j     ] = D == B ? D : E;
+				output[2 * i     + scaledWidth * (2 * j + 1)] = B == F ? F : E;
+				output[2 * i + 1 + scaledWidth *  2 * j     ] = D == H ? D : E;
+				output[2 * i + 1 + scaledWidth * (2 * j + 1)] = H == F ? F : E;
+			}
+			else
+			{
+				output[2 * i     + scaledWidth *  2 * j     ] = E;
+				output[2 * i     + scaledWidth * (2 * j + 1)] = E;
+				output[2 * i + 1 + scaledWidth *  2 * j     ] = E;
+				output[2 * i + 1 + scaledWidth * (2 * j + 1)] = E;
 			}
 		}
 	}
 }
 
-static void scale3x ( uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight )
+static void scale3x(uint32* const input, uint32* const output, const size_t width, const size_t height)
 {
-	const int width = 3* inWidth;
-	const int height = 3 * inHeight;
+	const size_t scaledWidth = 3 * width;
 
-	for ( int i = 0; i < inWidth; ++i )
+	for (size_t i = 0; i < width; ++i)
 	{
-		const int iMinus = (i > 0) ? (i-1) : 0;
-		const int iPlus = (i < inWidth - 1 ) ? (i+1) : i;
-		for ( int j = 0; j < inHeight; ++j )
+		const int iMinus = (i > 0        ) ? (i - 1) : 0;
+		const int iPlus  = (i < width - 1) ? (i + 1) : i;
+
+		for (size_t j = 0; j < height; ++j)
 		{
-			const int jMinus = (j > 0) ? (j-1) : 0;
-			const int jPlus = (j < inHeight - 1 ) ? (j+1) : j;
-			const uint32 A = inputBuffer[ iMinus +inWidth*jMinus];
-			const uint32 B = inputBuffer[ iMinus +inWidth*j    ];
-			const uint32 C = inputBuffer[ iMinus +inWidth*jPlus];
-			const uint32 D = inputBuffer[ i     +inWidth*jMinus];
-			const uint32 E = inputBuffer[ i     +inWidth*j    ];
-			const uint32 F = inputBuffer[ i     +inWidth*jPlus];
-			const uint32 G = inputBuffer[ iPlus +inWidth*jMinus];
-			const uint32 H = inputBuffer[ iPlus +inWidth*j    ];
-			const uint32 I = inputBuffer[ iPlus +inWidth*jPlus];
-			if (B != H && D != F) {
-				outputBuffer[3*i   + width*3*j    ] = D == B ? D : E;
-				outputBuffer[3*i   + width*(3*j+1)] = (D == B && E != C) || (B == F && E != A) ? B : E;
-				outputBuffer[3*i   + width*(3*j+2)] = B == F ? F : E;
-				outputBuffer[3*i+1 + width*3*j    ] = (D == B && E != G) || (D == H && E != A) ? D : E;
-				outputBuffer[3*i+1 + width*(3*j+1)] = E;
-				outputBuffer[3*i+1 + width*(3*j+2)] = (B == F && E != I) || (H == F && E != C) ? F : E;
-				outputBuffer[3*i+2 + width*3*j    ] = D == H ? D : E;
-				outputBuffer[3*i+2 + width*(3*j+1)] = (D == H && E != I) || (H == F && E != G) ? H : E;
-				outputBuffer[3*i+2 + width*(3*j+2)] = H == F ? F : E;
-			} else {
-				outputBuffer[3*i   + width*3*j    ] = E;
-				outputBuffer[3*i   + width*(3*j+1)] = E;
-				outputBuffer[3*i   + width*(3*j+2)] = E;
-				outputBuffer[3*i+1 + width*3*j    ] = E;
-				outputBuffer[3*i+1 + width*(3*j+1)] = E;
-				outputBuffer[3*i+1 + width*(3*j+2)] = E;
-				outputBuffer[3*i+2 + width*3*j    ] = E;
-				outputBuffer[3*i+2 + width*(3*j+1)] = E;
-				outputBuffer[3*i+2 + width*(3*j+2)] = E;
+			const size_t jMinus = (j > 0          ) ? (j - 1) : 0;
+			const size_t jPlus  = (j < height - 1 ) ? (j + 1) : j;
+
+			const uint32 A = input[iMinus + width * jMinus];
+			const uint32 B = input[iMinus + width * j     ];
+			const uint32 C = input[iMinus + width * jPlus ];
+			const uint32 D = input[i      + width * jMinus];
+			const uint32 E = input[i      + width * j     ];
+			const uint32 F = input[i      + width * jPlus ];
+			const uint32 G = input[iPlus  + width * jMinus];
+			const uint32 H = input[iPlus  + width * j     ];
+			const uint32 I = input[iPlus  + width * jPlus ];
+
+			if (B != H && D != F)
+			{
+				output[3 * i     + scaledWidth *  3 * j     ] = D == B ? D : E;
+				output[3 * i     + scaledWidth * (3 * j + 1)] = (D == B && E != C) || (B == F && E != A) ? B : E;
+				output[3 * i     + scaledWidth * (3 * j + 2)] = B == F ? F : E;
+				output[3 * i + 1 + scaledWidth *  3 * j     ] = (D == B && E != G) || (D == H && E != A) ? D : E;
+				output[3 * i + 1 + scaledWidth * (3 * j + 1)] = E;
+				output[3 * i + 1 + scaledWidth * (3 * j + 2)] = (B == F && E != I) || (H == F && E != C) ? F : E;
+				output[3 * i + 2 + scaledWidth *  3 * j     ] = D == H ? D : E;
+				output[3 * i + 2 + scaledWidth * (3 * j + 1)] = (D == H && E != I) || (H == F && E != G) ? H : E;
+				output[3 * i + 2 + scaledWidth * (3 * j + 2)] = H == F ? F : E;
+			}                                       
+			else
+			{
+				output[3 * i     + scaledWidth *  3 * j     ] = E;
+				output[3 * i     + scaledWidth * (3 * j + 1)] = E;
+				output[3 * i     + scaledWidth * (3 * j + 2)] = E;
+				output[3 * i + 1 + scaledWidth *  3 * j     ] = E;
+				output[3 * i + 1 + scaledWidth * (3 * j + 1)] = E;
+				output[3 * i + 1 + scaledWidth * (3 * j + 2)] = E;
+				output[3 * i + 2 + scaledWidth *  3 * j     ] = E;
+				output[3 * i + 2 + scaledWidth * (3 * j + 1)] = E;
+				output[3 * i + 2 + scaledWidth * (3 * j + 2)] = E;
 			}
 		}
 	}
 }
 
-static void scale4x ( uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight )
+static void scale4x(uint32* const input, uint32* const output, const size_t width, const size_t height)
 {
-	int width = 2* inWidth;
-	int height = 2 * inHeight;
-	uint32 * buffer2x = new uint32[width*height];
+	const size_t  width2x = 2 * width;
+	const size_t height2x = 2 * height;
 
-	scale2x ( reinterpret_cast<uint32*> ( inputBuffer ), reinterpret_cast<uint32*> ( buffer2x ), inWidth, inHeight );
-	width *= 2;
-	height *= 2;
-	scale2x ( reinterpret_cast<uint32*> ( buffer2x ), reinterpret_cast<uint32*> ( outputBuffer ), 2*inWidth, 2*inHeight );
+	uint32* const buffer2x = new uint32[width2x * height2x];
+
+	scale2x(input,    buffer2x, width,   height  );
+	scale2x(buffer2x, output,   width2x, height2x);
+
 	delete[] buffer2x;
 }
 
 
-static void xbrz2x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+static const size_t BYTES_PER_PIXEL = 4;
+
+typedef void (*HqNxFunction)(int*, unsigned char*, int, int, int);
+
+template <HqNxFunction func, size_t scale>
+static void hqNx(uint32* const input, uint32* const output, const size_t width, const size_t height)
 {
-	xbrz::scale(2, inputBuffer, outputBuffer, inWidth, inHeight);
+	func(reinterpret_cast<int*>(input), reinterpret_cast<unsigned char*>(output),
+		static_cast<int>(width), static_cast<int>(height), static_cast<int>(width * scale * BYTES_PER_PIXEL));
 }
 
-static void xbrz3x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
+template <size_t scale>
+static void xbrzNx(uint32* const input, uint32* const output, const size_t width, const size_t height)
 {
-	xbrz::scale(3, inputBuffer, outputBuffer, inWidth, inHeight);
-}
-
-static void xbrz4x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
-{
-	xbrz::scale(4, inputBuffer, outputBuffer, inWidth, inHeight);
-}
-
-static void xbrz5x(uint32* inputBuffer, uint32* outputBuffer, int inWidth, int inHeight)
-{
-	xbrz::scale(5, inputBuffer, outputBuffer, inWidth, inHeight);
+	xbrz::scale(scale, input, output, static_cast<int>(width), static_cast<int>(height));
 }
 
 
-static unsigned char *scaleNxHelper( void (*scaleNxFunction) ( uint32* , uint32* , int , int),
-							  const int N,
-							  unsigned char *inputBuffer,
-							  const int inWidth,
-							  const int inHeight,
-							  int &outWidth,
-							  int &outHeight )
-{
-	outWidth = N * inWidth;
-	outHeight = N *inHeight;
-	unsigned char * newBuffer = new unsigned char[outWidth*outHeight*4];
+typedef void (*ScaleFunction)(uint32* const input, uint32* const output, const size_t width, const size_t height);
 
-	scaleNxFunction ( reinterpret_cast<uint32*> ( inputBuffer ), reinterpret_cast<uint32*> ( newBuffer ), inWidth, inHeight );
-	delete[] inputBuffer;
-	return newBuffer;
+static unsigned char *scaleNxHelper(ScaleFunction scaleNxFunction,
+	const size_t scale, unsigned char* const input, const size_t width, const size_t height)
+{
+	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
+	scaleNxFunction(reinterpret_cast<uint32*>(input), reinterpret_cast<uint32*>(output), width, height);
+
+	delete[] input;
+
+	return output;
 }
 
-static unsigned char *hqNxHelper( void (*hqNxFunction) ( int*, unsigned char*, int, int, int ),
-							  const int N,
-							  unsigned char *inputBuffer,
-							  const int inWidth,
-							  const int inHeight,
-							  int &outWidth,
-							  int &outHeight )
+static unsigned char *hqNxHelper(ScaleFunction hqNxFunction,
+	const size_t scale, unsigned char* const input, const size_t width, const size_t height)
 {
-	static int initdone = false;
+	static bool isInitialized = false;
 
-	if (!initdone)
+	if (!isInitialized)
 	{
 		InitLUTs();
-		initdone = true;
+		isInitialized = true;
 	}
-	outWidth = N * inWidth;
-	outHeight = N *inHeight;
 
-	CImage cImageIn;
-	cImageIn.SetImage(inputBuffer, inWidth, inHeight, 32);
-	cImageIn.Convert32To17();
+	CImage image;
+	image.SetImage(input, width, height, 32);
+	image.Convert32To17();
 
-	unsigned char * newBuffer = new unsigned char[outWidth*outHeight*4];
-	hqNxFunction( reinterpret_cast<int*>(cImageIn.m_pBitmap), newBuffer, cImageIn.m_Xres, cImageIn.m_Yres, outWidth*4 );
-	delete[] inputBuffer;
-	return newBuffer;
+	delete[] input;
+
+	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
+	hqNxFunction(reinterpret_cast<uint32*>(image.m_pBitmap), reinterpret_cast<uint32*>(output), width, height);
+
+	return output;
 }
 
 //===========================================================================
 // 
-// [BB] Upsamples the texture in inputBuffer, frees inputBuffer and returns
+// [BB] Upsamples the texture in input, frees input and returns
 //  the upsampled buffer.
 //
 //===========================================================================
@@ -281,28 +279,41 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 			type -= 3;
 		}
 
-		switch (type)
+		typedef unsigned char* (*ScaleHelper)(const ScaleFunction func,
+			const size_t scale, unsigned char* input, const size_t width, const size_t height);
+
+		struct Scaler
 		{
-		case 1:
-			return scaleNxHelper( &scale2x, 2, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 2:
-			return scaleNxHelper( &scale3x, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 3:
-			return scaleNxHelper( &scale4x, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 4:
-			return hqNxHelper( &hq2x_32, 2, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 5:
-			return hqNxHelper( &hq3x_32, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 6:
-			return hqNxHelper( &hq4x_32, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight );
-		case 7:
-			return scaleNxHelper(&xbrz2x, 2, inputBuffer, inWidth, inHeight, outWidth, outHeight);
-		case 8:
-			return scaleNxHelper(&xbrz3x, 3, inputBuffer, inWidth, inHeight, outWidth, outHeight);
-		case 9:
-			return scaleNxHelper(&xbrz4x, 4, inputBuffer, inWidth, inHeight, outWidth, outHeight);
-		case 10:
-			return scaleNxHelper(&xbrz5x, 5, inputBuffer, inWidth, inHeight, outWidth, outHeight);
+			size_t        factor;
+			ScaleFunction function;
+			ScaleHelper   helper;
+		};
+
+		static const Scaler SCALERS[] =
+		{
+			{ 0, NULL,             NULL          },
+			{ 2, scale2x,          scaleNxHelper },
+			{ 3, scale3x,          scaleNxHelper },
+			{ 4, scale4x,          scaleNxHelper },
+			{ 2, hqNx<hq2x_32, 2>, hqNxHelper    },
+			{ 3, hqNx<hq3x_32, 3>, hqNxHelper    },
+			{ 4, hqNx<hq4x_32, 4>, hqNxHelper    },
+			{ 2, xbrzNx<2>,        scaleNxHelper },
+			{ 3, xbrzNx<3>,        scaleNxHelper },
+			{ 4, xbrzNx<4>,        scaleNxHelper },
+			{ 5, xbrzNx<5>,        scaleNxHelper },
+		};
+
+		if (type > 0)
+		{
+			const Scaler&  scaler = SCALERS[type];
+			unsigned char* result = scaler.helper(scaler.function, 
+				scaler.factor, inputBuffer, size_t(inWidth), size_t(inHeight));
+
+			outWidth  = static_cast<int>(scaler.factor * inWidth );
+			outHeight = static_cast<int>(scaler.factor * inHeight);
+
+			return result;
 		}
 	}
 	return inputBuffer;
