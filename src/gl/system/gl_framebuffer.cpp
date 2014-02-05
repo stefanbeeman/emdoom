@@ -99,7 +99,7 @@ OpenGLFrameBuffer::OpenGLFrameBuffer(void *hMonitor, int width, int height, int 
 	needsetgamma = true;
 	swapped = false;
 	Accel2D = true;
-	SetVSync(vid_vsync);
+	SetVSync(0 != vid_vsync);
 }
 
 OpenGLFrameBuffer::~OpenGLFrameBuffer()

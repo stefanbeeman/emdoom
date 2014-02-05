@@ -1422,7 +1422,7 @@ FileReader *FWadCollection::GetFileReader(int wadnum)
 
 FResourceLump *FWadCollection::GetResourceLump(int lump)
 {
-	return lump >= 0 && lump < LumpInfo.Size()
+	return lump >= 0 && static_cast<unsigned int>(lump) < LumpInfo.Size()
 		? LumpInfo[lump].lump
 		: NULL;
 }

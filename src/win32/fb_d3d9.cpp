@@ -270,7 +270,7 @@ D3DFB::D3DFB (UINT adapter, int width, int height, bool fullscreen)
 	GammaShader = NULL;
 	BlockSurface[0] = NULL;
 	BlockSurface[1] = NULL;
-	VSync = vid_vsync;
+	VSync = 0 != vid_vsync;
 	BlendingRect.left = 0;
 	BlendingRect.top = 0;
 	BlendingRect.right = FBWidth;
