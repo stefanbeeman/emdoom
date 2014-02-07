@@ -68,14 +68,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
@@ -100,7 +96,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>thirdparty\FMOD\inc;src\win32;src\sound;src;zlib;src\g_shared;src\g_doom;src\g_raven;src\g_heretic;src\g_hexen;src\g_strife;jpeg-6b;game-music-emu;gdtoa;bzip2;lzma\C;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdparty\FMOD\inc;thirdparty\unqlite;src\win32;src\sound;src;zlib;src\g_shared;src\g_doom;src\g_raven;src\g_heretic;src\g_hexen;src\g_strife;jpeg-6b;game-music-emu;gdtoa;bzip2;lzma\C;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;WIN32;_WIN32;_WINDOWS;HAVE_STRUPR;HAVE_FILELENGTH;NO_VA_COPY;BACKPATCH;HAVE_FLUIDSYNTH;DYN_FLUIDSYNTH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -239,7 +235,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>thirdparty\FMOD\inc;src\win32;src\sound;src;zlib;src\g_shared;src\g_doom;src\g_raven;src\g_heretic;src\g_hexen;src\g_strife;jpeg-6b;game-music-emu;gdtoa;bzip2;lzma\C;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdparty\FMOD\inc;thirdparty\unqlite;src\win32;src\sound;src;zlib;src\g_shared;src\g_doom;src\g_raven;src\g_heretic;src\g_hexen;src\g_strife;jpeg-6b;game-music-emu;gdtoa;bzip2;lzma\C;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WIN32;_WINDOWS;_CRTDBG_MAP_ALLOC;HAVE_STRUPR;HAVE_FILELENGTH;NO_VA_COPY;BACKPATCH;HAVE_FLUIDSYNTH;DYN_FLUIDSYNTH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -1282,6 +1278,7 @@
     <ClCompile Include="src\r_data\voxels.cpp" />
     <ClCompile Include="src\r_sky.cpp" />
     <ClCompile Include="src\r_utility.cpp" />
+    <ClCompile Include="thirdparty\unqlite\unqlite.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl\xbr\config.h" />
@@ -1457,6 +1454,7 @@
     <ClInclude Include="src\timidity\sf2.h" />
     <ClInclude Include="src\timidity\timidity.h" />
     <ClInclude Include="src\sdl\critsec.h" />
+    <ClInclude Include="thirdparty\unqlite\unqlite.h" />
     <CustomBuildStep Include="src\sdl\dikeys.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

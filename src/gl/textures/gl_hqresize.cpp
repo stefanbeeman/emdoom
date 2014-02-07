@@ -39,8 +39,25 @@
 #include "gl/renderer/gl_renderer.h"
 #include "gl/textures/gl_texture.h"
 #include "c_cvars.h"
+#include "cmdlib.h"
+#include "m_misc.h"
+#include "md5.h"
 #include "gl/hqnx/hqnx.h"
 #include "gl/xbr/xbrz.h"
+
+extern "C"
+{ 
+#include <unqlite.h>
+}
+
+// Uncomment to enable profiling output
+//#define GZ_TEXTURE_SCALE_PROFILE
+//#define GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+#if defined GZ_TEXTURE_SCALE_PROFILE || defined GZ_TEXTURE_CACHE_STORE_PROFILE
+#include "stats.h"
+#include "v_text.h"
+#endif // GZ_TEXTURE_SCALE_PROFILE
 
 CUSTOM_CVAR(Int, gl_texture_hqresize, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_NOINITCALL)
 {
@@ -199,8 +216,6 @@ static unsigned char *scaleNxHelper(ScaleFunction scaleNxFunction,
 	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
 	scaleNxFunction(reinterpret_cast<uint32*>(input), reinterpret_cast<uint32*>(output), width, height);
 
-	delete[] input;
-
 	return output;
 }
 
@@ -219,13 +234,211 @@ static unsigned char *hqNxHelper(ScaleFunction hqNxFunction,
 	image.SetImage(input, width, height, 32);
 	image.Convert32To17();
 
-	delete[] input;
-
 	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
 	hqNxFunction(reinterpret_cast<uint32*>(image.m_pBitmap), reinterpret_cast<uint32*>(output), width, height);
 
 	return output;
 }
+
+
+namespace
+{
+
+class ScaledTextureCache
+{
+public:
+    ScaledTextureCache();
+    ~ScaledTextureCache();
+
+    bool init();
+    bool shutdown();
+
+    unsigned char* fetch(const          char* const algorithm,
+                         const unsigned char* const original, const size_t originalSize, 
+                                                              const size_t scaledSize);
+    bool store(const          char* const algorithm,
+               const unsigned char* const original, const size_t originalSize,
+               const unsigned char* const scaled,   const size_t scaledSize);
+
+private:
+    FString  m_path;
+    unqlite* m_database;
+
+    static const int KEY_SIZE = 16;
+
+    void GenerateKey(const          char* const algorithm,
+                     const unsigned char* const data, const size_t size,
+                     BYTE key[KEY_SIZE]);
+};
+
+ScaledTextureCache s_textureCache;
+
+} // unnamed namespace
+
+
+CUSTOM_CVAR(Bool, gl_texture_hqcache, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+    if (self)
+    {
+        s_textureCache.init();
+    }
+    else
+    {
+        s_textureCache.shutdown();
+    }
+}
+
+
+namespace
+{
+
+ScaledTextureCache::ScaledTextureCache()
+: m_database(NULL)
+{
+
+}
+
+ScaledTextureCache::~ScaledTextureCache()
+{
+    shutdown();
+}
+
+
+bool ScaledTextureCache::init()
+{
+    if (NULL != m_database)
+    {
+        return false;
+    }
+
+    const FString cachePath = M_GetCachePath(true);
+    CreatePath(cachePath);
+
+    m_path = cachePath + "/texcache.db";
+
+    if (UNQLITE_OK != unqlite_open(&m_database, m_path.GetChars(), UNQLITE_OPEN_CREATE))
+    {
+        DPrintf("Error while opening scaled texture cache database from %s", m_path.GetChars());
+        return false;
+    }
+
+    return true;
+}
+
+bool ScaledTextureCache::shutdown()
+{
+    if (NULL == m_database)
+    {
+        return false;
+    }
+
+    return UNQLITE_OK == unqlite_close(m_database);
+}
+
+
+unsigned char* ScaledTextureCache::fetch(const          char* const algorithm,
+                                         const unsigned char* const original, const size_t originalSize, 
+                                                                              const size_t scaledSize)
+{
+    assert(NULL != original);
+
+    if (NULL == m_database)
+    {
+        return false;
+    }
+
+#ifdef GZ_TEXTURE_CACHE_FETCH_PROFILE
+    cycle_t perf;
+    perf.Reset();
+    perf.Clock();
+#endif // GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+    BYTE key[KEY_SIZE];
+    GenerateKey(algorithm, original, originalSize, key);
+
+#ifdef GZ_TEXTURE_CACHE_FETCH_PROFILE
+    perf.Unclock();
+    Printf(" -> Generated key in %f ms\n", perf.TimeMS());
+    perf.Reset();
+    perf.Clock();
+#endif // GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+    unqlite_int64 valueSize = 0;
+
+    if (UNQLITE_OK != unqlite_kv_fetch(m_database, key, KEY_SIZE, NULL, &valueSize))
+    {
+        return NULL;
+    }
+
+#ifdef GZ_TEXTURE_CACHE_FETCH_PROFILE
+    perf.Unclock();
+    Printf(" -> Looked up for data in %f ms\n", perf.TimeMS());
+#endif // GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+    if (unqlite_int64(scaledSize) != valueSize)
+    {
+        DPrintf("Scaled texture size mismatch, cache data discarded");
+        return NULL;
+    }
+
+    unsigned char* const result = new unsigned char[scaledSize];
+
+#ifdef GZ_TEXTURE_CACHE_FETCH_PROFILE
+    perf.Reset();
+    perf.Clock();
+#endif // GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+    if (UNQLITE_OK != unqlite_kv_fetch(m_database, key, KEY_SIZE, result, &valueSize))
+    {
+        delete[] result;
+
+        DPrintf("Error while fetching scaled texture data from cache");
+        return NULL;
+    }
+
+#ifdef GZ_TEXTURE_CACHE_FETCH_PROFILE
+    perf.Unclock();
+    Printf(" -> Fetched data in %f ms\n", perf.TimeMS());
+#endif // GZ_TEXTURE_CACHE_FETCH_PROFILE
+
+    return result;
+}
+
+bool ScaledTextureCache::store(const          char* const algorithm,
+                               const unsigned char* const original, const size_t originalSize,
+                               const unsigned char* const scaled,   const size_t scaledSize)
+{
+    assert(NULL != original);
+    assert(NULL != scaled);
+
+    if (NULL == m_database)
+    {
+        return false;
+    }
+
+    BYTE key[KEY_SIZE];
+    GenerateKey(algorithm, original, originalSize, key);
+
+    if (UNQLITE_OK != unqlite_kv_store(m_database, key, KEY_SIZE, scaled, unqlite_int64(scaledSize)))
+    {
+        DPrintf("Error while storing scaled texture data to cache");
+        return false;
+    }
+
+    return true;
+}
+
+void ScaledTextureCache::GenerateKey(const          char* const algorithm,
+                                     const unsigned char* const data, const size_t size,
+                                     BYTE key[16])
+{
+    MD5Context hashContext;
+    hashContext.Update(reinterpret_cast<const BYTE*>(algorithm), static_cast<unsigned int>(strlen(algorithm)));
+    hashContext.Update(reinterpret_cast<const BYTE*>(data),      static_cast<unsigned int>(size));
+    hashContext.Final(key);
+}
+
+} // unnamed namespace
 
 //===========================================================================
 // 
@@ -284,6 +497,7 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 
 		struct Scaler
 		{
+            const char*   algorithm;
 			size_t        factor;
 			ScaleFunction function;
 			ScaleHelper   helper;
@@ -291,27 +505,82 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 
 		static const Scaler SCALERS[] =
 		{
-			{ 0, NULL,             NULL          },
-			{ 2, scale2x,          scaleNxHelper },
-			{ 3, scale3x,          scaleNxHelper },
-			{ 4, scale4x,          scaleNxHelper },
-			{ 2, hqNx<hq2x_32, 2>, hqNxHelper    },
-			{ 3, hqNx<hq3x_32, 3>, hqNxHelper    },
-			{ 4, hqNx<hq4x_32, 4>, hqNxHelper    },
-			{ 2, xbrzNx<2>,        scaleNxHelper },
-			{ 3, xbrzNx<3>,        scaleNxHelper },
-			{ 4, xbrzNx<4>,        scaleNxHelper },
-			{ 5, xbrzNx<5>,        scaleNxHelper },
+			{ NULL,      0, NULL,             NULL          },
+
+			{ "scale2x", 2, scale2x,          scaleNxHelper },
+			{ "scale3x", 3, scale3x,          scaleNxHelper },
+			{ "scale4x", 4, scale4x,          scaleNxHelper },
+
+			{ "hq2x",    2, hqNx<hq2x_32, 2>, hqNxHelper    },
+			{ "hq3x",    3, hqNx<hq3x_32, 3>, hqNxHelper    },
+			{ "hq4x",    4, hqNx<hq4x_32, 4>, hqNxHelper    },
+			
+            { "xbrz2x",  2, xbrzNx<2>,        scaleNxHelper },
+			{ "xbrz3x",  3, xbrzNx<3>,        scaleNxHelper },
+			{ "xbrz4x",  4, xbrzNx<4>,        scaleNxHelper },
+			{ "xbrz5x",  5, xbrzNx<5>,        scaleNxHelper },
 		};
 
 		if (type > 0)
 		{
 			const Scaler&  scaler = SCALERS[type];
-			unsigned char* result = scaler.helper(scaler.function, 
-				scaler.factor, inputBuffer, size_t(inWidth), size_t(inHeight));
 
-			outWidth  = static_cast<int>(scaler.factor * inWidth );
-			outHeight = static_cast<int>(scaler.factor * inHeight);
+            outWidth  = static_cast<int>(scaler.factor * inWidth );
+            outHeight = static_cast<int>(scaler.factor * inHeight);
+
+            const size_t  inSize = size_t( inWidth *  inHeight * BYTES_PER_PIXEL);
+            const size_t outSize = size_t(outWidth * outHeight * BYTES_PER_PIXEL);
+
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+            cycle_t perf;
+            perf.Reset();
+            perf.Clock();
+#endif // GZ_TEXTURE_SCALE_PROFILE
+
+            unsigned char* result = s_textureCache.fetch(scaler.algorithm, inputBuffer, inSize, outSize);
+
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+            perf.Unclock();
+
+            if (NULL != result)
+            {
+                Printf(TEXTCOLOR_GOLD "[%ix%i] Fetched in %f ms\n", inWidth, inHeight, perf.TimeMS());
+            }
+#endif // GZ_TEXTURE_SCALE_PROFILE
+
+            if (NULL == result)
+            {
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+                perf.Reset();
+                perf.Clock();
+#endif // GZ_TEXTURE_SCALE_PROFILE
+
+                result = scaler.helper(scaler.function, 
+                    scaler.factor, inputBuffer, size_t(inWidth), size_t(inHeight));
+
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+                perf.Unclock();
+                Printf(TEXTCOLOR_GREEN "[%ix%i] Scaled in %f ms\n", inWidth, inHeight, perf.TimeMS());
+                perf.Reset();
+                perf.Clock();
+#endif // GZ_TEXTURE_SCALE_PROFILE
+
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+                const bool isStored = 
+#endif // GZ_TEXTURE_SCALE_PROFILE
+                s_textureCache.store(scaler.algorithm, inputBuffer, inSize, result, outSize);
+
+#ifdef GZ_TEXTURE_SCALE_PROFILE
+                perf.Unclock();
+
+                if (isStored)
+                {
+                    Printf(TEXTCOLOR_RED "[%ix%i] Stored in %f ms\n", inWidth, inHeight, perf.TimeMS());
+                }
+#endif // GZ_TEXTURE_SCALE_PROFILE
+            }
+
+            delete[] inputBuffer;
 
 			return result;
 		}
