@@ -1665,6 +1665,8 @@ AM_ITEMS			= "Items:";
 
 MNU_OUTDATED_IWAD	= "You are using an outdated IWAD file!";
 
+TXT_PRECACHE_WAIT	= "Loading...";
+
 // Bloodbath announcer
 
 BBA_BONED = "%k boned %o like a fish";

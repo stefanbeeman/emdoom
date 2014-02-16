@@ -53,6 +53,7 @@
 #include "r_renderer.h"
 #include "r_sky.h"
 #include "textures/textures.h"
+#include "gstrings.h"
 
 FTextureManager TexMan;
 
@@ -1223,6 +1224,60 @@ int FTextureManager::CountLumpTextures (int lumpnum)
 //
 //===========================================================================
 
+namespace
+{
+
+class PrecacheProgress
+{
+public:
+	PrecacheProgress()
+	: m_time  (I_MSTime())
+	, m_color (CR_YELLOW)
+	, m_dimmed(false)
+	{
+	}
+
+	void Update()
+	{
+		static const unsigned int UPDATE_TIME_MS = 250;
+		const unsigned int now = I_MSTime();
+
+		if (UPDATE_TIME_MS > now - m_time)
+		{
+			return;
+		}
+
+		const char* const loadingMessage = GStrings("TXT_PRECACHE_WAIT");
+		FFont* const font = BigFont;
+
+		const int x = (SCREENWIDTH  - font->StringWidth(loadingMessage) * CleanXfac) / 2;
+		const int y = (SCREENHEIGHT - font->GetHeight()) / 2;
+
+		screen->Lock(false);
+
+		if (!m_dimmed)
+		{
+			// Dim amount is a guess value
+			// [?] should depend on gamma/brightness/contrast [?]
+			screen->Dim(0, 0.93f, 0, 0, SCREENWIDTH, SCREENHEIGHT);
+			m_dimmed = true;
+		}
+
+		screen->DrawText(BigFont, m_color, x, y, loadingMessage, DTA_CleanNoMove, true, TAG_DONE);
+		screen->Update();
+
+		m_time  = now;
+		m_color = (CR_YELLOW == m_color) ? CR_GOLD : CR_YELLOW;
+	}
+
+private:
+	unsigned int m_time;
+	EColorRange  m_color;
+	bool         m_dimmed;
+};
+
+} // unnamed namespace
+
 void FTextureManager::PrecacheLevel (void)
 {
 	BYTE *hitlist;
@@ -1235,9 +1290,13 @@ void FTextureManager::PrecacheLevel (void)
 	memset (hitlist, 0, cnt);
 
 	screen->GetHitlist(hitlist);
+
+	PrecacheProgress precacheProgress;
+
 	for (int i = cnt - 1; i >= 0; i--)
 	{
 		Renderer->PrecacheTexture(ByIndex(i), hitlist[i]);
+		precacheProgress.Update();
 	}
 
 	delete[] hitlist;
