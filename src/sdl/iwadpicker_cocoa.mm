@@ -56,16 +56,16 @@ enum
 static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 
 // Class to convert the IWAD data into a form that Cocoa can use.
-@interface IWADTableData : NSObject 
+@interface IWADTableData : NSObject
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
-<NSTableViewDataSource>
+	<NSTableViewDataSource>
 #endif
 {
 	NSMutableArray *data;
 }
 
 - (void)dealloc;
-- (IWADTableData *)init:(WadStuff *) wads:(int) numwads;
+- (IWADTableData *)init:(WadStuff *) wads num:(int) numwads;
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
@@ -80,7 +80,7 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 	[super dealloc];
 }
 
-- (IWADTableData *)init:(WadStuff *) wads:(int) numwads
+- (IWADTableData *)init:(WadStuff *) wads num:(int) numwads
 {
 	data = [[NSMutableArray alloc] initWithCapacity:numwads];
 
@@ -163,15 +163,15 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 - (void)buttonPressed:(id) sender;
 - (void)browseButtonPressed:(id) sender;
 - (void)doubleClicked:(id) sender;
-- (void)makeLabel:(NSTextField *)label:(const char*) str;
-- (int)pickIWad:(WadStuff *)wads:(int) numwads:(bool) showwin:(int) defaultiwad;
+- (void)makeLabel:(NSTextField *)label withString:(const char*) str;
+- (int)pickIWad:(WadStuff *)wads num:(int) numwads showWindow:(bool) showwin defaultWad:(int) defaultiwad;
 - (NSString*)commandLineParameters;
 - (void)menuActionSent:(NSNotification*)notification;
 @end
 
 @implementation IWADPicker
 
-- (void)buttonPressed:(id) sender;
+- (void)buttonPressed:(id) sender
 {
 	if(sender == cancelButton)
 		cancelled = true;
@@ -180,7 +180,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	[app stopModal];
 }
 
-- (void)browseButtonPressed:(id) sender;
+- (void)browseButtonPressed:(id) sender
 {
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	[openPanel setAllowsMultipleSelection:YES];
@@ -216,7 +216,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	}
 }
 
-- (void)doubleClicked:(id) sender;
+- (void)doubleClicked:(id) sender
 {
 	if ([sender clickedRow] >= 0)
 	{
@@ -227,7 +227,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 
 // Apparently labels in Cocoa are uneditable text fields, so lets make this a
 // little more automated.
-- (void)makeLabel:(NSTextField *)label:(const char*) str
+- (void)makeLabel:(NSTextField *)label withString:(const char*) str
 {
 	[label setStringValue:[NSString stringWithUTF8String:str]];
 	[label setBezeled:NO];
@@ -236,7 +236,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	[label setSelectable:NO];
 }
 
-- (int)pickIWad:(WadStuff *)wads:(int) numwads:(bool) showwin:(int) defaultiwad
+- (int)pickIWad:(WadStuff *)wads num:(int) numwads showWindow:(bool) showwin defaultWad:(int) defaultiwad
 {
 	cancelled = false;
 
@@ -248,13 +248,13 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	[window setTitle:windowTitle];
 
 	NSTextField *description = [[NSTextField alloc] initWithFrame:NSMakeRect(18, 384, 402, 50)];
-	[self makeLabel:description:"GZDoom found more than one IWAD\nSelect from the list below to determine which one to use:"];
+	[self makeLabel:description withString:"GZDoom found more than one IWAD\nSelect from the list below to determine which one to use:"];
 	[[window contentView] addSubview:description];
 	[description release];
 
 	NSScrollView *iwadScroller = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 135, 402, 256)];
 	NSTableView *iwadTable = [[NSTableView alloc] initWithFrame:[iwadScroller bounds]];
-	IWADTableData *tableData = [[IWADTableData alloc] init:wads:numwads];
+	IWADTableData *tableData = [[IWADTableData alloc] init:wads num:numwads];
 	for(int i = 0;i < NUM_COLUMNS;i++)
 	{
 		NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:[NSString stringWithUTF8String:tableHeaders[i]]];
@@ -281,7 +281,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	[iwadScroller release];
 
 	NSTextField *additionalParametersLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(18, 108, 144, 17)];
-	[self makeLabel:additionalParametersLabel:"Additional Parameters:"];
+	[self makeLabel:additionalParametersLabel withString:"Additional Parameters:"];
 	[[window contentView] addSubview:additionalParametersLabel];
 	parametersTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 48, 402, 54)];
 	[parametersTextField setStringValue:[NSString stringWithUTF8String:macosx_additional_parameters]];
@@ -320,6 +320,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
 	[center addObserver:self selector:@selector(menuActionSent:) name:NSMenuDidSendActionNotification object:nil];
 
+	[window center];
 	[app runModalForWindow:window];
 
 	[center removeObserver:self name:NSMenuDidSendActionNotification object:nil];
@@ -416,21 +417,21 @@ void I_SetMainWindowVisible( bool visible );
 int I_PickIWad_Cocoa (WadStuff *wads, int numwads, bool showwin, int defaultiwad)
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
+
 #ifdef COCOA_NO_SDL
 	I_SetMainWindowVisible( false );
 #endif // COCOA_NO_SDL
-	
+
 	IWADPicker *picker = [IWADPicker alloc];
-	int ret = [picker pickIWad:wads:numwads:showwin:defaultiwad];
-	
+	int ret = [picker pickIWad:wads num:numwads showWindow:showwin defaultWad:defaultiwad];
+
 #ifdef COCOA_NO_SDL
 	I_SetMainWindowVisible( true );
 #endif // COCOA_NO_SDL
-	
+
 	NSString* parametersToAppend = [picker commandLineParameters];
 	macosx_additional_parameters = [parametersToAppend UTF8String];
-	
+
 	if ( ret >= 0 )
 	{
 		if ( 0 != [parametersToAppend length] )
@@ -440,6 +441,6 @@ int I_PickIWad_Cocoa (WadStuff *wads, int numwads, bool showwin, int defaultiwad
 	}
 
 	[pool release];
-	
+
 	return ret;
 }
