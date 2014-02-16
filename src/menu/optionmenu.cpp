@@ -588,3 +588,42 @@ public:
 };
 
 IMPLEMENT_CLASS(DCompatibilityMenu)
+
+
+class DGLTextureGLOptions : public DOptionMenu
+{
+	DECLARE_CLASS(DGLTextureGLOptions, DOptionMenu)
+
+public:
+	virtual void Drawer()
+	{
+		Super::Drawer();
+
+		EXTERN_CVAR(Int, gl_texture_hqresize);
+		EXTERN_CVAR(Bool, gl_precache);
+
+		if (gl_texture_hqresize > 0 && !gl_precache)
+		{
+			static const char* const HINT_TEXT[] =
+			{
+				"Consider to turn on",
+				"'Precache GL textures' option",
+				"to avoid stuttering during play"
+			};
+
+			for (size_t i = 0; i < sizeof HINT_TEXT / sizeof HINT_TEXT[0]; ++i)
+			{
+				const char* const text = HINT_TEXT[i];
+
+				const int x = (screen->GetWidth() - SmallFont->StringWidth(text) * CleanXfac_1) / 2;
+				const int y = ((-mDesc->mPosition + BigFont->GetHeight())
+					+ OptionSettings.mLinespacing * (mDesc->mItems.Size() + 2 + i)) * CleanYfac_1;
+
+				screen->DrawText(SmallFont, OptionSettings.mFontColor,
+					x, y, text, DTA_CleanNoMove_1, true, TAG_DONE);
+			}
+		}
+	}
+};
+
+IMPLEMENT_CLASS(DGLTextureGLOptions)
