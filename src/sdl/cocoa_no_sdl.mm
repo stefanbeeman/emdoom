@@ -55,6 +55,7 @@
 #include "basicinlines.h"
 #include "bitmap.h"
 #include "c_console.h"
+#include "c_dispatch.h"
 #include "cmdlib.h"
 #include "d_event.h"
 #include "d_gui.h"
@@ -129,6 +130,8 @@ void CheckGUICapture()
 	if ( wantCapture != GUICapture )
 	{
 		GUICapture = wantCapture;
+
+		ResetButtonStates();
 	}
 }
 
@@ -280,11 +283,12 @@ void I_ReleaseMouseCapture()
 namespace
 {
 
-const size_t TABLE_SIZE = 128;
+const size_t KEY_COUNT = 128;
+
 
 // See Carbon -> HIToolbox -> Events.h for kVK_ constants
 
-const uint8_t KEYCODE_TO_DIK[ TABLE_SIZE ] =
+const uint8_t KEYCODE_TO_DIK[ KEY_COUNT ] =
 {
 	DIK_A,        DIK_S,             DIK_D,         DIK_F,        DIK_H,           DIK_G,       DIK_Z,        DIK_X,          // 0x00 - 0x07
 	DIK_C,        DIK_V,             0,             DIK_B,        DIK_Q,           DIK_W,       DIK_E,        DIK_R,          // 0x08 - 0x0F
@@ -304,7 +308,7 @@ const uint8_t KEYCODE_TO_DIK[ TABLE_SIZE ] =
 	DIK_F2,       0,                 DIK_F1,        DIK_LEFT,     DIK_RIGHT,       DIK_DOWN,    DIK_UP,       0,              // 0x78 - 0x7F	
 };
 
-const uint8_t KEYCODE_TO_ASCII[ TABLE_SIZE ] =
+const uint8_t KEYCODE_TO_ASCII[ KEY_COUNT ] =
 {
 	'a', 's',  'd', 'f', 'h', 'g', 'z',  'x', // 0x00 - 0x07
 	'c', 'v',    0, 'b', 'q', 'w', 'e',  'r', // 0x08 - 0x0F
@@ -469,12 +473,12 @@ void ProcessKeyboardEventInMenu( NSEvent* theEvent )
 void ProcessKeyboardEvent( NSEvent* theEvent )
 {
 	const unsigned short keyCode = [theEvent keyCode];
-	if ( keyCode >= TABLE_SIZE )
+	if ( keyCode >= KEY_COUNT )
 	{
 		assert( !"Unknown keycode" );
 		return;
 	}
-		
+
 	if ( GUICapture )
 	{
 		ProcessKeyboardEventInMenu( theEvent );
