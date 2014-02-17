@@ -28,7 +28,7 @@
 /tools/re2c/build
 /tools/updaterevision/x64/
 /tools/zipdir/x64
-/wadsrc/*.pk3
+/wadsrc*/*.pk3
 /build_vc2013
 /bzip2/x64/
 /disasm.txt
