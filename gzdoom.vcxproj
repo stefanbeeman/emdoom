@@ -333,8 +333,7 @@
   <ItemGroup>
     <ClCompile Include="src\actorptrselect.cpp" />
     <ClCompile Include="src\am_map.cpp" />
-    <ClCompile Include="src\autostart.cpp" />
-    <ClCompile Include="src\autozend.cpp" />
+    <ClCompile Include="src\__autostart.cpp" />
     <ClCompile Include="src\b_bot.cpp" />
     <ClCompile Include="src\B_func.cpp" />
     <ClCompile Include="src\B_game.cpp" />
@@ -1282,6 +1281,7 @@
     <ClCompile Include="src\r_data\voxels.cpp" />
     <ClCompile Include="src\r_sky.cpp" />
     <ClCompile Include="src\r_utility.cpp" />
+    <ClCompile Include="src\zzautozend.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl\xbr\config.h" />
