@@ -173,39 +173,27 @@ static void scale4x(uint32* const input, uint32* const output, const size_t widt
 }
 
 
-static const size_t BYTES_PER_PIXEL = 4;
+static const size_t BYTES_PER_PIXEL = sizeof(uint32);
 
-typedef void (*HqNxFunction)(int*, unsigned char*, int, int, int);
+typedef void (*ScaleFunction)(const size_t scale, const size_t width, const size_t height, uint32* const input, uint32* const output);
 
-template <HqNxFunction func, size_t scale>
-static void hqNx(uint32* const input, uint32* const output, const size_t width, const size_t height)
+
+static void scaleNx(const size_t scale, const size_t width, const size_t height, uint32* const input, uint32* const output)
 {
-	func(reinterpret_cast<int*>(input), reinterpret_cast<unsigned char*>(output),
-		static_cast<int>(width), static_cast<int>(height), static_cast<int>(width * scale * BYTES_PER_PIXEL));
+	void (*function)(uint32* const input, uint32* const output, const size_t width, const size_t height) = NULL;
+
+	switch (scale)
+	{
+		case  2: function = scale2x;     break;
+		case  3: function = scale3x;     break;
+		case  4: function = scale4x;     break;
+		default: assert(!"Wrong scale"); return;
+	}
+
+	function(input, output, width, height);
 }
 
-template <size_t scale>
-static void xbrzNx(uint32* const input, uint32* const output, const size_t width, const size_t height)
-{
-	xbrz::scale(scale, input, output, static_cast<int>(width), static_cast<int>(height));
-}
-
-
-typedef void (*ScaleFunction)(uint32* const input, uint32* const output, const size_t width, const size_t height);
-
-static unsigned char *scaleNxHelper(ScaleFunction scaleNxFunction,
-	const size_t scale, unsigned char* const input, const size_t width, const size_t height)
-{
-	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
-	scaleNxFunction(reinterpret_cast<uint32*>(input), reinterpret_cast<uint32*>(output), width, height);
-
-	delete[] input;
-
-	return output;
-}
-
-static unsigned char *hqNxHelper(ScaleFunction hqNxFunction,
-	const size_t scale, unsigned char* const input, const size_t width, const size_t height)
+static void hqNx(const size_t scale, const size_t width, const size_t height, uint32* const input, uint32* const output)
 {
 	static bool isInitialized = false;
 
@@ -216,16 +204,28 @@ static unsigned char *hqNxHelper(ScaleFunction hqNxFunction,
 	}
 
 	CImage image;
-	image.SetImage(input, width, height, 32);
+	image.SetImage(reinterpret_cast<unsigned char*>(input), static_cast<int>(width), static_cast<int>(height), 32);
 	image.Convert32To17();
 
-	delete[] input;
+	void (*function)(int* input, unsigned char* output, int width, int height, int pitch) = NULL;
 
-	unsigned char* const output = new unsigned char[scale * width * scale * height * BYTES_PER_PIXEL];
-	hqNxFunction(reinterpret_cast<uint32*>(image.m_pBitmap), reinterpret_cast<uint32*>(output), width, height);
+	switch (scale)
+	{
+		case  2: function = hq2x_32;     break;
+		case  3: function = hq3x_32;     break;
+		case  4: function = hq4x_32;     break;
+		default: assert(!"Wrong scale"); return;
+	}
 
-	return output;
+	function(reinterpret_cast<int*>(image.m_pBitmap), reinterpret_cast<unsigned char*>(output),
+		static_cast<int>(width), static_cast<int>(height), static_cast<int>(width * scale * BYTES_PER_PIXEL));
 }
+
+static void xbrzNx(const size_t scale, const size_t width, const size_t height, uint32* const input, uint32* const output)
+{
+	xbrz::scale(scale, input, output, static_cast<int>(width), static_cast<int>(height));
+}
+
 
 //===========================================================================
 // 
@@ -279,42 +279,43 @@ unsigned char *gl_CreateUpsampledTextureBuffer ( const FTexture *inputTexture, u
 			type -= 3;
 		}
 
-		typedef unsigned char* (*ScaleHelper)(const ScaleFunction func,
-			const size_t scale, unsigned char* input, const size_t width, const size_t height);
-
 		struct Scaler
 		{
 			size_t        factor;
 			ScaleFunction function;
-			ScaleHelper   helper;
 		};
 
 		static const Scaler SCALERS[] =
 		{
-			{ 0, NULL,             NULL          },
-			{ 2, scale2x,          scaleNxHelper },
-			{ 3, scale3x,          scaleNxHelper },
-			{ 4, scale4x,          scaleNxHelper },
-			{ 2, hqNx<hq2x_32, 2>, hqNxHelper    },
-			{ 3, hqNx<hq3x_32, 3>, hqNxHelper    },
-			{ 4, hqNx<hq4x_32, 4>, hqNxHelper    },
-			{ 2, xbrzNx<2>,        scaleNxHelper },
-			{ 3, xbrzNx<3>,        scaleNxHelper },
-			{ 4, xbrzNx<4>,        scaleNxHelper },
-			{ 5, xbrzNx<5>,        scaleNxHelper },
+			{ 0, NULL    },
+			{ 2, scaleNx },
+			{ 3, scaleNx },
+			{ 4, scaleNx },
+			{ 2, hqNx    },
+			{ 3, hqNx    },
+			{ 4, hqNx    },
+			{ 2, xbrzNx  },
+			{ 3, xbrzNx  },
+			{ 4, xbrzNx  },
+			{ 5, xbrzNx  },
 		};
 
 		if (type > 0)
 		{
-			const Scaler&  scaler = SCALERS[type];
-			unsigned char* result = scaler.helper(scaler.function, 
-				scaler.factor, inputBuffer, size_t(inWidth), size_t(inHeight));
+			const Scaler& scaler = SCALERS[type];
+			const size_t scale = scaler.factor;
+
+			uint32* const output = new uint32[scale * inWidth * scale * inHeight];
+			scaler.function(scale, inWidth, inHeight, reinterpret_cast<uint32*>(inputBuffer), output);
 
 			outWidth  = static_cast<int>(scaler.factor * inWidth );
 			outHeight = static_cast<int>(scaler.factor * inHeight);
 
-			return result;
+			delete[] inputBuffer;
+
+			return reinterpret_cast<unsigned char*>(output);
 		}
 	}
+
 	return inputBuffer;
 }
