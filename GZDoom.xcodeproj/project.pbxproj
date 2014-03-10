@@ -498,8 +498,8 @@
 		8AA9A1971660E80A007F75A4 /* OPL3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9A1951660E80A007F75A4 /* OPL3.cpp */; };
 		8AA9A1981660E8DC007F75A4 /* OPL3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9A1951660E80A007F75A4 /* OPL3.cpp */; };
 		8AA9A1991660E8E5007F75A4 /* opl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9A1921660E80A007F75A4 /* opl.cpp */; };
-		8AB53BBB18941AD10079E426 /* xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AB53BB918941A880079E426 /* xbrz.cpp */; };
-		8AB53BBC18941AD90079E426 /* xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AB53BB918941A880079E426 /* xbrz.cpp */; };
+		8AB53BBB18941AD10079E426 /* xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AB53BB918941A880079E426 /* xbrz.cpp */; settings = {COMPILER_FLAGS = "-O3"; }; };
+		8AB53BBC18941AD90079E426 /* xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AB53BB918941A880079E426 /* xbrz.cpp */; settings = {COMPILER_FLAGS = "-O3"; }; };
 		8AC81C411391321300F49DC3 /* libjpeg_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF278CA1390F0370095D9A0 /* libjpeg_gzdoom.a */; };
 		8AC81C421391321300F49DC3 /* liblzma_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF2795A1390F1200095D9A0 /* liblzma_gzdoom.a */; };
 		8AC81C431391321300F49DC3 /* libgme_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF27A541390F4F40095D9A0 /* libgme_gzdoom.a */; };
