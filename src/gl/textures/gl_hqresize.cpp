@@ -34,6 +34,17 @@
 **
 */
 
+#ifdef __APPLE__
+#	include <AvailabilityMacros.h>
+#	if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+#		define GZ_USE_LIBDISPATCH
+#	endif // MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+#endif // __APPLE__
+
+#ifdef GZ_USE_LIBDISPATCH
+#include <dispatch/dispatch.h>
+#endif // GZ_USE_LIBDISPATCH
+
 #include "gl/system/gl_system.h"
 #include "gl/system/gl_interface.h"
 #include "gl/renderer/gl_renderer.h"
@@ -221,9 +232,46 @@ static void hqNx(const size_t scale, const size_t width, const size_t height, ui
 		static_cast<int>(width), static_cast<int>(height), static_cast<int>(width * scale * BYTES_PER_PIXEL));
 }
 
+#ifdef GZ_USE_LIBDISPATCH
+CVAR(Bool, gl_texture_hqresize_multithread, true, CVAR_ARCHIVE | CVAR_GLOBALCONFIG);
+
+CUSTOM_CVAR(Int, gl_texture_hqresize_mt_width, 16, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	if (self < 2)    self = 2;
+	if (self > 1024) self = 1024;
+}
+
+CUSTOM_CVAR(Int, gl_texture_hqresize_mt_height, 4, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	if (self < 2)    self = 2;
+	if (self > 1024) self = 1024;
+}
+#endif // GZ_USE_LIBDISPATCH
+
 static void xbrzNx(const size_t scale, const size_t width, const size_t height, uint32* const input, uint32* const output)
 {
-	xbrz::scale(scale, input, output, static_cast<int>(width), static_cast<int>(height));
+#ifdef GZ_USE_LIBDISPATCH
+	const size_t thresholdWidth  = gl_texture_hqresize_mt_width;
+	const size_t thresholdHeight = gl_texture_hqresize_mt_height;
+
+	if (gl_texture_hqresize_multithread
+		&& width  > thresholdWidth
+		&& height > thresholdHeight)
+	{
+		const dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+		dispatch_apply(height / thresholdHeight + 1, queue, ^(size_t sliceY)
+		{
+			xbrz::scale(scale, input, output,
+				static_cast<int>(width), static_cast<int>(height), xbrz::ScalerCfg(),
+				sliceY * thresholdHeight, (sliceY + 1) * thresholdHeight);
+		});
+	}
+	else
+#endif // GZ_USE_LIBDISPATCH
+	{
+		xbrz::scale(scale, input, output, static_cast<int>(width), static_cast<int>(height));
+	}
 }
 
 
