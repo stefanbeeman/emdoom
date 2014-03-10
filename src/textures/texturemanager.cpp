@@ -63,6 +63,19 @@ CUSTOM_CVAR(Bool, vid_nopalsubstitutions, false, CVAR_ARCHIVE)
 	R_InitSkyMap ();
 }
 
+CCMD(cleartexturecache)
+{
+	if (NULL == Renderer)
+	{
+		return;
+	}
+
+	for (int i = TexMan.NumTextures() - 1; i >= 0; --i)
+	{
+		Renderer->PrecacheTexture(TexMan.ByIndex(i), 0);
+	}
+}
+
 //==========================================================================
 //
 // FTextureManager :: FTextureManager
