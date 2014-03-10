@@ -54,6 +54,7 @@
 #include "r_sky.h"
 #include "textures/textures.h"
 #include "gstrings.h"
+#include "stats.h"
 
 FTextureManager TexMan;
 
@@ -1306,11 +1307,20 @@ void FTextureManager::PrecacheLevel (void)
 
 	PrecacheProgress precacheProgress;
 
+	// Consider to comment out PrecacheProgress::Update() call below
+	// in order to get more precise timing results
+	cycle_t precacheProfiler;
+	precacheProfiler.Reset();
+	precacheProfiler.Clock();
+
 	for (int i = cnt - 1; i >= 0; i--)
 	{
 		Renderer->PrecacheTexture(ByIndex(i), hitlist[i]);
 		precacheProgress.Update();
 	}
+
+	precacheProfiler.Unclock();
+	DPrintf(TEXTCOLOR_RED "Textures were precached in %.03f ms\n", precacheProfiler.TimeMS());
 
 	delete[] hitlist;
 }
