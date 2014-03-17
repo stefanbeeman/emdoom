@@ -149,7 +149,10 @@
     <ClCompile Include="hexnan.c" />
     <ClCompile Include="misc.c" />
     <ClCompile Include="smisc.c" />
-    <ClCompile Include="strtod.c" />
+    <ClCompile Include="strtod.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="strtodg.c" />
     <ClCompile Include="strtodI.c" />
     <ClCompile Include="strtodnrp.c">
