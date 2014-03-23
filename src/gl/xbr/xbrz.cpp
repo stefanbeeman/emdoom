@@ -41,7 +41,6 @@ T abs(T value)
     return value < 0 ? -value : value;
 }
 
-const uint32_t alphaMask = 0xff000000;
 const uint32_t redMask   = 0xff0000;
 const uint32_t greenMask = 0x00ff00;
 const uint32_t blueMask  = 0x0000ff;
@@ -55,9 +54,19 @@ void alphaBlend(uint32_t& dst, uint32_t col) //blend color over destination with
     static_assert(0 < N && N < M, "");
 #endif // XBRZ_CXX11
 
-    const uint32_t alpha = (alphaMask == (col & alphaMask) && alphaMask == (dst & alphaMask))
-        ? alphaMask
-        : (alphaMask & ((col & alphaMask) * N + (dst & alphaMask) * (M - N)) / M);
+    static const uint32_t ALPHA_MASK  = 0xFF000000;
+    static const uint32_t ALPHA_SHIFT = 24;
+
+    static const uint32_t FULL_OPAQUE = 0xFF;
+
+    const uint32_t colAlpha = col >> ALPHA_SHIFT;
+    const uint32_t dstAlpha = dst >> ALPHA_SHIFT;
+
+    // Overflow is ignored intentionally!
+
+    const uint32_t alpha = (FULL_OPAQUE == colAlpha && FULL_OPAQUE == dstAlpha)
+        ? ALPHA_MASK
+        : ALPHA_MASK & ((colAlpha * N + dstAlpha * (M - N)) / M << ALPHA_SHIFT);
 
     dst = (redMask   & ((col & redMask  ) * N + (dst & redMask  ) * (M - N)) / M) | //this works because 8 upper bits are free
           (greenMask & ((col & greenMask) * N + (dst & greenMask) * (M - N)) / M) |
