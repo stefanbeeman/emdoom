@@ -676,46 +676,7 @@
 		8AF27BF01390F5EE0095D9A0 /* xmeffect.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27B921390F5EE0095D9A0 /* xmeffect.c */; };
 		8AF27CB5139121FA0095D9A0 /* dmisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C86139121F90095D9A0 /* dmisc.c */; };
 		8AF27CB6139121FA0095D9A0 /* dtoa.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C87139121F90095D9A0 /* dtoa.c */; };
-		8AF27CB7139121FA0095D9A0 /* g__fmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C88139121F90095D9A0 /* g__fmt.c */; };
-		8AF27CB8139121FA0095D9A0 /* g_ddfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C89139121F90095D9A0 /* g_ddfmt.c */; };
-		8AF27CB9139121FA0095D9A0 /* g_dfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8A139121F90095D9A0 /* g_dfmt.c */; };
-		8AF27CBA139121FA0095D9A0 /* g_ffmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8B139121F90095D9A0 /* g_ffmt.c */; };
-		8AF27CBB139121FA0095D9A0 /* g_Qfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8C139121FA0095D9A0 /* g_Qfmt.c */; };
-		8AF27CBC139121FA0095D9A0 /* g_xfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8D139121FA0095D9A0 /* g_xfmt.c */; };
-		8AF27CBD139121FA0095D9A0 /* g_xLfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8E139121FA0095D9A0 /* g_xLfmt.c */; };
-		8AF27CBE139121FA0095D9A0 /* gdtoa.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C8F139121FA0095D9A0 /* gdtoa.c */; };
-		8AF27CBF139121FA0095D9A0 /* gethex.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C92139121FA0095D9A0 /* gethex.c */; };
-		8AF27CC0139121FA0095D9A0 /* gmisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C93139121FA0095D9A0 /* gmisc.c */; };
-		8AF27CC1139121FA0095D9A0 /* hd_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C94139121FA0095D9A0 /* hd_init.c */; };
-		8AF27CC2139121FA0095D9A0 /* hexnan.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C95139121FA0095D9A0 /* hexnan.c */; };
 		8AF27CC3139121FA0095D9A0 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C96139121FA0095D9A0 /* misc.c */; };
-		8AF27CC5139121FA0095D9A0 /* smisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C99139121FA0095D9A0 /* smisc.c */; };
-		8AF27CC6139121FA0095D9A0 /* strtod.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9A139121FA0095D9A0 /* strtod.c */; };
-		8AF27CC7139121FA0095D9A0 /* strtodg.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9B139121FA0095D9A0 /* strtodg.c */; };
-		8AF27CC8139121FA0095D9A0 /* strtodI.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9C139121FA0095D9A0 /* strtodI.c */; };
-		8AF27CC9139121FA0095D9A0 /* strtodnrp.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9D139121FA0095D9A0 /* strtodnrp.c */; };
-		8AF27CCA139121FA0095D9A0 /* strtof.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9E139121FA0095D9A0 /* strtof.c */; };
-		8AF27CCB139121FA0095D9A0 /* strtoId.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9F139121FA0095D9A0 /* strtoId.c */; };
-		8AF27CCC139121FA0095D9A0 /* strtoIdd.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA0139121FA0095D9A0 /* strtoIdd.c */; };
-		8AF27CCD139121FA0095D9A0 /* strtoIf.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA1139121FA0095D9A0 /* strtoIf.c */; };
-		8AF27CCE139121FA0095D9A0 /* strtoIg.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA2139121FA0095D9A0 /* strtoIg.c */; };
-		8AF27CCF139121FA0095D9A0 /* strtoIQ.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA3139121FA0095D9A0 /* strtoIQ.c */; };
-		8AF27CD0139121FA0095D9A0 /* strtoIx.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA4139121FA0095D9A0 /* strtoIx.c */; };
-		8AF27CD1139121FA0095D9A0 /* strtoIxL.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA5139121FA0095D9A0 /* strtoIxL.c */; };
-		8AF27CD2139121FA0095D9A0 /* strtopd.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA6139121FA0095D9A0 /* strtopd.c */; };
-		8AF27CD3139121FA0095D9A0 /* strtopdd.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA7139121FA0095D9A0 /* strtopdd.c */; };
-		8AF27CD4139121FA0095D9A0 /* strtopf.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA8139121FA0095D9A0 /* strtopf.c */; };
-		8AF27CD5139121FA0095D9A0 /* strtopQ.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CA9139121FA0095D9A0 /* strtopQ.c */; };
-		8AF27CD6139121FA0095D9A0 /* strtopx.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAA139121FA0095D9A0 /* strtopx.c */; };
-		8AF27CD7139121FA0095D9A0 /* strtopxL.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAB139121FA0095D9A0 /* strtopxL.c */; };
-		8AF27CD8139121FA0095D9A0 /* strtord.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAC139121FA0095D9A0 /* strtord.c */; };
-		8AF27CD9139121FA0095D9A0 /* strtordd.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAD139121FA0095D9A0 /* strtordd.c */; };
-		8AF27CDA139121FA0095D9A0 /* strtorf.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAE139121FA0095D9A0 /* strtorf.c */; };
-		8AF27CDB139121FA0095D9A0 /* strtorQ.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAF139121FA0095D9A0 /* strtorQ.c */; };
-		8AF27CDC139121FA0095D9A0 /* strtorx.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB0139121FA0095D9A0 /* strtorx.c */; };
-		8AF27CDD139121FA0095D9A0 /* strtorxL.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB1139121FA0095D9A0 /* strtorxL.c */; };
-		8AF27CDE139121FA0095D9A0 /* sum.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB2139121FA0095D9A0 /* sum.c */; };
-		8AF27CDF139121FA0095D9A0 /* ulp.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB3139121FA0095D9A0 /* ulp.c */; };
 		8AF2800A139126C00095D9A0 /* am_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CFF139126C00095D9A0 /* am_map.cpp */; };
 		8AF28012139126C00095D9A0 /* __autostart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27D0C139126C00095D9A0 /* __autostart.cpp */; };
 		8AF28013139126C00095D9A0 /* zzautozend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27D0D139126C00095D9A0 /* zzautozend.cpp */; };
@@ -7564,46 +7525,7 @@
 			files = (
 				8AF27CB5139121FA0095D9A0 /* dmisc.c in Sources */,
 				8AF27CB6139121FA0095D9A0 /* dtoa.c in Sources */,
-				8AF27CB7139121FA0095D9A0 /* g__fmt.c in Sources */,
-				8AF27CB8139121FA0095D9A0 /* g_ddfmt.c in Sources */,
-				8AF27CB9139121FA0095D9A0 /* g_dfmt.c in Sources */,
-				8AF27CBA139121FA0095D9A0 /* g_ffmt.c in Sources */,
-				8AF27CBB139121FA0095D9A0 /* g_Qfmt.c in Sources */,
-				8AF27CBC139121FA0095D9A0 /* g_xfmt.c in Sources */,
-				8AF27CBD139121FA0095D9A0 /* g_xLfmt.c in Sources */,
-				8AF27CBE139121FA0095D9A0 /* gdtoa.c in Sources */,
-				8AF27CBF139121FA0095D9A0 /* gethex.c in Sources */,
-				8AF27CC0139121FA0095D9A0 /* gmisc.c in Sources */,
-				8AF27CC1139121FA0095D9A0 /* hd_init.c in Sources */,
-				8AF27CC2139121FA0095D9A0 /* hexnan.c in Sources */,
 				8AF27CC3139121FA0095D9A0 /* misc.c in Sources */,
-				8AF27CC5139121FA0095D9A0 /* smisc.c in Sources */,
-				8AF27CC6139121FA0095D9A0 /* strtod.c in Sources */,
-				8AF27CC7139121FA0095D9A0 /* strtodg.c in Sources */,
-				8AF27CC8139121FA0095D9A0 /* strtodI.c in Sources */,
-				8AF27CC9139121FA0095D9A0 /* strtodnrp.c in Sources */,
-				8AF27CCA139121FA0095D9A0 /* strtof.c in Sources */,
-				8AF27CCB139121FA0095D9A0 /* strtoId.c in Sources */,
-				8AF27CCC139121FA0095D9A0 /* strtoIdd.c in Sources */,
-				8AF27CCD139121FA0095D9A0 /* strtoIf.c in Sources */,
-				8AF27CCE139121FA0095D9A0 /* strtoIg.c in Sources */,
-				8AF27CCF139121FA0095D9A0 /* strtoIQ.c in Sources */,
-				8AF27CD0139121FA0095D9A0 /* strtoIx.c in Sources */,
-				8AF27CD1139121FA0095D9A0 /* strtoIxL.c in Sources */,
-				8AF27CD2139121FA0095D9A0 /* strtopd.c in Sources */,
-				8AF27CD3139121FA0095D9A0 /* strtopdd.c in Sources */,
-				8AF27CD4139121FA0095D9A0 /* strtopf.c in Sources */,
-				8AF27CD5139121FA0095D9A0 /* strtopQ.c in Sources */,
-				8AF27CD6139121FA0095D9A0 /* strtopx.c in Sources */,
-				8AF27CD7139121FA0095D9A0 /* strtopxL.c in Sources */,
-				8AF27CD8139121FA0095D9A0 /* strtord.c in Sources */,
-				8AF27CD9139121FA0095D9A0 /* strtordd.c in Sources */,
-				8AF27CDA139121FA0095D9A0 /* strtorf.c in Sources */,
-				8AF27CDB139121FA0095D9A0 /* strtorQ.c in Sources */,
-				8AF27CDC139121FA0095D9A0 /* strtorx.c in Sources */,
-				8AF27CDD139121FA0095D9A0 /* strtorxL.c in Sources */,
-				8AF27CDE139121FA0095D9A0 /* sum.c in Sources */,
-				8AF27CDF139121FA0095D9A0 /* ulp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
