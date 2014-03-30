@@ -2775,8 +2775,6 @@
 		8AF27CB1139121FA0095D9A0 /* strtorxL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strtorxL.c; sourceTree = "<group>"; };
 		8AF27CB2139121FA0095D9A0 /* sum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sum.c; sourceTree = "<group>"; };
 		8AF27CB3139121FA0095D9A0 /* ulp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ulp.c; sourceTree = "<group>"; };
-		8AF27CEC139123E30095D9A0 /* arith.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arith.h; sourceTree = "<group>"; };
-		8AF27CED139123E30095D9A0 /* gd_qnan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gd_qnan.h; sourceTree = "<group>"; };
 		8AF27CFD139126C00095D9A0 /* actionspecials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = actionspecials.h; sourceTree = "<group>"; };
 		8AF27CFE139126C00095D9A0 /* actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = actor.h; sourceTree = "<group>"; };
 		8AF27CFF139126C00095D9A0 /* am_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = am_map.cpp; sourceTree = "<group>"; };
@@ -5454,7 +5452,6 @@
 		8AF27C84139121F90095D9A0 /* gdtoa */ = {
 			isa = PBXGroup;
 			children = (
-				8AF27CEC139123E30095D9A0 /* arith.h */,
 				8AF27C85139121F90095D9A0 /* arithchk.c */,
 				8AF27C86139121F90095D9A0 /* dmisc.c */,
 				8AF27C87139121F90095D9A0 /* dtoa.c */,
@@ -5465,7 +5462,6 @@
 				8AF27C8C139121FA0095D9A0 /* g_Qfmt.c */,
 				8AF27C8D139121FA0095D9A0 /* g_xfmt.c */,
 				8AF27C8E139121FA0095D9A0 /* g_xLfmt.c */,
-				8AF27CED139123E30095D9A0 /* gd_qnan.h */,
 				8A3FB89D18B10ED6007AAE66 /* gdtoa_fltrnds.h */,
 				8AF27C8F139121FA0095D9A0 /* gdtoa.c */,
 				8AF27C90139121FA0095D9A0 /* gdtoa.h */,
