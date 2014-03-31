@@ -1245,7 +1245,7 @@ class PrecacheProgress
 {
 public:
 	PrecacheProgress()
-	: m_time  (I_MSTime())
+	: m_time  (I_FPSTime())
 	, m_color (CR_YELLOW)
 	, m_dimmed(false)
 	{
@@ -1254,7 +1254,7 @@ public:
 	void Update()
 	{
 		static const unsigned int UPDATE_TIME_MS = 250;
-		const unsigned int now = I_MSTime();
+		const unsigned int now = I_FPSTime();
 
 		if (UPDATE_TIME_MS > now - m_time)
 		{
