@@ -115,6 +115,16 @@
 		8A7C310018F169BE0001B5A2 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A7C30FF18F1698C0001B5A2 /* init.cpp */; };
 		8A7C310118F169C80001B5A2 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A7C30FF18F1698C0001B5A2 /* init.cpp */; };
 		8A7C310518F16B490001B5A2 /* Spc_Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A7C310318F16B220001B5A2 /* Spc_Filter.cpp */; };
+		8A7C310618F182D40001B5A2 /* strtod.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9A139121FA0095D9A0 /* strtod.c */; };
+		8A7C310718F1837C0001B5A2 /* strtord.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CAC139121FA0095D9A0 /* strtord.c */; };
+		8A7C310818F183A30001B5A2 /* g__fmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C88139121F90095D9A0 /* g__fmt.c */; };
+		8A7C310918F183C30001B5A2 /* smisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C99139121FA0095D9A0 /* smisc.c */; };
+		8A7C310A18F183DF0001B5A2 /* strtodg.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C9B139121FA0095D9A0 /* strtodg.c */; };
+		8A7C310B18F183F50001B5A2 /* gmisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C93139121FA0095D9A0 /* gmisc.c */; };
+		8A7C310C18F184070001B5A2 /* gethex.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C92139121FA0095D9A0 /* gethex.c */; };
+		8A7C310D18F1841D0001B5A2 /* hd_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27C94139121FA0095D9A0 /* hd_init.c */; };
+		8A7C310E18F184410001B5A2 /* ulp.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB3139121FA0095D9A0 /* ulp.c */; };
+		8A7C310F18F184430001B5A2 /* sum.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27CB2139121FA0095D9A0 /* sum.c */; };
 		8A7C81C613BF3C0B000B654E /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27F3E139126C00095D9A0 /* SDLMain.m */; };
 		8A7D867E1537055C002D03BD /* hq4x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27E13139126C00095D9A0 /* hq4x.cpp */; settings = {COMPILER_FLAGS = "-O3"; }; };
 		8A7D867F1537055D002D03BD /* hq3x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AF27E12139126C00095D9A0 /* hq3x.cpp */; settings = {COMPILER_FLAGS = "-O3"; }; };
@@ -7533,7 +7543,17 @@
 			files = (
 				8AF27CB5139121FA0095D9A0 /* dmisc.c in Sources */,
 				8AF27CB6139121FA0095D9A0 /* dtoa.c in Sources */,
+				8A7C310818F183A30001B5A2 /* g__fmt.c in Sources */,
+				8A7C310C18F184070001B5A2 /* gethex.c in Sources */,
+				8A7C310B18F183F50001B5A2 /* gmisc.c in Sources */,
+				8A7C310D18F1841D0001B5A2 /* hd_init.c in Sources */,
 				8AF27CC3139121FA0095D9A0 /* misc.c in Sources */,
+				8A7C310918F183C30001B5A2 /* smisc.c in Sources */,
+				8A7C310618F182D40001B5A2 /* strtod.c in Sources */,
+				8A7C310718F1837C0001B5A2 /* strtord.c in Sources */,
+				8A7C310A18F183DF0001B5A2 /* strtodg.c in Sources */,
+				8A7C310F18F184430001B5A2 /* sum.c in Sources */,
+				8A7C310E18F184410001B5A2 /* ulp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
