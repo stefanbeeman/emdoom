@@ -257,8 +257,7 @@ endif( NOT FMOD_LIB_NAME )
 
 if( NOT WIN32 )
 	find_path( FMOD_INCLUDE_DIR fmod.hpp
-		PATHS ${FMOD_LOCAL_INC_DIRS}
-		"../thirdparty/FMOD/inc" )
+		PATHS ${FMOD_LOCAL_INC_DIRS} )
 endif( NOT WIN32 )
 
 if( NOT FMOD_INCLUDE_DIR )
@@ -285,10 +284,6 @@ else( WIN32 OR APPLE )
 		NAMES ${FMOD_VERSIONS}
 		PATHS ${FMOD_LOCAL_LIB_DIRS} )
 endif( WIN32 OR APPLE )
-
-if( APPLE AND NOT FMOD_LIBRARY )
-	find_library( FMOD_LIBRARY "libfmodex.dylib" "../thirdparty/FMOD/lib" )
-endif( APPLE AND NOT FMOD_LIBRARY )
 
 if( FMOD_LIBRARY )
 	message( STATUS "FMOD library found at ${FMOD_LIBRARY}" )
@@ -405,8 +400,7 @@ endif( NOT NO_ASM )
 if( APPLE )
 	find_path( GLEW_INCLUDE_DIR GL/glew.h
 		PATHS "/usr/include"
-		"/usr/local/include"
-		"../thirdparty/glew/include" )
+		"/usr/local/include" )
 
 	if( GLEW_INCLUDE_DIR )
 		message( STATUS "GLEW include files found at ${GLEW_INCLUDE_DIR}" )
@@ -630,16 +624,6 @@ if( WIN32 )
 		set( SYSTEM_SOURCES ${SYSTEM_SOURCES} win32/zdoom.rc )
 	endif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" )
 
-	# [BB] Maxim Stepin's hq2x/3x/4x pixel upsampling algorithm as library. Currently only used with VC++.
-	if( MSVC AND NOT X64 )
-	set( SYSTEM_SOURCES
-		${SYSTEM_SOURCES}
-		gl/hqnx/Image.cpp
-		gl/hqnx/hq2x.cpp
-		gl/hqnx/hq3x.cpp
-		gl/hqnx/hq4x.cpp
-	)
-	endif( MSVC AND NOT X64)
 else( WIN32 )
 	set( SYSTEM_SOURCES_DIR sdl )
 	set( SYSTEM_SOURCES ${PLAT_SDL_SOURCES} )
@@ -1063,6 +1047,10 @@ add_executable( zdoom WIN32
 	gl/renderer/gl_renderer.cpp
 	gl/renderer/gl_renderstate.cpp
 	gl/renderer/gl_lightdata.cpp
+	gl/hqnx/init.cpp
+	gl/hqnx/hq2x.cpp
+	gl/hqnx/hq3x.cpp
+	gl/hqnx/hq4x.cpp
 	gl/textures/gl_hwtexture.cpp
 	gl/textures/gl_texture.cpp
 	gl/textures/gl_material.cpp
@@ -1102,10 +1090,6 @@ add_executable( zdoom WIN32
 	gl/models/gl_models_md2.cpp
 	gl/models/gl_models.cpp
 	gl/models/gl_voxels.cpp
-	gl/hqnx/hq2x.cpp
-	gl/hqnx/hq3x.cpp
-	gl/hqnx/hq4x.cpp
-	gl/hqnx/Image.cpp
 	oplsynth/fmopl.cpp
 	oplsynth/mlopl.cpp
 	oplsynth/mlopl_io.cpp
@@ -1116,7 +1100,6 @@ add_executable( zdoom WIN32
 	oplsynth/OPL3.cpp
 	resourcefiles/ancientzip.cpp
 	resourcefiles/file_7z.cpp
-	resourcefiles/file_chasm_bin.cpp
 	resourcefiles/file_grp.cpp
 	resourcefiles/file_lump.cpp
 	resourcefiles/file_rff.cpp
@@ -1152,7 +1135,6 @@ add_executable( zdoom WIN32
 	textures/bitmap.cpp
 	textures/buildtexture.cpp
 	textures/canvastexture.cpp
-	textures/celtexture.cpp
 	textures/ddstexture.cpp
 	textures/flattexture.cpp
 	textures/imgztexture.cpp
