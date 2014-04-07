@@ -169,12 +169,6 @@
     <ClCompile Include="src\am_map.cpp">
       <Filter>!Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\autostart.cpp">
-      <Filter>!Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\autozend.cpp">
-      <Filter>!Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\b_bot.cpp">
       <Filter>!Source Files</Filter>
     </ClCompile>
@@ -1126,9 +1120,6 @@
     <ClCompile Include="src\gl\hqnx\hq4x.cpp">
       <Filter>GL Renderer\hqnx</Filter>
     </ClCompile>
-    <ClCompile Include="src\gl\hqnx\Image.cpp">
-      <Filter>GL Renderer\hqnx</Filter>
-    </ClCompile>
     <ClCompile Include="src\resourcefiles\ancientzip.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -1569,6 +1560,15 @@
     </ClCompile>
     <ClCompile Include="src\gl\xbr\xbrz.cpp">
       <Filter>GL Renderer\xBR</Filter>
+    </ClCompile>
+    <ClCompile Include="src\__autostart.cpp">
+      <Filter>!Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zzautozend.cpp">
+      <Filter>!Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gl\hqnx\init.cpp">
+      <Filter>GL Renderer\hqnx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2244,12 +2244,6 @@
     <ClInclude Include="src\gl\renderer\gl_renderstate.h">
       <Filter>GL Renderer\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\gl\hqnx\hqnx.h">
-      <Filter>GL Renderer\hqnx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gl\hqnx\Image.h">
-      <Filter>GL Renderer\hqnx</Filter>
-    </ClInclude>
     <ClInclude Include="src\resourcefiles\ancientzip.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -2327,6 +2321,12 @@
     </ClInclude>
     <ClInclude Include="src\gl\xbr\config.h">
       <Filter>GL Renderer\xBR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gl\hqnx\common.h">
+      <Filter>GL Renderer\hqnx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gl\hqnx\hqx.h">
+      <Filter>GL Renderer\hqnx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

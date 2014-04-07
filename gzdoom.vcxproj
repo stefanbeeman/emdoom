@@ -333,6 +333,7 @@
   <ItemGroup>
     <ClCompile Include="src\actorptrselect.cpp" />
     <ClCompile Include="src\am_map.cpp" />
+    <ClCompile Include="src\gl\hqnx\init.cpp" />
     <ClCompile Include="src\__autostart.cpp" />
     <ClCompile Include="src\b_bot.cpp" />
     <ClCompile Include="src\B_func.cpp" />
@@ -764,7 +765,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\gl\hqnx\Image.cpp" />
     <ClCompile Include="src\resourcefiles\ancientzip.cpp" />
     <ClCompile Include="src\resourcefiles\file_7z.cpp" />
     <ClCompile Include="src\resourcefiles\file_directory.cpp" />
@@ -1284,6 +1284,8 @@
     <ClCompile Include="src\zzautozend.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\gl\hqnx\common.h" />
+    <ClInclude Include="src\gl\hqnx\hqx.h" />
     <ClInclude Include="src\gl\xbr\config.h" />
     <ClInclude Include="src\gl\xbr\xbrz.h" />
     <ClInclude Include="src\sc_man_scanner.h" />
@@ -1546,8 +1548,6 @@
     <ClInclude Include="src\gl\renderer\gl_lightdata.h" />
     <ClInclude Include="src\gl\renderer\gl_renderer.h" />
     <ClInclude Include="src\gl\renderer\gl_renderstate.h" />
-    <ClInclude Include="src\gl\hqnx\hqnx.h" />
-    <ClInclude Include="src\gl\hqnx\Image.h" />
     <ClInclude Include="src\resourcefiles\ancientzip.h" />
     <ClInclude Include="src\resourcefiles\resourcefile.h" />
     <ClInclude Include="src\menu\menu.h" />

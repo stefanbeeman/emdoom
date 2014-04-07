@@ -149,6 +149,9 @@
     <ClCompile Include="gme\Ym2612_Emu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gme\Spc_Filter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gme\Ay_Apu.h">
@@ -311,6 +314,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gme\Ym2612_Emu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gme\gme_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gme\Spc_Filter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
