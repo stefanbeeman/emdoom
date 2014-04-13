@@ -2165,6 +2165,7 @@ void G_DoSaveGame (bool okForQuicksave, FString filename, const char *descriptio
 
 void G_ReadDemoTiccmd (ticcmd_t *cmd, int player)
 {
+/*
 	int id = DEM_BAD;
 
 	while (id != DEM_USERCMD && id != DEM_EMPTYUSERCMD)
@@ -2208,6 +2209,24 @@ void G_ReadDemoTiccmd (ticcmd_t *cmd, int player)
 			break;
 		}
 	}
+*/
+
+	static const BYTE DEMOMARKER = 0x80;
+
+	if (*demo_p == DEMOMARKER)
+	{
+		// end of demo data stream
+		G_CheckDemoStatus ();
+		return;
+	}
+
+	cmd->ucmd.forwardmove = ((signed char)*demo_p++) << 8;
+	cmd->ucmd.sidemove = ((signed char)*demo_p++) << 8;
+
+	// TODO: support fot longtics demos
+	cmd->ucmd.yaw = ((unsigned char) *demo_p++) << 8;
+
+	cmd->ucmd.buttons = (unsigned char)*demo_p++;
 } 
 
 bool stoprecording;
@@ -2549,7 +2568,7 @@ void G_DoPlayDemo (void)
 	Printf ("Playing demo %s\n", defdemoname.GetChars());
 
 	C_BackupCVars ();		// [RH] Save cvars that might be affected by demo
-
+/*
 	if (ReadLong (&demo_p) != FORM_ID)
 	{
 		const char *eek = "Cannot play non-ZDoom demos.\n";
@@ -2574,7 +2593,28 @@ void G_DoPlayDemo (void)
 		demoplayback = false;
 	}
 	else
+*/
 	{
+		demover = DEMOGAMEVERSION; demo_p++; // TODO: check version
+		gameskill = *demo_p++;
+
+		const BYTE episode = *demo_p++;
+		const BYTE level = *demo_p++;
+
+		const FString mapNameStr = CalcMapName(episode, level);
+		strcpy(mapname, mapNameStr.GetChars());
+
+		demo_p++; // TODO: multiplayer rule
+		demo_p++; // TODO: respawn
+		demo_p++; // TODO: fast
+		demo_p++; // TODO: no monsters
+		demo_p++; // TODO: recording player
+
+		playeringame[0] = *demo_p++;
+		playeringame[1] = *demo_p++;
+		playeringame[2] = *demo_p++;
+		playeringame[3] = *demo_p++;
+
 		// don't spend a lot of time in loadlevel 
 		precache = false;
 		demonew = true;
