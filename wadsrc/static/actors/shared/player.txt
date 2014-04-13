@@ -6,6 +6,7 @@ Actor PlayerPawn : Actor native
 	Mass 100
 	Painchance 255
 	Speed 1
+	ReactionTime 0
 	+SOLID
 	+SHOOTABLE
 	+DROPOFF
