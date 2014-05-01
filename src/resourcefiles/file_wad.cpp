@@ -793,7 +793,8 @@ FResourceFile* CheckDisk( const char* filename, FileReader* file, bool quiet )
 			{
 				return result;
 			}
-			
+
+			result->Reader = NULL; // to avoid destruction of reader
 			delete result;
 		}
 	}
