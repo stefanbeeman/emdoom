@@ -159,6 +159,8 @@ HUSTR_E4M7 = "E4M7: And Hell Followed";
 HUSTR_E4M8 = "E4M8: Unto The Cruel";
 HUSTR_E4M9 = "E4M9: Fear";
 
+HUSTR_E1M10 = "E1M10: Sewers";
+
 HUSTR_1 = "level 1: entryway";
 HUSTR_2 = "level 2: underhalls";
 HUSTR_3 = "level 3: the gantlet";

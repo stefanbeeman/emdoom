@@ -222,6 +222,21 @@ IWad
 
 IWad
 {
+	Name = "The Ultimate DOOM (Xbox)"
+	Autoname = "Doom1"
+	Game = "Doom"
+	Config = "Doom"
+	Mapinfo = "mapinfo/ultdoom_xbox.txt"
+	Compatibility = "Shorttex"
+	MustContain = "E1M1","E2M1","E2M2","E2M3","E2M4","E2M5","E2M6","E2M7","E2M8","E2M9",
+		          "E3M1","E3M2","E3M3","E3M4","E3M5","E3M6","E3M7","E3M8","E3M9",
+		          "DPHOOF","BFGGA0","HEADA1","CYBRA1","SPIDA1D1", "E4M2",
+		          "E1M10", "SEWERS"
+	BannerColors = "54 54 54", "a8 a8 a8"
+}
+
+IWad
+{
 	Name = "DOOM (XBLA/Xbox 360)"
 	Autoname = "Doom1"
 	Game = "Doom"
@@ -313,6 +328,18 @@ IWad
 
 IWad
 {
+	Name = "DOOM 2 (Xbox)"
+	Autoname = "Doom2"
+	Game = "Doom"
+	Config = "Doom"
+	Mapinfo = "mapinfo/doom2_xbox.txt"
+	Compatibility = "Shorttex"
+	MustContain = "MAP01", "MAP33", "CWILV32"
+	BannerColors = "a8 00 00", "a8 a8 a8"
+}
+
+IWad
+{
 	Name = "DOOM II (XBLA/Xbox 360)"
 	Autoname = "Doom2"
 	Game = "Doom"
@@ -389,6 +416,8 @@ Names
 	"harm1.wad"
 	"hacx.wad"
 	"hacx2.wad"
+	"doomxbox.wad"
+	"doom2xbox.wad"
 	"doom.disk"
 	"doom2.disk"
 	"doom_x360.disk"
