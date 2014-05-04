@@ -1378,6 +1378,7 @@
 		8A42211D150A0478001D28A0 /* IOHIDLib_.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDLib_.h; sourceTree = "<group>"; };
 		8A422138150A0578001D28A0 /* iokit_joystick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iokit_joystick.cpp; sourceTree = "<group>"; };
 		8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = gzdoom.xcconfig; path = misc/gzdoom.xcconfig; sourceTree = "<group>"; };
+		8A4F17EB191623B80058F24E /* mystdint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mystdint.h; sourceTree = "<group>"; };
 		8A61705C17E59AD10068A2B9 /* gl_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_api.cpp; sourceTree = "<group>"; };
 		8A61705D17E59AD10068A2B9 /* gl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_api.h; sourceTree = "<group>"; };
 		8A61705E17E59AD10068A2B9 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
@@ -6046,6 +6047,7 @@
 				8AF27E13139126C00095D9A0 /* hq4x.cpp */,
 				8A7C30F818F1692E0001B5A2 /* hqx.h */,
 				8A7C30FF18F1698C0001B5A2 /* init.cpp */,
+				8A4F17EB191623B80058F24E /* mystdint.h */,
 			);
 			path = hqnx;
 			sourceTree = "<group>";
