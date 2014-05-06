@@ -138,48 +138,42 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C\7zBuf.c" />
-    <ClCompile Include="C\7zCrc.c" />
-    <ClCompile Include="C\7zStream.c" />
-    <ClCompile Include="C\Alloc.c" />
-    <ClCompile Include="C\Bcj2.c" />
-    <ClCompile Include="C\Bra86.c" />
-    <ClCompile Include="C\LzFind.c" />
-    <ClCompile Include="C\LzFindMt.c" />
-    <ClCompile Include="C\LzmaDec.c" />
-    <ClCompile Include="C\LzmaEnc.c" />
-    <ClCompile Include="C\LzmaLib.c" />
-    <ClCompile Include="C\Threads.c" />
-    <ClCompile Include="C\Archive\7z\7zDecode.c" />
-    <ClCompile Include="C\Archive\7z\7zExtract.c" />
-    <ClCompile Include="C\Archive\7z\7zHeader.c" />
-    <ClCompile Include="C\Archive\7z\7zIn.c" />
-    <ClCompile Include="C\Archive\7z\7zItem.c" />
+    <None Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C\7z.h" />
     <ClInclude Include="C\7zBuf.h" />
     <ClInclude Include="C\7zCrc.h" />
     <ClInclude Include="C\7zVersion.h" />
-    <ClInclude Include="C\Alloc.h" />
     <ClInclude Include="C\Bcj2.h" />
     <ClInclude Include="C\Bra.h" />
     <ClInclude Include="C\CpuArch.h" />
     <ClInclude Include="C\LzFind.h" />
     <ClInclude Include="C\LzFindMt.h" />
     <ClInclude Include="C\LzHash.h" />
+    <ClInclude Include="C\Lzma2Dec.h" />
     <ClInclude Include="C\LzmaDec.h" />
     <ClInclude Include="C\LzmaEnc.h" />
-    <ClInclude Include="C\LzmaLib.h" />
     <ClInclude Include="C\Threads.h" />
     <ClInclude Include="C\Types.h" />
-    <ClInclude Include="C\Archive\7z\7zDecode.h" />
-    <ClInclude Include="C\Archive\7z\7zExtract.h" />
-    <ClInclude Include="C\Archive\7z\7zHeader.h" />
-    <ClInclude Include="C\Archive\7z\7zIn.h" />
-    <ClInclude Include="C\Archive\7z\7zItem.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CMakeLists.txt" />
+    <ClCompile Include="C\7zBuf.c" />
+    <ClCompile Include="C\7zCrc.c" />
+    <ClCompile Include="C\7zCrcOpt.c" />
+    <ClCompile Include="C\7zDec.c" />
+    <ClCompile Include="C\7zIn.c" />
+    <ClCompile Include="C\7zStream.c" />
+    <ClCompile Include="C\Bcj2.c" />
+    <ClCompile Include="C\Bra.c" />
+    <ClCompile Include="C\Bra86.c" />
+    <ClCompile Include="C\CpuArch.c" />
+    <ClCompile Include="C\LzFind.c" />
+    <ClCompile Include="C\LzFindMt.c" />
+    <ClCompile Include="C\Lzma2Dec.c" />
+    <ClCompile Include="C\LzmaDec.c" />
+    <ClCompile Include="C\LzmaEnc.c" />
+    <ClCompile Include="C\Threads.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

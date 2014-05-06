@@ -653,6 +653,8 @@ FResourceFile *CheckWad(const char *filename, FileReader *file, bool quiet)
 		{
 			FResourceFile *rf = new FWadFile(filename, file);
 			if (rf->Open(quiet)) return rf;
+
+			rf->Reader = NULL; // to avoid destruction of reader
 			delete rf;
 		}
 	}
@@ -791,7 +793,8 @@ FResourceFile* CheckDisk( const char* filename, FileReader* file, bool quiet )
 			{
 				return result;
 			}
-			
+
+			result->Reader = NULL; // to avoid destruction of reader
 			delete result;
 		}
 	}
