@@ -54,7 +54,7 @@
 #define BOBTOFINESHIFT			(FINEANGLEBITS - 6)
 
 // Effective size is 10240.
-extern	fixed_t 		finesine[5*FINEANGLES/4];
+extern	const fixed_t 	finesine[5*FINEANGLES/4];
 
 // Re-use data, is just PI/2 phase shift.
 // [RH] Instead of using a pointer, use some inline code
@@ -69,7 +69,7 @@ struct cosine_inline
 extern cosine_inline finecosine;
 
 // Effective size is 4096.
-extern fixed_t			finetangent[FINEANGLES/2];
+extern const fixed_t	finetangent[FINEANGLES/2];
 
 // Binary Angle Measument, BAM.
 #define ANG45			(0x20000000)
@@ -104,7 +104,7 @@ inline angle_t abs (angle_t ang)
 // Effective size is 2049;
 // The +1 size is to handle the case when x==y
 //	without additional checking.
-extern angle_t			tantoangle[SLOPERANGE+1];
+extern const angle_t	tantoangle[SLOPERANGE+1];
 
 inline double bam2rad(angle_t ang)
 {

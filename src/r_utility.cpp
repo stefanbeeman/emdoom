@@ -260,26 +260,6 @@ angle_t R_PointToAngle2 (fixed_t x1, fixed_t y1, fixed_t x, fixed_t y)
 
 //==========================================================================
 //
-// R_InitPointToAngle
-//
-//==========================================================================
-
-void R_InitPointToAngle (void)
-{
-	double f;
-	int i;
-//
-// slope (tangent) to angle lookup
-//
-	for (i = 0; i <= SLOPERANGE; i++)
-	{
-		f = atan2 ((double)i, (double)SLOPERANGE) / (6.28318530718 /* 2*pi */);
-		tantoangle[i] = (angle_t)(0xffffffff*f);
-	}
-}
-
-//==========================================================================
-//
 // R_PointToDist2
 //
 // Returns the distance from (0,0) to some other point. In a
@@ -308,42 +288,6 @@ fixed_t R_PointToDist2 (fixed_t dx, fixed_t dy)
 	}
 
 	return FixedDiv (dx, finecosine[tantoangle[FixedDiv (dy, dx) >> DBITS] >> ANGLETOFINESHIFT]);
-}
-
-//==========================================================================
-//
-// R_InitTables
-//
-//==========================================================================
-
-void R_InitTables (void)
-{
-	int i;
-	const double pimul = PI*2/FINEANGLES;
-
-	// viewangle tangent table
-	finetangent[0] = (fixed_t)(FRACUNIT*tan ((0.5-FINEANGLES/4)*pimul)+0.5);
-	for (i = 1; i < FINEANGLES/2; i++)
-	{
-		finetangent[i] = (fixed_t)(FRACUNIT*tan ((i-FINEANGLES/4)*pimul)+0.5);
-	}
-	
-	// finesine table
-	for (i = 0; i < FINEANGLES/4; i++)
-	{
-		finesine[i] = (fixed_t)(FRACUNIT * sin (i*pimul));
-	}
-	for (i = 0; i < FINEANGLES/4; i++)
-	{
-		finesine[i+FINEANGLES/4] = finesine[FINEANGLES/4-1-i];
-	}
-	for (i = 0; i < FINEANGLES/2; i++)
-	{
-		finesine[i+FINEANGLES/2] = -finesine[i];
-	}
-	finesine[FINEANGLES/4] = FRACUNIT;
-	finesine[FINEANGLES*3/4] = -FRACUNIT;
-	memcpy (&finesine[FINEANGLES], &finesine[0], sizeof(angle_t)*FINEANGLES/4);
 }
 
 //==========================================================================
@@ -541,8 +485,6 @@ void R_Init ()
 	//R_InitColormaps ();
 	//StartScreen->Progress();
 
-	R_InitPointToAngle ();
-	R_InitTables ();
 	R_InitTranslationTables ();
 	R_SetViewSize (screenblocks);
 	Renderer->Init();
