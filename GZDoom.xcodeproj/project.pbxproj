@@ -119,8 +119,9 @@
 		8A422126150A0478001D28A0 /* IOHIDDevice_.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A422119150A0478001D28A0 /* IOHIDDevice_.c */; };
 		8A422128150A0478001D28A0 /* IOHIDElement_.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A42211B150A0478001D28A0 /* IOHIDElement_.c */; };
 		8A422139150A0578001D28A0 /* iokit_joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A422138150A0578001D28A0 /* iokit_joystick.cpp */; };
-		8A61707A17E5C5C60068A2B9 /* gl_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A61705C17E59AD10068A2B9 /* gl_api.cpp */; };
-		8A61707B17E5C6AA0068A2B9 /* gl_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A61705C17E59AD10068A2B9 /* gl_api.cpp */; };
+		8A651FF6191E69EB009DB9CD /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A651FF5191E69E3009DB9CD /* glew.c */; };
+		8A651FFB191E6A39009DB9CD /* libglew_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A651FED191E6988009DB9CD /* libglew_gzdoom.a */; };
+		8A651FFC191E6A3E009DB9CD /* libglew_gzdoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A651FED191E6988009DB9CD /* libglew_gzdoom.a */; };
 		8A74F2A2139235E0001F54B0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F2A1139235E0001F54B0 /* OpenGL.framework */; };
 		8A74F2BA1392360F001F54B0 /* libfmodex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F2B91392360F001F54B0 /* libfmodex.dylib */; };
 		8A74F38F13925284001F54B0 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A74F38E13925284001F54B0 /* IOKit.framework */; };
@@ -1102,6 +1103,20 @@
 			remoteGlobalIDString = 8A422107150A0420001D28A0;
 			remoteInfo = hid_utilities;
 		};
+		8A651FF7191E6A1C009DB9CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A651FDB191E6988009DB9CD;
+			remoteInfo = glew;
+		};
+		8A651FF9191E6A2C009DB9CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A651FDB191E6988009DB9CD;
+			remoteInfo = glew;
+		};
 		8A6637BB17AD51BE00868E21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1379,10 +1394,11 @@
 		8A422138150A0578001D28A0 /* iokit_joystick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iokit_joystick.cpp; sourceTree = "<group>"; };
 		8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = gzdoom.xcconfig; path = misc/gzdoom.xcconfig; sourceTree = "<group>"; };
 		8A4F17EB191623B80058F24E /* mystdint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mystdint.h; sourceTree = "<group>"; };
-		8A61705C17E59AD10068A2B9 /* gl_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_api.cpp; sourceTree = "<group>"; };
-		8A61705D17E59AD10068A2B9 /* gl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_api.h; sourceTree = "<group>"; };
-		8A61705E17E59AD10068A2B9 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
-		8A61705F17E59AD10068A2B9 /* wglext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wglext.h; sourceTree = "<group>"; };
+		8A651FED191E6988009DB9CD /* libglew_gzdoom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglew_gzdoom.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A651FF1191E69E3009DB9CD /* glew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glew.h; sourceTree = "<group>"; };
+		8A651FF2191E69E3009DB9CD /* glxew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glxew.h; sourceTree = "<group>"; };
+		8A651FF3191E69E3009DB9CD /* wglew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wglew.h; sourceTree = "<group>"; };
+		8A651FF5191E69E3009DB9CD /* glew.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = glew.c; sourceTree = "<group>"; };
 		8A74F2A1139235E0001F54B0 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		8A74F2B91392360F001F54B0 /* libfmodex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodex.dylib; path = thirdparty/FMOD/lib/libfmodex.dylib; sourceTree = "<group>"; };
 		8A74F38E13925284001F54B0 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -2989,8 +3005,6 @@
 		8AF27DFD139126C00095D9A0 /* gl_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_data.cpp; sourceTree = "<group>"; };
 		8AF27DFE139126C00095D9A0 /* gl_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_data.h; sourceTree = "<group>"; };
 		8AF27DFF139126C00095D9A0 /* gl_portaldata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_portaldata.cpp; sourceTree = "<group>"; };
-		8AF27E00139126C00095D9A0 /* gl_sections.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_sections.cpp; sourceTree = "<group>"; };
-		8AF27E01139126C00095D9A0 /* gl_sections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_sections.h; sourceTree = "<group>"; };
 		8AF27E02139126C00095D9A0 /* gl_setup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_setup.cpp; sourceTree = "<group>"; };
 		8AF27E03139126C00095D9A0 /* gl_vertexbuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_vertexbuffer.cpp; sourceTree = "<group>"; };
 		8AF27E04139126C00095D9A0 /* gl_vertexbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_vertexbuffer.h; sourceTree = "<group>"; };
@@ -3484,6 +3498,7 @@
 				8A9F547D14BB0F2900F3369B /* libgme_gzdoom.a in Frameworks */,
 				8A9F547E14BB0F2900F3369B /* libdumb_gzdoom.a in Frameworks */,
 				8A9F547F14BB0F2900F3369B /* libgdtoa_gzdoom.a in Frameworks */,
+				8A651FFC191E6A3E009DB9CD /* libglew_gzdoom.a in Frameworks */,
 				8A42210D150A0458001D28A0 /* libhid_utilities_gzdoom.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3537,6 +3552,7 @@
 				8AC81C431391321300F49DC3 /* libgme_gzdoom.a in Frameworks */,
 				8AC81C441391321300F49DC3 /* libdumb_gzdoom.a in Frameworks */,
 				8AC81C451391321300F49DC3 /* libgdtoa_gzdoom.a in Frameworks */,
+				8A651FFB191E6A39009DB9CD /* libglew_gzdoom.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3549,6 +3565,7 @@
 				8AF27CFC139126C00095D9A0 /* GZDoom */,
 				8AF27B281390F5EE0095D9A0 /* dumb */,
 				8AF27C84139121F90095D9A0 /* gdtoa */,
+				8A651FEE191E69C0009DB9CD /* glew */,
 				8AF27A571390F51A0095D9A0 /* gme */,
 				8A422110150A0478001D28A0 /* hid_utilities */,
 				8AF2790A1390F0880095D9A0 /* jpeg-6b */,
@@ -3574,6 +3591,7 @@
 				8A9F548414BB0F2900F3369B /* GZDoom.app */,
 				8D1107320486CEB800E47090 /* GZDoom.app */,
 				8AF3DF4E1778323600474776 /* updaterevision */,
+				8A651FED191E6988009DB9CD /* libglew_gzdoom.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3666,15 +3684,40 @@
 			path = thirdparty/hid_utilities;
 			sourceTree = "<group>";
 		};
-		8A61705B17E59AD10068A2B9 /* api */ = {
+		8A651FEE191E69C0009DB9CD /* glew */ = {
 			isa = PBXGroup;
 			children = (
-				8A61705C17E59AD10068A2B9 /* gl_api.cpp */,
-				8A61705D17E59AD10068A2B9 /* gl_api.h */,
-				8A61705E17E59AD10068A2B9 /* glext.h */,
-				8A61705F17E59AD10068A2B9 /* wglext.h */,
+				8A651FEF191E69E3009DB9CD /* include */,
+				8A651FF4191E69E3009DB9CD /* src */,
 			);
-			path = api;
+			name = glew;
+			path = thirdparty/glew;
+			sourceTree = "<group>";
+		};
+		8A651FEF191E69E3009DB9CD /* include */ = {
+			isa = PBXGroup;
+			children = (
+				8A651FF0191E69E3009DB9CD /* GL */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		8A651FF0191E69E3009DB9CD /* GL */ = {
+			isa = PBXGroup;
+			children = (
+				8A651FF1191E69E3009DB9CD /* glew.h */,
+				8A651FF2191E69E3009DB9CD /* glxew.h */,
+				8A651FF3191E69E3009DB9CD /* wglew.h */,
+			);
+			path = GL;
+			sourceTree = "<group>";
+		};
+		8A651FF4191E69E3009DB9CD /* src */ = {
+			isa = PBXGroup;
+			children = (
+				8A651FF5191E69E3009DB9CD /* glew.c */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		8A80DBE217ABB57000917483 /* wadsrc */ = {
@@ -5990,7 +6033,6 @@
 		8AF27DFB139126C00095D9A0 /* gl */ = {
 			isa = PBXGroup;
 			children = (
-				8A61705B17E59AD10068A2B9 /* api */,
 				8AF27DFC139126C00095D9A0 /* data */,
 				8AF27E05139126C00095D9A0 /* dynlights */,
 				8AF27E0F139126C00095D9A0 /* hqnx */,
@@ -6014,8 +6056,6 @@
 				8AF27DFD139126C00095D9A0 /* gl_data.cpp */,
 				8AF27DFE139126C00095D9A0 /* gl_data.h */,
 				8AF27DFF139126C00095D9A0 /* gl_portaldata.cpp */,
-				8AF27E00139126C00095D9A0 /* gl_sections.cpp */,
-				8AF27E01139126C00095D9A0 /* gl_sections.h */,
 				8AF27E02139126C00095D9A0 /* gl_setup.cpp */,
 				8AF27E03139126C00095D9A0 /* gl_vertexbuffer.cpp */,
 				8AF27E04139126C00095D9A0 /* gl_vertexbuffer.h */,
@@ -6487,6 +6527,21 @@
 			productReference = 8A422108150A0420001D28A0 /* libhid_utilities_gzdoom.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		8A651FDB191E6988009DB9CD /* glew */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A651FEA191E6988009DB9CD /* Build configuration list for PBXNativeTarget "glew" */;
+			buildPhases = (
+				8A651FDC191E6988009DB9CD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = glew;
+			productName = gdtoa;
+			productReference = 8A651FED191E6988009DB9CD /* libglew_gzdoom.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		8A9F52E814BB0F2900F3369B /* GZDoom_Cocoa */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A9F548114BB0F2900F3369B /* Build configuration list for PBXNativeTarget "GZDoom_Cocoa" */;
@@ -6511,6 +6566,7 @@
 				8A9F52F914BB0F2900F3369B /* PBXTargetDependency */,
 				8A9F52FB14BB0F2900F3369B /* PBXTargetDependency */,
 				8A9F52FD14BB0F2900F3369B /* PBXTargetDependency */,
+				8A651FF8191E6A1C009DB9CD /* PBXTargetDependency */,
 				8A42210F150A0461001D28A0 /* PBXTargetDependency */,
 			);
 			name = GZDoom_Cocoa;
@@ -6683,6 +6739,7 @@
 				8AC81C3A139131FE00F49DC3 /* PBXTargetDependency */,
 				8AC81C38139131FE00F49DC3 /* PBXTargetDependency */,
 				8AC81C36139131FE00F49DC3 /* PBXTargetDependency */,
+				8A651FFA191E6A2C009DB9CD /* PBXTargetDependency */,
 			);
 			name = GZDoom_SDL;
 			productInstallPath = "$(HOME)/Applications";
@@ -6733,6 +6790,7 @@
 				8AF27A531390F4F40095D9A0 /* gme */,
 				8AF27B241390F5DC0095D9A0 /* dumb */,
 				8AF27C1B1390F7E20095D9A0 /* gdtoa */,
+				8A651FDB191E6988009DB9CD /* glew */,
 				8A422107150A0420001D28A0 /* hid_utilities */,
 				8A6637B417AD50DF00868E21 /* make_deploy */,
 			);
@@ -6907,6 +6965,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A651FDC191E6988009DB9CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A651FF6191E69EB009DB9CD /* glew.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A9F530314BB0F2900F3369B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6965,7 +7031,6 @@
 				8A9F535F14BB0F2900F3369B /* shared_sbar.cpp in Sources */,
 				8A9F536114BB0F2900F3369B /* a_strifestuff.cpp in Sources */,
 				8A9F536214BB0F2900F3369B /* strife_sbar.cpp in Sources */,
-				8A61707A17E5C5C60068A2B9 /* gl_api.cpp in Sources */,
 				8A9F536514BB0F2900F3369B /* gl_data.cpp in Sources */,
 				8A9F536614BB0F2900F3369B /* gl_portaldata.cpp in Sources */,
 				8A9F536814BB0F2900F3369B /* gl_setup.cpp in Sources */,
@@ -7587,7 +7652,6 @@
 				8AF280A7139126C00095D9A0 /* shared_sbar.cpp in Sources */,
 				8AF280B8139126C00095D9A0 /* a_strifestuff.cpp in Sources */,
 				8AF280BC139126C00095D9A0 /* strife_sbar.cpp in Sources */,
-				8A61707B17E5C6AA0068A2B9 /* gl_api.cpp in Sources */,
 				8AF280BF139126C00095D9A0 /* gl_data.cpp in Sources */,
 				8AF280C0139126C00095D9A0 /* gl_portaldata.cpp in Sources */,
 				8AF280C2139126C00095D9A0 /* gl_setup.cpp in Sources */,
@@ -7955,6 +8019,16 @@
 			target = 8A422107150A0420001D28A0 /* hid_utilities */;
 			targetProxy = 8A42210E150A0461001D28A0 /* PBXContainerItemProxy */;
 		};
+		8A651FF8191E6A1C009DB9CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A651FDB191E6988009DB9CD /* glew */;
+			targetProxy = 8A651FF7191E6A1C009DB9CD /* PBXContainerItemProxy */;
+		};
+		8A651FFA191E6A2C009DB9CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A651FDB191E6988009DB9CD /* glew */;
+			targetProxy = 8A651FF9191E6A2C009DB9CD /* PBXContainerItemProxy */;
+		};
 		8A6637BC17AD51BE00868E21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8A9F52E814BB0F2900F3369B /* GZDoom_Cocoa */;
@@ -8113,6 +8187,38 @@
 				COPY_PHASE_STRIP = YES;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = hid_utilities_gzdoom;
+			};
+			name = Release;
+		};
+		8A651FEB191E6988009DB9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					GLEW_NO_GLU,
+					GLEW_STATIC,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					thirdparty/glew/include,
+				);
+				PRODUCT_NAME = glew_gzdoom;
+			};
+			name = Debug;
+		};
+		8A651FEC191E6988009DB9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					GLEW_NO_GLU,
+					GLEW_STATIC,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					thirdparty/glew/include,
+				);
+				PRODUCT_NAME = glew_gzdoom;
 			};
 			name = Release;
 		};
@@ -8440,6 +8546,15 @@
 			buildConfigurations = (
 				8A422109150A0421001D28A0 /* Debug */,
 				8A42210A150A0421001D28A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A651FEA191E6988009DB9CD /* Build configuration list for PBXNativeTarget "glew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A651FEB191E6988009DB9CD /* Debug */,
+				8A651FEC191E6988009DB9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

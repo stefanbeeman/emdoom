@@ -53,7 +53,6 @@
 #include <SDL.h>
 #define wglGetProcAddress(x) (*SDL_GL_GetProcAddress)(x)
 #endif
-static void APIENTRY glBlendEquationDummy (GLenum mode);
 
 
 static TArray<FString>  m_Extensions;
@@ -189,7 +188,7 @@ void gl_LoadExtensions()
 		gl.flags|=RFL_MAP_BUFFER_RANGE;
 	}
 
-	if (gl.flags & RFL_GL_30)
+	if (gl.flags & RFL_GL_30 || CheckExtension("GL_ARB_framebuffer_object"))
 	{
 		gl.flags|=RFL_FRAMEBUFFER;
 	}
@@ -227,26 +226,6 @@ void gl_PrintStartupLog()
 	glGetIntegerv(GL_MAX_COMBINED_UNIFORM_BLOCKS, &v);
 	Printf ("Max. combined uniform blocks: %d\n", v);
 
-}
-
-//==========================================================================
-//
-// 
-//
-//==========================================================================
-
-static void APIENTRY glBlendEquationDummy (GLenum mode)
-{
-	// If this is not supported all non-existent modes are
-	// made to draw nothing.
-	if (mode == GL_FUNC_ADD)
-	{
-		glColorMask(true, true, true, true);
-	}
-	else
-	{
-		glColorMask(false, false, false, false);
-	}
 }
 
 //==========================================================================
