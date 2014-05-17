@@ -169,6 +169,8 @@ FTexture::FTexture (const char *name, int lumpnum)
 
 FTexture::~FTexture ()
 {
+	FTexture *link = Wads.GetLinkedTexture(SourceLump);
+	if (link == this) Wads.SetLinkedTexture(SourceLump, NULL);
 	KillNative();
 }
 
