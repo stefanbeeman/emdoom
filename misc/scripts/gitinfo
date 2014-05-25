@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "Generating gitinfo.h..."
+
+cd "${SRCROOT}/src"
+"${CONFIGURATION_BUILD_DIR}/updaterevision" "${SRCROOT}/src/gitinfo.h"

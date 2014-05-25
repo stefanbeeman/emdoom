@@ -6875,7 +6875,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\necho \"Generating xlat_parser.c and xlat_parser.h...\"\n\ncp -f \"${SRCROOT}/tools/lemon/lempar.c\" \"${CONFIGURATION_BUILD_DIR}/lempar.c\"\n\t\ncd \"${SRCROOT}/src/xlat\"\n\"${CONFIGURATION_BUILD_DIR}/lemon\" xlat_parser.y\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/xlat_parser\"\n";
 		};
 		49E91DF81393C02300CCEBBC /* Run Post-Build Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6889,7 +6889,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nGZDOOM_EXEC_DIR=${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\n\nif [ ! -e \"${GZDOOM_EXEC_DIR}\" ]; then\n    mkdir -p \"${GZDOOM_EXEC_DIR}\"\nfi\n\nrsync -av \"${SRCROOT}/thirdparty/FMOD/lib/libfmodex.dylib\" \"${GZDOOM_EXEC_DIR}\"\n\nGZDOOM_EXEC_FILE=${GZDOOM_EXEC_DIR}/${EXECUTABLE_NAME}\n\nif [ -e \"${GZDOOM_EXEC_FILE}\" ]; then\n    FMOD_LIB_NAME=libfmodex.dylib\n    FMOD_NEED_FIX=`otool -L \"${GZDOOM_EXEC_FILE}\" | fgrep ./${FMOD_LIB_NAME}`\n\n    if [ \"${FMOD_NEED_FIX}\" ]; then\n        install_name_tool -change ./${FMOD_LIB_NAME} @executable_path/${FMOD_LIB_NAME} \"${GZDOOM_EXEC_FILE}\"\n    fi\nfi\n\nZIPDIR_EXE=${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/zipdir\n\nif [ -e \"${ZIPDIR_EXE}\" ]; then\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/gzdoom.pk3\" \"${SRCROOT}/wadsrc/static\"\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/brightmaps.pk3\" \"${SRCROOT}/wadsrc_bm/static\"\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/lights.pk3\" \"${SRCROOT}/wadsrc_lights/static\"\nfi\n\nfor ITEM in \"${SRCROOT}/misc/wads/\"*; do\n    rsync -av \"${ITEM}\" \"${GZDOOM_EXEC_DIR}/`basename \"${ITEM}\"`\"\ndone\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/post_build\"\n";
 		};
 		49E92B3113991F2900CCEBBC /* Generate sc_man_scanner.h */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6905,7 +6905,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\necho \"Generating sc_man_scanner.h...\"\n\ncd \"${SRCROOT}/src\"\n\"${CONFIGURATION_BUILD_DIR}/re2c\" --no-generation-date -s -o sc_man_scanner.h sc_man_scanner.re\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/sc_man_scanner\"\n";
 		};
 		8A6637B717AD50DF00868E21 /* Make Deploy Image */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6919,7 +6919,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nSOURCE_BUNDLE_NAME=GZDoom.app\nBUNDLE_EXECUTABLE_PATH=Contents/MacOS/GZDoom\n\nDEPLOY_IMAGE_DIR=.deploy_image\nDEPLOY_EXTRAS_DIR=.deploy_image/Extras\n\ncd \"${SRCROOT}\"\n\necho \"Preparing directories...\"\nrm -r ${DEPLOY_IMAGE_DIR} 2>/dev/null\nmkdir -p ${DEPLOY_EXTRAS_DIR}\nln -s /Applications ${DEPLOY_IMAGE_DIR}/Applications\n\necho \"Copying game...\"\ncp -R ${BUILD_DIR}/${CONFIGURATION}_Cocoa/${SOURCE_BUNDLE_NAME} ${DEPLOY_IMAGE_DIR}\n\necho \"Stripping executables...\"\nstrip ${DEPLOY_IMAGE_DIR}/${SOURCE_BUNDLE_NAME}/${BUNDLE_EXECUTABLE_PATH}\n\necho \"Copying supplementary files...\"\nmkdir ${DEPLOY_EXTRAS_DIR}/Documentation\ncp -R docs/ ${DEPLOY_EXTRAS_DIR}/Documentation\nmkdir ${DEPLOY_EXTRAS_DIR}/\"Post-Processing Shaders\"\ncp -R misc/shaders/ ${DEPLOY_EXTRAS_DIR}/\"Post-Processing Shaders\"\ncp misc/resources/ReadMe.rtf ${DEPLOY_IMAGE_DIR}\ncp misc/resources/homepage.webloc ${DEPLOY_EXTRAS_DIR}/\"Visit GZDoom for OS X Homepage.webloc\"\n\nUSER_FOLDER_CONTENTS_PATH=\"${DEPLOY_EXTRAS_DIR}/Open GZDoom User Folder.app/Contents\"\nSOURCE_USER_FOLDER_PATH=misc/open_user_folder\n\nmkdir -p \"${USER_FOLDER_CONTENTS_PATH}/MacOS\"\nmkdir -p \"${USER_FOLDER_CONTENTS_PATH}/Resources\"\ncp ${SOURCE_USER_FOLDER_PATH}/Info.plist \"${USER_FOLDER_CONTENTS_PATH}\"\ncp ${SOURCE_USER_FOLDER_PATH}/open_user_folder \"${USER_FOLDER_CONTENTS_PATH}/MacOS\"\nln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns \"${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns\"\n\necho \"Building image...\"\nhdiutil create -srcfolder ${DEPLOY_IMAGE_DIR} -volname GZDoom -format UDBZ ${DEPLOY_IMAGE_DIR}/GZDoom.dmg\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\"\n";
 		};
 		8A9F548014BB0F2900F3369B /* Run Post-Build Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6933,7 +6933,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nGZDOOM_EXEC_DIR=${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\n\nif [ ! -e \"${GZDOOM_EXEC_DIR}\" ]; then\n    mkdir -p \"${GZDOOM_EXEC_DIR}\"\nfi\n\nrsync -av \"${SRCROOT}/thirdparty/FMOD/lib/libfmodex.dylib\" \"${GZDOOM_EXEC_DIR}\"\n\nGZDOOM_EXEC_FILE=${GZDOOM_EXEC_DIR}/${EXECUTABLE_NAME}\n\nif [ -e \"${GZDOOM_EXEC_FILE}\" ]; then\n    FMOD_LIB_NAME=libfmodex.dylib\n    FMOD_NEED_FIX=`otool -L \"${GZDOOM_EXEC_FILE}\" | fgrep ./${FMOD_LIB_NAME}`\n\n    if [ \"${FMOD_NEED_FIX}\" ]; then\n        install_name_tool -change ./${FMOD_LIB_NAME} @executable_path/${FMOD_LIB_NAME} \"${GZDOOM_EXEC_FILE}\"\n    fi\nfi\n\nZIPDIR_EXE=${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/zipdir\n\nif [ -e \"${ZIPDIR_EXE}\" ]; then\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/gzdoom.pk3\" \"${SRCROOT}/wadsrc/static\"\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/brightmaps.pk3\" \"${SRCROOT}/wadsrc_bm/static\"\n    \"${ZIPDIR_EXE}\" -ud \"${GZDOOM_EXEC_DIR}/lights.pk3\" \"${SRCROOT}/wadsrc_lights/static\"\nfi\n\nfor ITEM in \"${SRCROOT}/misc/wads/\"*; do\n    rsync -av \"${ITEM}\" \"${GZDOOM_EXEC_DIR}/`basename \"${ITEM}\"`\"\ndone\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/post_build\"\n";
 		};
 		8AF3DF641778359500474776 /* Generate gitinfo.h */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6947,7 +6947,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\necho \"Generating gitinfo.h...\"\n\ncd \"${SRCROOT}/src\"\n\"${CONFIGURATION_BUILD_DIR}/updaterevision\" \"${SRCROOT}/src/gitinfo.h\"\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/gitinfo\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
