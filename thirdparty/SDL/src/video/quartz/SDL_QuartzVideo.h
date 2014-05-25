@@ -80,6 +80,15 @@
 @end
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_9
+/* 
+    This is a workaround for removed definitions in OS X 10.9 SDK
+    See SDK 10.8, CoreGraphics.framework/Headers/CGDirectDisplay.h
+*/
+typedef uint32_t CGTableCount;
+typedef struct _CGDirectPaletteRef *CGDirectPaletteRef;
+#endif /* MAC_OS_X_VERSION_10_9 */
+
 /* use this to get the CGLContext; it handles Cocoa interface changes. */
 CGLContextObj QZ_GetCGLContextObj(NSOpenGLContext *nsctx);
 
