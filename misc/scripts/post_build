@@ -27,6 +27,6 @@ if [ -e "${ZIPDIR_EXE}" ]; then
 	"${ZIPDIR_EXE}" -ud "${GZDOOM_EXEC_DIR}/lights.pk3" "${SRCROOT}/wadsrc_lights/static"
 fi
 
-for ITEM in "${SRCROOT}/misc/wads/"*; do
+for ITEM in "${SRCROOT}/misc/execs/"*; do
 	rsync -av "${ITEM}" "${GZDOOM_EXEC_DIR}/`basename "${ITEM}"`"
 done
