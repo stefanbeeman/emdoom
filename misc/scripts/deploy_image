@@ -8,30 +8,31 @@ if [ -e "${TEMP_STORAGE_DIR}" ]; then
 fi
 
 DEPLOY_IMAGE_DIR=${DEPLOY_IMAGE_DIR}.deploy_image
-DEPLOY_EXTRAS_DIR=${DEPLOY_IMAGE_DIR}/Extras
+DEPLOY_CONTENT_DIR=${DEPLOY_IMAGE_DIR}/.content
+DEPLOY_CONTENT_EXTRAS_DIR=${DEPLOY_CONTENT_DIR}/Extras
 
 cd "${SRCROOT}"
 
 echo "Preparing directories..."
 rm -r "${DEPLOY_IMAGE_DIR}" 2>/dev/null
-mkdir -p "${DEPLOY_EXTRAS_DIR}"
-ln -s /Applications "${DEPLOY_IMAGE_DIR}/Applications"
+mkdir -p "${DEPLOY_CONTENT_EXTRAS_DIR}"
+ln -s /Applications "${DEPLOY_CONTENT_DIR}/Applications"
 
 echo "Copying game..."
-cp -R "${BUILD_DIR}/${CONFIGURATION}_Cocoa/${SOURCE_BUNDLE_NAME}" "${DEPLOY_IMAGE_DIR}"
+cp -R "${BUILD_DIR}/${CONFIGURATION}_Cocoa/${SOURCE_BUNDLE_NAME}" "${DEPLOY_CONTENT_DIR}"
 
 echo "Stripping executables..."
-strip "${DEPLOY_IMAGE_DIR}/${SOURCE_BUNDLE_NAME}/Contents/MacOS/GZDoom"
+strip "${DEPLOY_CONTENT_DIR}/${SOURCE_BUNDLE_NAME}/Contents/MacOS/GZDoom"
 
 echo "Copying supplementary files..."
-mkdir "${DEPLOY_EXTRAS_DIR}/Documentation"
-cp -R docs/ "${DEPLOY_EXTRAS_DIR}/Documentation"
-mkdir "${DEPLOY_EXTRAS_DIR}/Post-Processing Shaders"
-cp -R misc/shaders/ "${DEPLOY_EXTRAS_DIR}/Post-Processing Shaders"
-cp misc/resources/ReadMe.rtf "${DEPLOY_IMAGE_DIR}"
-cp misc/resources/homepage.webloc "${DEPLOY_EXTRAS_DIR}/Visit GZDoom for OS X Homepage.webloc"
+mkdir "${DEPLOY_CONTENT_EXTRAS_DIR}/Documentation"
+cp -R docs/ "${DEPLOY_CONTENT_EXTRAS_DIR}/Documentation"
+mkdir "${DEPLOY_CONTENT_EXTRAS_DIR}/Post-Processing Shaders"
+cp -R misc/shaders/ "${DEPLOY_CONTENT_EXTRAS_DIR}/Post-Processing Shaders"
+cp misc/resources/ReadMe.rtf "${DEPLOY_CONTENT_DIR}"
+cp misc/resources/homepage.webloc "${DEPLOY_CONTENT_EXTRAS_DIR}/Visit GZDoom for OS X Homepage.webloc"
 
-USER_FOLDER_CONTENTS_PATH=${DEPLOY_EXTRAS_DIR}"/Open GZDoom User Folder.app/Contents"
+USER_FOLDER_CONTENTS_PATH=${DEPLOY_CONTENT_EXTRAS_DIR}"/Open GZDoom User Folder.app/Contents"
 SOURCE_USER_FOLDER_PATH=misc/open_user_folder
 
 mkdir -p "${USER_FOLDER_CONTENTS_PATH}/MacOS"
@@ -41,4 +42,4 @@ cp "${SOURCE_USER_FOLDER_PATH}/open_user_folder" "${USER_FOLDER_CONTENTS_PATH}/M
 ln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns "${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns"
 
 echo "Building image..."
-hdiutil create -srcfolder "${DEPLOY_IMAGE_DIR}" -volname GZDoom -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/GZDoom.dmg"
+hdiutil create -srcfolder "${DEPLOY_CONTENT_DIR}" -volname GZDoom -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/GZDoom.dmg"
