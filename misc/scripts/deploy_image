@@ -21,8 +21,10 @@ ln -s /Applications "${DEPLOY_CONTENT_DIR}/Applications"
 echo "Copying game..."
 cp -R "${BUILD_DIR}/${CONFIGURATION}_Cocoa/${SOURCE_BUNDLE_NAME}" "${DEPLOY_CONTENT_DIR}"
 
+BUNDLE_EXEC_DIR=${DEPLOY_CONTENT_DIR}/${SOURCE_BUNDLE_NAME}/Contents/MacOS/
+
 echo "Stripping executables..."
-strip "${DEPLOY_CONTENT_DIR}/${SOURCE_BUNDLE_NAME}/Contents/MacOS/GZDoom"
+strip "${BUNDLE_EXEC_DIR}GZDoom"
 
 echo "Copying supplementary files..."
 mkdir "${DEPLOY_CONTENT_EXTRAS_DIR}/Documentation"
@@ -41,5 +43,18 @@ cp "${SOURCE_USER_FOLDER_PATH}/Info.plist" "${USER_FOLDER_CONTENTS_PATH}"
 cp "${SOURCE_USER_FOLDER_PATH}/open_user_folder" "${USER_FOLDER_CONTENTS_PATH}/MacOS"
 ln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns "${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns"
 
-echo "Building image..."
-hdiutil create -srcfolder "${DEPLOY_CONTENT_DIR}" -volname GZDoom -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/GZDoom.dmg"
+function build_image {
+	echo "Building $1 image..."
+	hdiutil create -srcfolder "${DEPLOY_CONTENT_DIR}" -volname "$1" -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/$1.dmg"
+}
+
+build_image "GZDoom"
+
+FREEDOOM_WADS_DIR=misc/freedoom
+
+if [ -e "${FREEDOOM_WADS_DIR}" ]; then
+	echo "Copying FreeDoom files..."
+	cp "${FREEDOOM_WADS_DIR}"/*.wad "${BUNDLE_EXEC_DIR}"
+
+	build_image "FreeGZDoom"
+fi
