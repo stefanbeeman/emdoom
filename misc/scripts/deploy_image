@@ -41,4 +41,4 @@ cp "${SOURCE_USER_FOLDER_PATH}/open_user_folder" "${USER_FOLDER_CONTENTS_PATH}/M
 ln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns "${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns"
 
 echo "Building image..."
-hdiutil create -srcfolder "${DEPLOY_IMAGE_DIR}" -volname GZDoom -format UDBZ "${DEPLOY_IMAGE_DIR}/GZDoom.dmg"
+hdiutil create -srcfolder "${DEPLOY_IMAGE_DIR}" -volname GZDoom -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/GZDoom.dmg"
