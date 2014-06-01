@@ -139,7 +139,10 @@ FTexture * FTexture::CreateTexture (int lumpnum, int usetype)
 FTexture * FTexture::CreateTexture (const char *name, int lumpnum, int usetype)
 {
 	FTexture *tex = CreateTexture(lumpnum, usetype);
-	if (tex != NULL && name != NULL) uppercopy(tex->Name, name);
+	if (tex != NULL && name != NULL) {
+		tex->Name = name;
+		tex->Name.ToUpper();
+	}
 	return tex;
 }
 
@@ -154,16 +157,16 @@ FTexture::FTexture (const char *name, int lumpnum)
 	id.SetInvalid();
 	if (name != NULL)
 	{
-		uppercopy(Name, name);
+		Name = name;
+		Name.ToUpper();
 	}
 	else if (lumpnum < 0)
 	{
-		*Name = 0;
+		Name = FString();
 	}
 	else
 	{
 		Wads.GetLumpName (Name, lumpnum);
-		Name[8] = 0;
 	}
 }
 
@@ -576,7 +579,6 @@ FDummyTexture::FDummyTexture ()
 	HeightBits = 6;
 	WidthBits = 6;
 	WidthMask = 63;
-	Name[0] = 0;
 	UseType = TEX_Null;
 }
 

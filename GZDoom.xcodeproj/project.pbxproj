@@ -92,6 +92,8 @@
 		8A0304DC190D4238000BC6D7 /* Lzma2Dec.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A0304C8190D4215000BC6D7 /* Lzma2Dec.c */; };
 		8A0304DD190D4238000BC6D7 /* LzmaDec.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A0304CA190D4215000BC6D7 /* LzmaDec.c */; };
 		8A0304DE190D4238000BC6D7 /* LzmaEnc.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A0304CC190D4215000BC6D7 /* LzmaEnc.c */; };
+		8A054ACE193B2A7400D7849E /* c_consolebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A054ACC193B2A5300D7849E /* c_consolebuffer.cpp */; };
+		8A054ACF193B2A7700D7849E /* c_consolebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A054ACC193B2A5300D7849E /* c_consolebuffer.cpp */; };
 		8A12DD10177D63F1006EE538 /* file_chasm_bin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */; };
 		8A12DD11177D6434006EE538 /* celtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD0E177D638D006EE538 /* celtexture.cpp */; };
 		8A12DD12177D6456006EE538 /* celtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A12DD0E177D638D006EE538 /* celtexture.cpp */; };
@@ -1376,6 +1378,8 @@
 		8A0304CE190D4215000BC6D7 /* Threads.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Threads.c; sourceTree = "<group>"; };
 		8A0304CF190D4215000BC6D7 /* Threads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Threads.h; sourceTree = "<group>"; };
 		8A0304D0190D4215000BC6D7 /* Types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		8A054ACC193B2A5300D7849E /* c_consolebuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = c_consolebuffer.cpp; sourceTree = "<group>"; };
+		8A054ACD193B2A5300D7849E /* c_consolebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = c_consolebuffer.h; sourceTree = "<group>"; };
 		8A12DD08177D6379006EE538 /* file_chasm_bin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = file_chasm_bin.cpp; sourceTree = "<group>"; };
 		8A12DD0E177D638D006EE538 /* celtexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = celtexture.cpp; sourceTree = "<group>"; };
 		8A1D337D154D6E0700BA2C16 /* libfluidsynth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfluidsynth.a; path = thirdparty/fluidsynth/lib/libfluidsynth.a; sourceTree = "<group>"; };
@@ -5557,6 +5561,8 @@
 				8AF27D19139126C00095D9A0 /* c_cmds.cpp */,
 				8AF27D1A139126C00095D9A0 /* c_console.cpp */,
 				8AF27D1B139126C00095D9A0 /* c_console.h */,
+				8A054ACC193B2A5300D7849E /* c_consolebuffer.cpp */,
+				8A054ACD193B2A5300D7849E /* c_consolebuffer.h */,
 				8AF27D1C139126C00095D9A0 /* c_cvars.cpp */,
 				8AF27D1D139126C00095D9A0 /* c_cvars.h */,
 				8AF27D1E139126C00095D9A0 /* c_dispatch.cpp */,
@@ -7244,6 +7250,7 @@
 				8A9F530C14BB0F2900F3369B /* c_bind.cpp in Sources */,
 				8A9F530D14BB0F2900F3369B /* c_cmds.cpp in Sources */,
 				8A9F530E14BB0F2900F3369B /* c_console.cpp in Sources */,
+				8A054ACE193B2A7400D7849E /* c_consolebuffer.cpp in Sources */,
 				8A9F530F14BB0F2900F3369B /* c_cvars.cpp in Sources */,
 				8A9F531014BB0F2900F3369B /* c_dispatch.cpp in Sources */,
 				8A9F531114BB0F2900F3369B /* c_expr.cpp in Sources */,
@@ -7865,6 +7872,7 @@
 				8AF2801A139126C00095D9A0 /* c_bind.cpp in Sources */,
 				8AF2801B139126C00095D9A0 /* c_cmds.cpp in Sources */,
 				8AF2801C139126C00095D9A0 /* c_console.cpp in Sources */,
+				8A054ACF193B2A7700D7849E /* c_consolebuffer.cpp in Sources */,
 				8AF2801D139126C00095D9A0 /* c_cvars.cpp in Sources */,
 				8AF2801E139126C00095D9A0 /* c_dispatch.cpp in Sources */,
 				8AF2801F139126C00095D9A0 /* c_expr.cpp in Sources */,
