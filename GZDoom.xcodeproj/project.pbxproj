@@ -31,16 +31,28 @@
 			name = sc_man_scanner.re;
 			productName = sc_man_scanner.re;
 		};
-		8A6637B417AD50DF00868E21 /* make_deploy */ = {
+		8A054AC3193B248100D7849E /* make_deploy_sdl */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 8A6637B817AD50DF00868E21 /* Build configuration list for PBXAggregateTarget "make_deploy" */;
+			buildConfigurationList = 8A054AC7193B248100D7849E /* Build configuration list for PBXAggregateTarget "make_deploy_sdl" */;
+			buildPhases = (
+				8A054AC6193B248100D7849E /* Make Deploy Image */,
+			);
+			dependencies = (
+				8A054ACB193B24AA00D7849E /* PBXTargetDependency */,
+			);
+			name = make_deploy_sdl;
+			productName = sc_man_scanner.re;
+		};
+		8A6637B417AD50DF00868E21 /* make_deploy_cocoa */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 8A6637B817AD50DF00868E21 /* Build configuration list for PBXAggregateTarget "make_deploy_cocoa" */;
 			buildPhases = (
 				8A6637B717AD50DF00868E21 /* Make Deploy Image */,
 			);
 			dependencies = (
 				8A6637BC17AD51BE00868E21 /* PBXTargetDependency */,
 			);
-			name = make_deploy;
+			name = make_deploy_cocoa;
 			productName = sc_man_scanner.re;
 		};
 		8AF3DF611778359500474776 /* gitinfo.h */ = {
@@ -1088,6 +1100,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8AF27A091390F2B50095D9A0;
 			remoteInfo = re2c;
+		};
+		8A054ACA193B24AA00D7849E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = GZDoom_SDL;
 		};
 		8A2AD157142F281400149995 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3579,19 +3598,19 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8AF27C1C1390F7E20095D9A0 /* libgdtoa_gzdoom.a */,
-				8AF27B251390F5DC0095D9A0 /* libdumb_gzdoom.a */,
-				8AF27A541390F4F40095D9A0 /* libgme_gzdoom.a */,
-				8AF2795A1390F1200095D9A0 /* liblzma_gzdoom.a */,
-				8AF278CA1390F0370095D9A0 /* libjpeg_gzdoom.a */,
-				8A422108150A0420001D28A0 /* libhid_utilities_gzdoom.a */,
-				8AF27A311390F41F0095D9A0 /* zipdir */,
-				8AF27A0A1390F2B50095D9A0 /* re2c */,
-				8AF279BC1390F2540095D9A0 /* lemon */,
 				8A9F548414BB0F2900F3369B /* GZDoom.app */,
 				8D1107320486CEB800E47090 /* GZDoom.app */,
-				8AF3DF4E1778323600474776 /* updaterevision */,
+				8AF27B251390F5DC0095D9A0 /* libdumb_gzdoom.a */,
+				8AF27C1C1390F7E20095D9A0 /* libgdtoa_gzdoom.a */,
 				8A651FED191E6988009DB9CD /* libglew_gzdoom.a */,
+				8AF27A541390F4F40095D9A0 /* libgme_gzdoom.a */,
+				8A422108150A0420001D28A0 /* libhid_utilities_gzdoom.a */,
+				8AF278CA1390F0370095D9A0 /* libjpeg_gzdoom.a */,
+				8AF2795A1390F1200095D9A0 /* liblzma_gzdoom.a */,
+				8AF279BC1390F2540095D9A0 /* lemon */,
+				8AF27A0A1390F2B50095D9A0 /* re2c */,
+				8AF3DF4E1778323600474776 /* updaterevision */,
+				8AF27A311390F41F0095D9A0 /* zipdir */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6792,7 +6811,8 @@
 				8AF27C1B1390F7E20095D9A0 /* gdtoa */,
 				8A651FDB191E6988009DB9CD /* glew */,
 				8A422107150A0420001D28A0 /* hid_utilities */,
-				8A6637B417AD50DF00868E21 /* make_deploy */,
+				8A6637B417AD50DF00868E21 /* make_deploy_cocoa */,
+				8A054AC3193B248100D7849E /* make_deploy_sdl */,
 			);
 		};
 /* End PBXProject section */
@@ -6906,6 +6926,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/misc/scripts/sc_man_scanner\"\n";
+		};
+		8A054AC6193B248100D7849E /* Make Deploy Image */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Make Deploy Image";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\"\n";
 		};
 		8A6637B717AD50DF00868E21 /* Make Deploy Image */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8009,6 +8043,11 @@
 			target = 8AF27A091390F2B50095D9A0 /* re2c */;
 			targetProxy = 49E92B3513991F3900CCEBBC /* PBXContainerItemProxy */;
 		};
+		8A054ACB193B24AA00D7849E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* GZDoom_SDL */;
+			targetProxy = 8A054ACA193B24AA00D7849E /* PBXContainerItemProxy */;
+		};
 		8A2AD158142F281400149995 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Static Library";
@@ -8170,6 +8209,20 @@
 			};
 			name = Release;
 		};
+		8A054AC8193B248100D7849E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = make_deploy_sdl;
+			};
+			name = Debug;
+		};
+		8A054AC9193B248100D7849E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = make_deploy_sdl;
+			};
+			name = Release;
+		};
 		8A422109150A0421001D28A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8225,14 +8278,14 @@
 		8A6637B917AD50DF00868E21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = make_deploy;
+				PRODUCT_NAME = make_deploy_cocoa;
 			};
 			name = Debug;
 		};
 		8A6637BA17AD50DF00868E21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = make_deploy;
+				PRODUCT_NAME = make_deploy_cocoa;
 			};
 			name = Release;
 		};
@@ -8541,6 +8594,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8A054AC7193B248100D7849E /* Build configuration list for PBXAggregateTarget "make_deploy_sdl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A054AC8193B248100D7849E /* Debug */,
+				8A054AC9193B248100D7849E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8A42212B150A0479001D28A0 /* Build configuration list for PBXNativeTarget "hid_utilities" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -8559,7 +8621,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8A6637B817AD50DF00868E21 /* Build configuration list for PBXAggregateTarget "make_deploy" */ = {
+		8A6637B817AD50DF00868E21 /* Build configuration list for PBXAggregateTarget "make_deploy_cocoa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8A6637B917AD50DF00868E21 /* Debug */,
