@@ -729,6 +729,7 @@ file( GLOB HEADER_FILES
 	gl/system/*.h
 	gl/textures/*.h
 	gl/utility/*.h
+    gl/xbr/*.h
 	*.h
 )
 
@@ -1054,6 +1055,7 @@ add_executable( zdoom WIN32
 	gl/hqnx/hq2x.cpp
 	gl/hqnx/hq3x.cpp
 	gl/hqnx/hq4x.cpp
+    gl/xbr/xbrz.cpp
 	gl/textures/gl_hwtexture.cpp
 	gl/textures/gl_texture.cpp
 	gl/textures/gl_material.cpp
@@ -1103,6 +1105,7 @@ add_executable( zdoom WIN32
 	oplsynth/OPL3.cpp
 	resourcefiles/ancientzip.cpp
 	resourcefiles/file_7z.cpp
+    resourcefiles/file_chasm_bin.cpp
 	resourcefiles/file_grp.cpp
 	resourcefiles/file_lump.cpp
 	resourcefiles/file_rff.cpp
@@ -1138,6 +1141,7 @@ add_executable( zdoom WIN32
 	textures/bitmap.cpp
 	textures/buildtexture.cpp
 	textures/canvastexture.cpp
+    textures/celtexture.cpp
 	textures/ddstexture.cpp
 	textures/flattexture.cpp
 	textures/imgztexture.cpp
@@ -1292,7 +1296,7 @@ source_group("Menu" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/menu/.+")
 source_group("OpenGL Renderer" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/.+")
 source_group("OpenGL Renderer\\Data" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/data/.+")
 source_group("OpenGL Renderer\\Dynamic Lights" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/dynlights/.+")
-source_group("OpenGL Renderer\\HQ Resize" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/hqnx/.+")
+source_group("OpenGL Renderer\\HQ Resize" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/(hqnx|xbr)/.+")
 source_group("OpenGL Renderer\\Models" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/models/.+")
 source_group("OpenGL Renderer\\Renderer" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/renderer/.+")
 source_group("OpenGL Renderer\\Scene" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/gl/scene/.+")
