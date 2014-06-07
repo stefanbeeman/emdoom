@@ -746,6 +746,9 @@ void ProcessMouseWheelEvent( NSEvent* theEvent )
 
 
 @interface ApplicationDelegate : NSResponder
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+	<NSFileManagerDelegate>
+#endif
 {
 @private
     FullscreenWindow* m_window;

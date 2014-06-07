@@ -672,11 +672,11 @@ void scalePixel(const Kernel_3x3& ker,
 {
 #ifndef NDEBUG
     if (breakIntoDebugger)
-#if defined _MSC_VER || defined __clang__
+#ifdef _MSC_VER
         __debugbreak(); //__asm int 3;
-#else // !_MSC_VER && !__clang__
+#else // !_MSC_VER
         __builtin_trap();
-#endif // _MSC_VER || __clang__
+#endif // _MSC_VER
 #endif
 
     const unsigned char blend = rotateBlendInfo<rotDeg>(blendInfo);
