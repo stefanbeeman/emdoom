@@ -8301,14 +8301,6 @@
 					"$(inherited)",
 					COCOA_NO_SDL,
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DOOM_HEADER_SEARCH_PATHS)",
-					"$(PORT_HEADER_SEARCH_PATHS)",
-					"$(LIBS_HEADER_SEARCH_PATHS)",
-					"$(TRDP_HEADER_SEARCH_PATHS)",
-					thirdparty/hid_utilities,
-				);
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = GZDoom;
@@ -8324,14 +8316,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					COCOA_NO_SDL,
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DOOM_HEADER_SEARCH_PATHS)",
-					"$(PORT_HEADER_SEARCH_PATHS)",
-					"$(LIBS_HEADER_SEARCH_PATHS)",
-					"$(TRDP_HEADER_SEARCH_PATHS)",
-					thirdparty/hid_utilities,
 				);
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
