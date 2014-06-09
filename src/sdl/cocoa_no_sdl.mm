@@ -564,7 +564,7 @@ void ProcessMouseButtonEvent( NSEvent* theEvent )
 				break;
 		}
 		
-		event.data1 = std::min( KEY_MOUSE1 + [theEvent buttonNumber], KEY_MOUSE8 );
+		event.data1 = std::min(KEY_MOUSE1 + [theEvent buttonNumber], NSInteger(KEY_MOUSE8));
 		
 		D_PostEvent( &event );
 	}
