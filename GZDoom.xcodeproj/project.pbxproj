@@ -113,9 +113,7 @@
 		8A1D33E3154D6F8900BA2C16 /* libglib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33E1154D6F8900BA2C16 /* libglib-2.0.a */; };
 		8A1D33E7154D6FD200BA2C16 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33E6154D6FD200BA2C16 /* libiconv.dylib */; };
 		8A1D33E8154D6FF900BA2C16 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33E6154D6FD200BA2C16 /* libiconv.dylib */; };
-		8A1D33EE154D702000BA2C16 /* libgthread-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33EC154D702000BA2C16 /* libgthread-2.0.a */; };
 		8A1D33EF154D702000BA2C16 /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33ED154D702000BA2C16 /* libintl.a */; };
-		8A1D33F0154D702000BA2C16 /* libgthread-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33EC154D702000BA2C16 /* libgthread-2.0.a */; };
 		8A1D33F1154D702000BA2C16 /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1D33ED154D702000BA2C16 /* libintl.a */; };
 		8A2C747E16C66D9500ABD7C8 /* blip_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C747416C66C9C00ABD7C8 /* blip_buf.c */; };
 		8A2C747F16C66DA600ABD7C8 /* loadokt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C747616C66CB600ABD7C8 /* loadokt.c */; };
@@ -1387,7 +1385,6 @@
 		8A1D33B2154D6EEF00BA2C16 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		8A1D33E1154D6F8900BA2C16 /* libglib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglib-2.0.a"; path = "thirdparty/fluidsynth/lib/libglib-2.0.a"; sourceTree = "<group>"; };
 		8A1D33E6154D6FD200BA2C16 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		8A1D33EC154D702000BA2C16 /* libgthread-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgthread-2.0.a"; path = "thirdparty/fluidsynth/lib/libgthread-2.0.a"; sourceTree = "<group>"; };
 		8A1D33ED154D702000BA2C16 /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libintl.a; path = thirdparty/fluidsynth/lib/libintl.a; sourceTree = "<group>"; };
 		8A2C747316C66C8F00ABD7C8 /* blip_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blip_buf.h; sourceTree = "<group>"; };
 		8A2C747416C66C9C00ABD7C8 /* blip_buf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blip_buf.c; sourceTree = "<group>"; };
@@ -3514,7 +3511,6 @@
 				8A9F547914BB0F2900F3369B /* libfmodex.dylib in Frameworks */,
 				8A1D337E154D6E1300BA2C16 /* libfluidsynth.a in Frameworks */,
 				8A1D33E2154D6F8900BA2C16 /* libglib-2.0.a in Frameworks */,
-				8A1D33EE154D702000BA2C16 /* libgthread-2.0.a in Frameworks */,
 				8A1D33EF154D702000BA2C16 /* libintl.a in Frameworks */,
 				8A9F547B14BB0F2900F3369B /* libjpeg_gzdoom.a in Frameworks */,
 				8A9F547C14BB0F2900F3369B /* liblzma_gzdoom.a in Frameworks */,
@@ -3568,7 +3564,6 @@
 				8AF62EBE142F25D0003F3556 /* libSDL_gzdoom.a in Frameworks */,
 				8A1D337F154D6E2300BA2C16 /* libfluidsynth.a in Frameworks */,
 				8A1D33E3154D6F8900BA2C16 /* libglib-2.0.a in Frameworks */,
-				8A1D33F0154D702000BA2C16 /* libgthread-2.0.a in Frameworks */,
 				8A1D33F1154D702000BA2C16 /* libintl.a in Frameworks */,
 				8AC81C411391321300F49DC3 /* libjpeg_gzdoom.a in Frameworks */,
 				8AC81C421391321300F49DC3 /* liblzma_gzdoom.a in Frameworks */,
@@ -3661,7 +3656,6 @@
 				8A74F2B91392360F001F54B0 /* libfmodex.dylib */,
 				8A1D337D154D6E0700BA2C16 /* libfluidsynth.a */,
 				8A1D33E1154D6F8900BA2C16 /* libglib-2.0.a */,
-				8A1D33EC154D702000BA2C16 /* libgthread-2.0.a */,
 				8A1D33ED154D702000BA2C16 /* libintl.a */,
 			);
 			name = Dependencies;
