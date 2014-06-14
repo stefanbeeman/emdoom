@@ -1,6 +1,10 @@
 #!/bin/sh
 
-SOURCE_BUNDLE_NAME=GZDoom.app
+if [ "$1" != "Cocoa" ] && [ "$1" != "SDL" ]; then
+	echo "Usage: deploy_image [Cocoa|SDL]"
+	exit 1
+fi
+
 TEMP_STORAGE_DIR=/Volumes/ramdisk/
 
 if [ -e "${TEMP_STORAGE_DIR}" ]; then
@@ -18,13 +22,15 @@ rm -r "${DEPLOY_IMAGE_DIR}" 2>/dev/null
 mkdir -p "${DEPLOY_CONTENT_EXTRAS_DIR}"
 ln -s /Applications "${DEPLOY_CONTENT_DIR}/Applications"
 
-echo "Copying game..."
-cp -R "${BUILD_DIR}/${CONFIGURATION}_Cocoa/${SOURCE_BUNDLE_NAME}" "${DEPLOY_CONTENT_DIR}"
+TARGET_BUNDLE_NAME=GZDoom.app
 
-BUNDLE_EXEC_DIR=${DEPLOY_CONTENT_DIR}/${SOURCE_BUNDLE_NAME}/Contents/MacOS/
+echo "Copying game..."
+cp -R "${BUILD_DIR}/${CONFIGURATION}/GZDoom_$1.app" "${DEPLOY_CONTENT_DIR}/${TARGET_BUNDLE_NAME}"
+
+BUNDLE_EXEC_DIR=${DEPLOY_CONTENT_DIR}/${TARGET_BUNDLE_NAME}/Contents/MacOS/
 
 echo "Stripping executables..."
-strip "${BUNDLE_EXEC_DIR}GZDoom"
+strip "${BUNDLE_EXEC_DIR}GZDoom_$1"
 
 echo "Copying supplementary files..."
 mkdir "${DEPLOY_CONTENT_EXTRAS_DIR}/Documentation"

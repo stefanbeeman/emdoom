@@ -2470,7 +2470,7 @@
 		8A938D1013B6039F002627DE /* actorptrselect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = actorptrselect.h; sourceTree = "<group>"; };
 		8A942A3D1553CC25005083CD /* v_blend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = v_blend.cpp; sourceTree = "<group>"; };
 		8A9906AF172D349500B2B92B /* i_system_cocoa.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = i_system_cocoa.mm; sourceTree = "<group>"; };
-		8A9F548414BB0F2900F3369B /* GZDoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GZDoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A9F548414BB0F2900F3369B /* GZDoom_Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GZDoom_Cocoa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AA9A1921660E80A007F75A4 /* opl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opl.cpp; sourceTree = "<group>"; };
 		8AA9A1931660E80A007F75A4 /* opl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opl.h; sourceTree = "<group>"; };
 		8AA9A1941660E80A007F75A4 /* opl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opl.h; sourceTree = "<group>"; };
@@ -3491,7 +3491,7 @@
 		8AF3DF4E1778323600474776 /* updaterevision */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = updaterevision; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF62EA6142F259E003F3556 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = thirdparty/SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* GZDoom-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GZDoom-Info.plist"; path = "misc/resources/GZDoom-Info.plist"; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* GZDoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GZDoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* GZDoom_SDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GZDoom_SDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3597,8 +3597,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8A9F548414BB0F2900F3369B /* GZDoom.app */,
-				8D1107320486CEB800E47090 /* GZDoom.app */,
+				8A9F548414BB0F2900F3369B /* GZDoom_Cocoa.app */,
+				8D1107320486CEB800E47090 /* GZDoom_SDL.app */,
 				8AF27B251390F5DC0095D9A0 /* libdumb_gzdoom.a */,
 				8AF27C1C1390F7E20095D9A0 /* libgdtoa_gzdoom.a */,
 				8A651FED191E6988009DB9CD /* libglew_gzdoom.a */,
@@ -6591,7 +6591,7 @@
 			name = GZDoom_Cocoa;
 			productInstallPath = "$(HOME)/Applications";
 			productName = GZDoom;
-			productReference = 8A9F548414BB0F2900F3369B /* GZDoom.app */;
+			productReference = 8A9F548414BB0F2900F3369B /* GZDoom_Cocoa.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8AF278C91390F0370095D9A0 /* jpeg */ = {
@@ -6763,7 +6763,7 @@
 			name = GZDoom_SDL;
 			productInstallPath = "$(HOME)/Applications";
 			productName = GZDoom;
-			productReference = 8D1107320486CEB800E47090 /* GZDoom.app */;
+			productReference = 8D1107320486CEB800E47090 /* GZDoom_SDL.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -6939,7 +6939,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\"\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\" SDL\n";
 		};
 		8A6637B717AD50DF00868E21 /* Make Deploy Image */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6953,7 +6953,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\"\n";
+			shellScript = "\"${SRCROOT}/misc/scripts/deploy_image\" Cocoa\n";
 		};
 		8A9F548014BB0F2900F3369B /* Run Post-Build Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8295,7 +8295,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_Cocoa";
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_Cocoa";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -8303,7 +8302,7 @@
 				);
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = GZDoom;
+				PRODUCT_NAME = GZDoom_Cocoa;
 			};
 			name = Debug;
 		};
@@ -8311,7 +8310,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_Cocoa";
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_Cocoa";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -8319,7 +8317,7 @@
 				);
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = GZDoom;
+				PRODUCT_NAME = GZDoom_Cocoa;
 			};
 			name = Release;
 		};
@@ -8497,10 +8495,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_SDL";
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_SDL";
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
-				PRODUCT_NAME = GZDoom;
+				PRODUCT_NAME = GZDoom_SDL;
 			};
 			name = Debug;
 		};
@@ -8508,10 +8505,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A44602813BF0306007FA8E1 /* gzdoom.xcconfig */;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_SDL";
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)_SDL";
 				INFOPLIST_FILE = "misc/resources/GZDoom-Info.plist";
-				PRODUCT_NAME = GZDoom;
+				PRODUCT_NAME = GZDoom_SDL;
 			};
 			name = Release;
 		};
