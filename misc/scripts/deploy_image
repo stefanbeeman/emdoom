@@ -47,11 +47,15 @@ mkdir -p "${USER_FOLDER_CONTENTS_PATH}/MacOS"
 mkdir -p "${USER_FOLDER_CONTENTS_PATH}/Resources"
 cp "${SOURCE_USER_FOLDER_PATH}/Info.plist" "${USER_FOLDER_CONTENTS_PATH}"
 cp "${SOURCE_USER_FOLDER_PATH}/open_user_folder" "${USER_FOLDER_CONTENTS_PATH}/MacOS"
-ln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns "${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns"
+ln -s /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/DocumentsFolderIcon.icns \
+	"${USER_FOLDER_CONTENTS_PATH}/Resources/Folder.icns"
 
 function build_image {
+	DEPLOY_IMAGE_NAME=$1-`git describe`
+
 	echo "Building $1 image..."
-	hdiutil create -srcfolder "${DEPLOY_CONTENT_DIR}" -volname "$1" -format UDBZ -fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/$1.dmg"
+	hdiutil create -srcfolder "${DEPLOY_CONTENT_DIR}" -volname "${DEPLOY_IMAGE_NAME}" -format UDBZ \
+		-fs HFS+ -fsargs "-c c=64,a=16,e=16" "${DEPLOY_IMAGE_DIR}/${DEPLOY_IMAGE_NAME}.dmg"
 }
 
 build_image "GZDoom"
