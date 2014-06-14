@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "${SRCROOT}" ]; then
+	echo "Error: this script must be run by Xcode"
+	exit 1
+fi
+
 GZDOOM_EXEC_DIR=${CONFIGURATION_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}
 
 if [ ! -e "${GZDOOM_EXEC_DIR}" ]; then
