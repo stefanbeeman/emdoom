@@ -100,7 +100,7 @@ if( WIN32 )
 		# .. and this one for Graf Zahl
 		"D:/portable/FMOD SoundSystem 4.26/FMOD Programmers API WIN32/api"
 		# GZDoom for OS X
-		"../thirdparty/FMOD"
+		"../thirdparty/FMOD/include/4.26.36"
 		)
 	set( FMOD_INC_PATH_SUFFIXES PATH_SUFFIXES inc )
 	set( FMOD_LIB_PATH_SUFFIXES PATH_SUFFIXES lib )
