@@ -264,7 +264,11 @@ endif( WIN32 )
 # GLEW include directory
 include_directories( "${GLEW_INCLUDE_DIR}" )
 
-find_library( GLEW_LIBRARY glew32 PATH ${GLEW_LIBRARY_DIR} )
+if( NOT WIN32 OR APPLE )
+	find_library( GLEW_LIBRARY libGLEW.so )
+else( NOT WIN32 OR APPLE )
+	find_library( GLEW_LIBRARY glew32 PATH ${GLEW_LIBRARY_DIR} )
+endif( NOT WIN32 OR APPLE )
 
 if( NOT GLEW_LIBRARY )
 	message( SEND_ERROR "Could not find GLEW library files" )
