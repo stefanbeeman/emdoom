@@ -2466,6 +2466,66 @@
 		8A8D68B413C84344001D368F /* r_swrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = r_swrenderer.h; sourceTree = "<group>"; };
 		8A8D68B513C84344001D368F /* r_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = r_utility.cpp; sourceTree = "<group>"; };
 		8A8D68B613C84344001D368F /* r_utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = r_utility.h; sourceTree = "<group>"; };
+		8A906C7519556C1D0017F0E4 /* BurnWipe.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = BurnWipe.pso; sourceTree = "<group>"; };
+		8A906C7619556C1D0017F0E4 /* GammaCorrection.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = GammaCorrection.pso; sourceTree = "<group>"; };
+		8A906C7719556C1D0017F0E4 /* InGameColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormap.pso; sourceTree = "<group>"; };
+		8A906C7819556C1D0017F0E4 /* InGameColormapDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapDesat.pso; sourceTree = "<group>"; };
+		8A906C7919556C1D0017F0E4 /* InGameColormapInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInv.pso; sourceTree = "<group>"; };
+		8A906C7A19556C1D0017F0E4 /* InGameColormapInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInvDesat.pso; sourceTree = "<group>"; };
+		8A906C7B19556C1D0017F0E4 /* InGameColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPal.pso; sourceTree = "<group>"; };
+		8A906C7C19556C1D0017F0E4 /* InGameColormapPalDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalDesat.pso; sourceTree = "<group>"; };
+		8A906C7D19556C1D0017F0E4 /* InGameColormapPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInv.pso; sourceTree = "<group>"; };
+		8A906C7E19556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInvDesat.pso; sourceTree = "<group>"; };
+		8A906C7F19556C1D0017F0E4 /* NormalColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColor.pso; sourceTree = "<group>"; };
+		8A906C8019556C1D0017F0E4 /* NormalColorInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorInv.pso; sourceTree = "<group>"; };
+		8A906C8119556C1D0017F0E4 /* NormalColorPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPal.pso; sourceTree = "<group>"; };
+		8A906C8219556C1D0017F0E4 /* NormalColorPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPalInv.pso; sourceTree = "<group>"; };
+		8A906C8319556C1D0017F0E4 /* RedToAlpha.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlpha.pso; sourceTree = "<group>"; };
+		8A906C8419556C1D0017F0E4 /* RedToAlphaInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlphaInv.pso; sourceTree = "<group>"; };
+		8A906C8519556C1D0017F0E4 /* SpecialColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormap.pso; sourceTree = "<group>"; };
+		8A906C8619556C1D0017F0E4 /* SpecialColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormapPal.pso; sourceTree = "<group>"; };
+		8A906C8719556C1D0017F0E4 /* VertexColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = VertexColor.pso; sourceTree = "<group>"; };
+		8A906C8A19556C1D0017F0E4 /* BurnWipe.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = BurnWipe.pso; sourceTree = "<group>"; };
+		8A906C8B19556C1D0017F0E4 /* GammaCorrection.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = GammaCorrection.pso; sourceTree = "<group>"; };
+		8A906C8C19556C1D0017F0E4 /* InGameColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormap.pso; sourceTree = "<group>"; };
+		8A906C8D19556C1D0017F0E4 /* InGameColormapDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapDesat.pso; sourceTree = "<group>"; };
+		8A906C8E19556C1D0017F0E4 /* InGameColormapInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInv.pso; sourceTree = "<group>"; };
+		8A906C8F19556C1D0017F0E4 /* InGameColormapInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInvDesat.pso; sourceTree = "<group>"; };
+		8A906C9019556C1D0017F0E4 /* InGameColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPal.pso; sourceTree = "<group>"; };
+		8A906C9119556C1D0017F0E4 /* InGameColormapPalDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalDesat.pso; sourceTree = "<group>"; };
+		8A906C9219556C1D0017F0E4 /* InGameColormapPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInv.pso; sourceTree = "<group>"; };
+		8A906C9319556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInvDesat.pso; sourceTree = "<group>"; };
+		8A906C9419556C1D0017F0E4 /* NormalColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColor.pso; sourceTree = "<group>"; };
+		8A906C9519556C1D0017F0E4 /* NormalColorInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorInv.pso; sourceTree = "<group>"; };
+		8A906C9619556C1D0017F0E4 /* NormalColorPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPal.pso; sourceTree = "<group>"; };
+		8A906C9719556C1D0017F0E4 /* NormalColorPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPalInv.pso; sourceTree = "<group>"; };
+		8A906C9819556C1D0017F0E4 /* RedToAlpha.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlpha.pso; sourceTree = "<group>"; };
+		8A906C9919556C1D0017F0E4 /* RedToAlphaInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlphaInv.pso; sourceTree = "<group>"; };
+		8A906C9A19556C1D0017F0E4 /* SpecialColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormap.pso; sourceTree = "<group>"; };
+		8A906C9B19556C1D0017F0E4 /* SpecialColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormapPal.pso; sourceTree = "<group>"; };
+		8A906C9C19556C1D0017F0E4 /* VertexColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = VertexColor.pso; sourceTree = "<group>"; };
+		8A906C9F19556C1D0017F0E4 /* BurnWipe.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = BurnWipe.pso; sourceTree = "<group>"; };
+		8A906CA019556C1D0017F0E4 /* GammaCorrection.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = GammaCorrection.pso; sourceTree = "<group>"; };
+		8A906CA119556C1D0017F0E4 /* InGameColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormap.pso; sourceTree = "<group>"; };
+		8A906CA219556C1D0017F0E4 /* InGameColormapDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapDesat.pso; sourceTree = "<group>"; };
+		8A906CA319556C1D0017F0E4 /* InGameColormapInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInv.pso; sourceTree = "<group>"; };
+		8A906CA419556C1D0017F0E4 /* InGameColormapInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapInvDesat.pso; sourceTree = "<group>"; };
+		8A906CA519556C1D0017F0E4 /* InGameColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPal.pso; sourceTree = "<group>"; };
+		8A906CA619556C1D0017F0E4 /* InGameColormapPalDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalDesat.pso; sourceTree = "<group>"; };
+		8A906CA719556C1D0017F0E4 /* InGameColormapPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInv.pso; sourceTree = "<group>"; };
+		8A906CA819556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = InGameColormapPalInvDesat.pso; sourceTree = "<group>"; };
+		8A906CA919556C1D0017F0E4 /* NormalColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColor.pso; sourceTree = "<group>"; };
+		8A906CAA19556C1D0017F0E4 /* NormalColorInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorInv.pso; sourceTree = "<group>"; };
+		8A906CAB19556C1D0017F0E4 /* NormalColorPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPal.pso; sourceTree = "<group>"; };
+		8A906CAC19556C1D0017F0E4 /* NormalColorPalInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = NormalColorPalInv.pso; sourceTree = "<group>"; };
+		8A906CAD19556C1D0017F0E4 /* RedToAlpha.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlpha.pso; sourceTree = "<group>"; };
+		8A906CAE19556C1D0017F0E4 /* RedToAlphaInv.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = RedToAlphaInv.pso; sourceTree = "<group>"; };
+		8A906CAF19556C1D0017F0E4 /* SpecialColormap.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormap.pso; sourceTree = "<group>"; };
+		8A906CB019556C1D0017F0E4 /* SpecialColormapPal.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpecialColormapPal.pso; sourceTree = "<group>"; };
+		8A906CB119556C1D0017F0E4 /* VertexColor.pso */ = {isa = PBXFileReference; lastKnownFileType = file; path = VertexColor.pso; sourceTree = "<group>"; };
+		8A906CB719556C370017F0E4 /* main_foglayer.fp */ = {isa = PBXFileReference; lastKnownFileType = text; path = main_foglayer.fp; sourceTree = "<group>"; };
+		8A906CB819556CAB0017F0E4 /* doom2_xbox.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doom2_xbox.txt; sourceTree = "<group>"; };
+		8A906CBA19556CC30017F0E4 /* readyico.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readyico.png; sourceTree = "<group>"; };
 		8A938D0F13B6039F002627DE /* actorptrselect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = actorptrselect.cpp; sourceTree = "<group>"; };
 		8A938D1013B6039F002627DE /* actorptrselect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = actorptrselect.h; sourceTree = "<group>"; };
 		8A942A3D1553CC25005083CD /* v_blend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = v_blend.cpp; sourceTree = "<group>"; };
@@ -4112,6 +4172,7 @@
 				8A80DCDD17ABB57000917483 /* mageface.lmp */,
 				8A80DCDE17ABB57000917483 /* plasma1.png */,
 				8A80DCDF17ABB57000917483 /* plasma2.png */,
+				8A906CBA19556CC30017F0E4 /* readyico.png */,
 				8A80DCE017ABB57000917483 /* scorch1.png */,
 				8A80DCE117ABB57000917483 /* selectbo.png */,
 				8A80DCE217ABB57000917483 /* stcfn191.lmp */,
@@ -4173,6 +4234,7 @@
 				8A80DD1B17ABB57000917483 /* doom1.txt */,
 				8A80DD1C17ABB57000917483 /* doom2.txt */,
 				8A80DD1D17ABB57000917483 /* doom2_x360.txt */,
+				8A906CB819556CAB0017F0E4 /* doom2_xbox.txt */,
 				8A80DD1E17ABB57000917483 /* doom2bfg.txt */,
 				8A80DD1F17ABB57000917483 /* doomcommon.txt */,
 				8A80DD2017ABB57000917483 /* hacxharm.txt */,
@@ -4212,6 +4274,9 @@
 		8A80DD3717ABB57000917483 /* d3d */ = {
 			isa = PBXGroup;
 			children = (
+				8A906C7319556C1D0017F0E4 /* sm14 */,
+				8A906C8819556C1D0017F0E4 /* sm20 */,
+				8A906C9D19556C1D0017F0E4 /* sm30 */,
 				8A80DD3917ABB57000917483 /* shaders.ps */,
 			);
 			path = d3d;
@@ -4239,6 +4304,7 @@
 				8A80DD8A17ABB57000917483 /* main.fp */,
 				8A80DD8B17ABB57000917483 /* main.vp */,
 				8A80DD8C17ABB57000917483 /* main_colormap.fp */,
+				8A906CB719556C370017F0E4 /* main_foglayer.fp */,
 			);
 			path = glsl;
 			sourceTree = "<group>";
@@ -5013,6 +5079,84 @@
 			);
 			name = wadsrc_lights;
 			path = wadsrc_lights/static;
+			sourceTree = "<group>";
+		};
+		8A906C7319556C1D0017F0E4 /* sm14 */ = {
+			isa = PBXGroup;
+			children = (
+				8A906C7519556C1D0017F0E4 /* BurnWipe.pso */,
+				8A906C7619556C1D0017F0E4 /* GammaCorrection.pso */,
+				8A906C7719556C1D0017F0E4 /* InGameColormap.pso */,
+				8A906C7819556C1D0017F0E4 /* InGameColormapDesat.pso */,
+				8A906C7919556C1D0017F0E4 /* InGameColormapInv.pso */,
+				8A906C7A19556C1D0017F0E4 /* InGameColormapInvDesat.pso */,
+				8A906C7B19556C1D0017F0E4 /* InGameColormapPal.pso */,
+				8A906C7C19556C1D0017F0E4 /* InGameColormapPalDesat.pso */,
+				8A906C7D19556C1D0017F0E4 /* InGameColormapPalInv.pso */,
+				8A906C7E19556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */,
+				8A906C7F19556C1D0017F0E4 /* NormalColor.pso */,
+				8A906C8019556C1D0017F0E4 /* NormalColorInv.pso */,
+				8A906C8119556C1D0017F0E4 /* NormalColorPal.pso */,
+				8A906C8219556C1D0017F0E4 /* NormalColorPalInv.pso */,
+				8A906C8319556C1D0017F0E4 /* RedToAlpha.pso */,
+				8A906C8419556C1D0017F0E4 /* RedToAlphaInv.pso */,
+				8A906C8519556C1D0017F0E4 /* SpecialColormap.pso */,
+				8A906C8619556C1D0017F0E4 /* SpecialColormapPal.pso */,
+				8A906C8719556C1D0017F0E4 /* VertexColor.pso */,
+			);
+			path = sm14;
+			sourceTree = "<group>";
+		};
+		8A906C8819556C1D0017F0E4 /* sm20 */ = {
+			isa = PBXGroup;
+			children = (
+				8A906C8A19556C1D0017F0E4 /* BurnWipe.pso */,
+				8A906C8B19556C1D0017F0E4 /* GammaCorrection.pso */,
+				8A906C8C19556C1D0017F0E4 /* InGameColormap.pso */,
+				8A906C8D19556C1D0017F0E4 /* InGameColormapDesat.pso */,
+				8A906C8E19556C1D0017F0E4 /* InGameColormapInv.pso */,
+				8A906C8F19556C1D0017F0E4 /* InGameColormapInvDesat.pso */,
+				8A906C9019556C1D0017F0E4 /* InGameColormapPal.pso */,
+				8A906C9119556C1D0017F0E4 /* InGameColormapPalDesat.pso */,
+				8A906C9219556C1D0017F0E4 /* InGameColormapPalInv.pso */,
+				8A906C9319556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */,
+				8A906C9419556C1D0017F0E4 /* NormalColor.pso */,
+				8A906C9519556C1D0017F0E4 /* NormalColorInv.pso */,
+				8A906C9619556C1D0017F0E4 /* NormalColorPal.pso */,
+				8A906C9719556C1D0017F0E4 /* NormalColorPalInv.pso */,
+				8A906C9819556C1D0017F0E4 /* RedToAlpha.pso */,
+				8A906C9919556C1D0017F0E4 /* RedToAlphaInv.pso */,
+				8A906C9A19556C1D0017F0E4 /* SpecialColormap.pso */,
+				8A906C9B19556C1D0017F0E4 /* SpecialColormapPal.pso */,
+				8A906C9C19556C1D0017F0E4 /* VertexColor.pso */,
+			);
+			path = sm20;
+			sourceTree = "<group>";
+		};
+		8A906C9D19556C1D0017F0E4 /* sm30 */ = {
+			isa = PBXGroup;
+			children = (
+				8A906C9F19556C1D0017F0E4 /* BurnWipe.pso */,
+				8A906CA019556C1D0017F0E4 /* GammaCorrection.pso */,
+				8A906CA119556C1D0017F0E4 /* InGameColormap.pso */,
+				8A906CA219556C1D0017F0E4 /* InGameColormapDesat.pso */,
+				8A906CA319556C1D0017F0E4 /* InGameColormapInv.pso */,
+				8A906CA419556C1D0017F0E4 /* InGameColormapInvDesat.pso */,
+				8A906CA519556C1D0017F0E4 /* InGameColormapPal.pso */,
+				8A906CA619556C1D0017F0E4 /* InGameColormapPalDesat.pso */,
+				8A906CA719556C1D0017F0E4 /* InGameColormapPalInv.pso */,
+				8A906CA819556C1D0017F0E4 /* InGameColormapPalInvDesat.pso */,
+				8A906CA919556C1D0017F0E4 /* NormalColor.pso */,
+				8A906CAA19556C1D0017F0E4 /* NormalColorInv.pso */,
+				8A906CAB19556C1D0017F0E4 /* NormalColorPal.pso */,
+				8A906CAC19556C1D0017F0E4 /* NormalColorPalInv.pso */,
+				8A906CAD19556C1D0017F0E4 /* RedToAlpha.pso */,
+				8A906CAE19556C1D0017F0E4 /* RedToAlphaInv.pso */,
+				8A906CAF19556C1D0017F0E4 /* SpecialColormap.pso */,
+				8A906CB019556C1D0017F0E4 /* SpecialColormapPal.pso */,
+				8A906CB119556C1D0017F0E4 /* VertexColor.pso */,
+			);
+			path = sm30;
 			sourceTree = "<group>";
 		};
 		8AA9A1911660E80A007F75A4 /* dosbox */ = {
