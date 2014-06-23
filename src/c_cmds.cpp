@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <Python.h>
 
 #ifdef _WIN32
 #include <direct.h>
@@ -1153,4 +1154,72 @@ CCMD(secret)
 			else inlevel = false;
 		}
 	}
+}
+
+//============================================================================
+//
+// Run python or something
+//
+//============================================================================
+
+CCMD(python)
+{
+		PyObject *pName, *pModule, *pDict, *pFunc;
+		PyObject *pArgs, *pValue;
+		int i;
+
+		int argc = argv.argc();
+		if (argc < 3) {
+    	Printf("Usage: python filename funcname [args]\n");
+    } else {
+    	Py_Initialize();
+	    pName = PyString_FromString(argv[1]);
+	    /* Error checking of pName left out */
+
+	    pModule = PyImport_Import(pName);
+	    Py_DECREF(pName);
+
+	    if (pModule != NULL) {
+	        pFunc = PyObject_GetAttrString(pModule, argv[2]);
+	        /* pFunc is a new reference */
+
+	        if (pFunc && PyCallable_Check(pFunc)) {
+	            pArgs = PyTuple_New(argc - 3);
+	            for (i = 0; i < argc - 3; ++i) {
+	                pValue = PyInt_FromLong(atoi(argv[i + 3]));
+	                if (!pValue) {
+	                    Py_DECREF(pArgs);
+	                    Py_DECREF(pModule);
+	                    Printf("Cannot convert argument\n");
+	                }
+	                /* pValue reference stolen here: */
+	                PyTuple_SetItem(pArgs, i, pValue);
+	            }
+	            pValue = PyObject_CallObject(pFunc, pArgs);
+	            Py_DECREF(pArgs);
+	            if (pValue != NULL) {
+	                Printf("Result of call: %ld\n", PyInt_AsLong(pValue));
+	                Py_DECREF(pValue);
+	            }
+	            else {
+	                Py_DECREF(pFunc);
+	                Py_DECREF(pModule);
+	                PyErr_Print();
+	                Printf("Call failed\n");
+	            }
+	        }
+	        else {
+	            if (PyErr_Occurred())
+	                PyErr_Print();
+	            Printf("Cannot find function \"%s\"\n", argv[2]);
+	        }
+	        Py_XDECREF(pFunc);
+	        Py_DECREF(pModule);
+	    }
+	    else {
+	        PyErr_Print();
+	        Printf("Failed to load \"%s\"\n", argv[1]);
+	    }
+	    Py_Finalize();
+	  }
 }
