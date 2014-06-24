@@ -747,7 +747,7 @@ file( GLOB HEADER_FILES
 	gl/system/*.h
 	gl/textures/*.h
 	gl/utility/*.h
-    gl/xbr/*.h
+  gl/xbr/*.h
 	*.h
 )
 
@@ -1123,7 +1123,7 @@ add_executable( zdoom WIN32
 	oplsynth/OPL3.cpp
 	resourcefiles/ancientzip.cpp
 	resourcefiles/file_7z.cpp
-    resourcefiles/file_chasm_bin.cpp
+  resourcefiles/file_chasm_bin.cpp
 	resourcefiles/file_grp.cpp
 	resourcefiles/file_lump.cpp
 	resourcefiles/file_rff.cpp
@@ -1211,7 +1211,11 @@ add_executable( zdoom WIN32
 	r_data/r_interpolate.cpp
 	r_data/r_translate.cpp
 	zzautozend.cpp
+	python/py_interpreter.cpp
 )
+IF(APPLE)
+	TARGET_LINK_LIBRARIES( zdoom ${FRAMEWORKS} )
+ENDIF(APPLE)
 
 set_source_files_properties( xlat/parse_xlat.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c" )
 set_source_files_properties( sc_man.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h" )
