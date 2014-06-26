@@ -70,6 +70,7 @@
 #include "r_data/colormaps.h"
 
 #include "fragglescript/t_fs.h"
+#include "python/pythinker.h"
 
 #define MISSING_TEXTURE_WARN_LIMIT		20
 
@@ -3693,6 +3694,7 @@ void P_SetupLevel (const char *lumpname, int position)
 		{
 			ForceNodeBuild = true;
 		}
+		new PyThinker;
 		T_LoadScripts(map);
 
 		if (!map->HasBehavior || map->isText)

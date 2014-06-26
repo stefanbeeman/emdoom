@@ -2072,7 +2072,6 @@ static void D_DoomInit()
 
 	Printf ("M_LoadDefaults: Load system defaults.\n");
 	M_LoadDefaults ();			// load before initing other systems
-
 }
 
 //==========================================================================

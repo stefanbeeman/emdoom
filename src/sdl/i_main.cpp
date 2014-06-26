@@ -34,7 +34,6 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include "python/py_interpreter.h"
 #include <SDL.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -64,7 +63,6 @@
 #include "cmdlib.h"
 #include "r_utility.h"
 #include "doomstat.h"
-
 
 // MACROS ------------------------------------------------------------------
 
@@ -342,7 +340,6 @@ int main (int argc, char **argv)
 		*/
 
 		atexit (call_terms);
-		atterm (pyStopInterpreter);
 		atterm (I_Quit);
 
 		// Should we even be doing anything with progdir on Unix systems?
@@ -361,13 +358,11 @@ int main (int argc, char **argv)
 		}
 		I_StartupJoysticks();
 		C_InitConsole (80*8, 25*8, false);
-		pyStartInterpreter();
 		D_DoomMain ();
     }
     catch (class CDoomError &error)
     {
 		I_ShutdownJoysticks();
-		Py_Finalize();
 		if (error.GetMessage ())
 			fprintf (stderr, "%s\n", error.GetMessage ());
 

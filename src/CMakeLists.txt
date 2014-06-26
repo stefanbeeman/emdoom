@@ -1211,7 +1211,9 @@ add_executable( zdoom WIN32
 	r_data/r_interpolate.cpp
 	r_data/r_translate.cpp
 	zzautozend.cpp
-	python/py_interpreter.cpp
+	python/pythinker.cpp
+	python/dispatch.cpp
+	python/console.cpp
 )
 IF(APPLE)
 	TARGET_LINK_LIBRARIES( zdoom ${FRAMEWORKS} )
