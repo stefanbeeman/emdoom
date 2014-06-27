@@ -70,7 +70,7 @@
 #include "r_data/colormaps.h"
 
 #include "fragglescript/t_fs.h"
-#include "python/pythinker.h"
+#include "python/py_thinker.h"
 
 #define MISSING_TEXTURE_WARN_LIMIT		20
 

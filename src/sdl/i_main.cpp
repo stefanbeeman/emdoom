@@ -63,7 +63,7 @@
 #include "cmdlib.h"
 #include "r_utility.h"
 #include "doomstat.h"
-#include "py_init.h"
+#include "python/py_init.h"
 
 // MACROS ------------------------------------------------------------------
 
