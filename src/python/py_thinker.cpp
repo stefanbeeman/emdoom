@@ -1,4 +1,3 @@
-#include "i_system.h"
 #include "python/py_thinker.h"
 
 PyThinker::PyThinker() : DThinker(STAT_SCRIPTS) {}

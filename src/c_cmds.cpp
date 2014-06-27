@@ -73,7 +73,7 @@
 #include "v_text.h"
 #include "p_lnspec.h"
 #include "v_video.h"
-#include "python/dispatch.h"
+#include "python/pyx/dispatch.h"
 
 extern FILE *Logfile;
 extern bool insave;

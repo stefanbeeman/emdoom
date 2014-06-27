@@ -748,6 +748,8 @@ file( GLOB HEADER_FILES
 	gl/textures/*.h
 	gl/utility/*.h
   gl/xbr/*.h
+  python/pyx/*.h
+  python/*.h
 	*.h
 )
 

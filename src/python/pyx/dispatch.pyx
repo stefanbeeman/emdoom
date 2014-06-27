@@ -18,6 +18,9 @@ def inner_read(name):
   except:
     print 'Shit broke yo.'
 
+cdef public int python_tick():
+  return 1
+
 cdef public void python_import(const char* name):
   try:
     inner_read(name)
@@ -28,6 +31,3 @@ cdef public void python_import(const char* name):
   #   importlib.import_module(fn)
   # except:
   #   print "Unable to load module: " + fn
-
-cdef public python_tick():
-  return 1
