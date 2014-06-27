@@ -63,6 +63,7 @@
 #include "cmdlib.h"
 #include "r_utility.h"
 #include "doomstat.h"
+#include "py_init.h"
 
 // MACROS ------------------------------------------------------------------
 
@@ -341,6 +342,7 @@ int main (int argc, char **argv)
 
 		atexit (call_terms);
 		atterm (I_Quit);
+		atterm (python_stop);
 
 		// Should we even be doing anything with progdir on Unix systems?
 		char program[PATH_MAX];
@@ -358,6 +360,7 @@ int main (int argc, char **argv)
 		}
 		I_StartupJoysticks();
 		C_InitConsole (80*8, 25*8, false);
+		python_start(); //Start the python interpreter.
 		D_DoomMain ();
     }
     catch (class CDoomError &error)
