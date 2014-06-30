@@ -360,10 +360,6 @@ int main (int argc, char **argv)
 		}
 		I_StartupJoysticks();
 		C_InitConsole (80*8, 25*8, false);
-<<<<<<< HEAD
-		python_start(); //Start the python interpreter.
-=======
->>>>>>> 61a9d16f6e225b8461dd2b68b43200a1ef90c45f
 		D_DoomMain ();
     }
     catch (class CDoomError &error)
