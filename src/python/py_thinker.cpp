@@ -6,6 +6,4 @@ PyThinker::~PyThinker() {}
 
 void PyThinker::Serialize(FArchive &arc) {}
 
-void PyThinker::Tick() {
-  python_tick();
-}
+void PyThinker::Tick() {}

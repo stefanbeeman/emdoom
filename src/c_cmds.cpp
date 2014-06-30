@@ -73,6 +73,7 @@
 #include "v_text.h"
 #include "p_lnspec.h"
 #include "v_video.h"
+#include "python/py_init.h"
 
 extern FILE *Logfile;
 extern bool insave;
@@ -1159,9 +1160,28 @@ CCMD(secret)
 
 //============================================================================
 //
-// Python test
+// Python commands
 //
 //============================================================================
+
+CCMD(interpret) {
+	if (argv.argc() < 2) {
+		Printf("Usage: interpret command");
+		return;
+	}
+
+	Printf("TODO");
+}
+
+CCMD(python) {
+	if (argv.argc() < 2) {
+		Printf("Usage: python filename");
+		return;
+	}
+
+	const char* filename = argv[1];
+	python_run_file(filename);
+}
 
 CCMD(import) {
 	if (argv.argc() < 2) {

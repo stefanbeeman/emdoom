@@ -2,7 +2,6 @@
 #include "dobject.h"
 #include "dthinker.h"
 #include "doomtype.h"
-#include "python/pyx/dispatch.h"
 
 class PyThinker : public DThinker {
   public:

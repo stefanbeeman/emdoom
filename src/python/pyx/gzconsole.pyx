@@ -4,6 +4,9 @@ cdef extern from "c_console.h":
 cdef extern from "c_dispatch.h":
   void AddCommandString (char *text, int keynum)
 
+cdef public void __gzconsole__():
+  pass
+
 def log(message):
   encoded = encode(message, 'log')
   PrintString(0, encoded)
