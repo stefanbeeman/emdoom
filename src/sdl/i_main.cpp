@@ -360,6 +360,7 @@ int main (int argc, char **argv)
 		}
 		I_StartupJoysticks();
 		C_InitConsole (80*8, 25*8, false);
+		python_start(); //Start the python interpreter.
 		D_DoomMain ();
     }
     catch (class CDoomError &error)
