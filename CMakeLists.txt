@@ -91,6 +91,7 @@ endif( APPLE )
 find_package( BZip2 )
 find_package( JPEG )
 find_package( ZLIB )
+find_package( GLEW )
 # GME
 find_path( GME_INCLUDE_DIR gme/gme.h )
 find_library( GME_LIBRARIES gme )
