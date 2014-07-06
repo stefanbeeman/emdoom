@@ -1,5 +1,8 @@
+#include <cstdio>
+#include <iostream>
+
 #include <Python.h>
-#include <stdio.h>
+
 #include "python/pyx/gzconsole.h"
 
 static PyMethodDef nomethods[] = {{NULL, NULL}};
@@ -18,9 +21,8 @@ void python_run_string(const char *command) {
   PyRun_SimpleString(command);
 }
 
-void python_run_file(const char *filename) {
-  FILE * pyFile = fopen(filename, "r");
-  PyRun_SimpleFileEx(pyFile, filename, 1);
+void python_run_file(FILE *fp, const char *filename) {
+  PyRun_SimpleFile(fp, filename);
 }
 
 void python_import(const char *name) {

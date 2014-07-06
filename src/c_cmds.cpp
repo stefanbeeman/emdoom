@@ -1180,7 +1180,13 @@ CCMD(python) {
 	}
 
 	const char* filename = argv[1];
-	python_run_file(filename);
+	FILE* fp = fopen(filename, "r");
+	if (!fp) {
+		Printf("Cannot open file %s", filename);
+		return;
+	}
+
+	python_run_file(fp, filename);
 }
 
 CCMD(import) {
