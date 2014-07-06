@@ -115,19 +115,25 @@ static const char* const tableHeaders[NUM_COLUMNS] = { "IWAD", "Game" };
 
 @end
 
-static NSDictionary* s_knownFileTypes = [NSDictionary dictionaryWithObjectsAndKeys:
-	@"-file"    , @"wad",
-	@"-file"    , @"pk3",
-	@"-file"    , @"zip",
-	@"-file"    , @"pk7",
-	@"-file"    , @"7z",
-	@"-deh"     , @"deh",
-	@"-bex"     , @"bex",
-	@"-exec"    , @"cfg",
-	@"-playdemo", @"lmp",
-	nil];
+static NSDictionary* GetKnownFileTypes()
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		@"-file"    , @"wad",
+		@"-file"    , @"pk3",
+		@"-file"    , @"zip",
+		@"-file"    , @"pk7",
+		@"-file"    , @"7z",
+		@"-deh"     , @"deh",
+		@"-bex"     , @"bex",
+		@"-exec"    , @"cfg",
+		@"-playdemo", @"lmp",
+		nil];	
+}
 
-static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
+static NSArray* GetKnownExtensions()
+{
+	return [GetKnownFileTypes() allKeys];
+}
 
 @interface NSMutableString(AppendKnownFileType)
 - (void)appendKnownFileType:(NSString *)filePath;
@@ -137,7 +143,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 - (void)appendKnownFileType:(NSString *)filePath
 {
 	NSString* extension = [[filePath pathExtension] lowercaseString];
-	NSString* parameter = [s_knownFileTypes objectForKey:extension];
+	NSString* parameter = [GetKnownFileTypes() objectForKey:extension];
 	
 	if (nil == parameter)
 	{
@@ -186,7 +192,7 @@ static NSArray* s_knownExtensions = [s_knownFileTypes allKeys];
 	[openPanel setAllowsMultipleSelection:YES];
 	[openPanel setCanChooseFiles:YES];
 	[openPanel setResolvesAliases:YES];
-	[openPanel setAllowedFileTypes:s_knownExtensions];
+	[openPanel setAllowedFileTypes:GetKnownExtensions()];
 
 	if (NSOKButton == [openPanel runModal])
 	{
