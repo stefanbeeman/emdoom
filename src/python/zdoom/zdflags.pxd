@@ -238,3 +238,51 @@ cdef extern from 'actor.h':
     
     # --- dummies for unknown/unimplemented Strife flags ---
     MF_STRIFEx8000000 = 0 # seems related to MF_SHADOW
+  
+  enum EBounceFlags:
+    BOUNCE_Walls = 1<<0    # bounces off of walls
+    BOUNCE_Floors = 1<<1   # bounces off of floors
+    BOUNCE_Ceilings = 1<<2   # bounces off of ceilings
+    BOUNCE_Actors = 1<<3   # bounces off of some actors
+    BOUNCE_AllActors = 1<<4  # bounces off of all actors (requires BOUNCE_Actors to be set too)
+    BOUNCE_AutoOff = 1<<5    # when bouncing off a sector plane if the new Z velocity is below 3.0 disable further bouncing
+    BOUNCE_HereticType = 1<<6  # goes into Death state when bouncing on floors or ceilings
+    BOUNCE_UseSeeSound = 1<<7  # compatibility fallback. This will only be set by the compatibility handlers for the old bounce flags.
+    BOUNCE_NoWallSound = 1<<8  # don't make noise when bouncing off a wall
+    BOUNCE_Quiet = 1<<9    # Strife's grenades don't make a bouncing sound
+    BOUNCE_ExplodeOnWater = 1<<10  # explodes when hitting a water surface
+    BOUNCE_CanBounceWater = 1<<11  # can bounce on water
+    BOUNCE_MBF = 1<<12     # This in itself is not a valid mode but replaces MBF's MF_BOUNCE flag.
+    BOUNCE_AutoOffFloorOnly = 1<<13    # like BOUNCE_AutoOff but only on floors
+    BOUNCE_UseBounceState = 1<<14  # Use Bounce[.*] states
+    BOUNCE_TypeMask = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors | BOUNCE_AutoOff | BOUNCE_HereticType | BOUNCE_MBF
+    BOUNCE_None = 0
+    BOUNCE_Heretic = BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_HereticType
+    BOUNCE_Doom = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors | BOUNCE_AutoOff
+    BOUNCE_Hexen = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors
+    BOUNCE_Grenade = BOUNCE_MBF | BOUNCE_Doom    # Bounces on walls and flats like ZDoom bounce.
+    BOUNCE_Classic = BOUNCE_MBF | BOUNCE_Floors | BOUNCE_Ceilings  # Bounces on flats only but does not die when bouncing.
+    BOUNCE_DoomCompat = BOUNCE_Doom | BOUNCE_UseSeeSound
+    BOUNCE_HereticCompat = BOUNCE_Heretic | BOUNCE_UseSeeSound
+    BOUNCE_HexenCompat = BOUNCE_Hexen | BOUNCE_UseSeeSound
+    # The distinction between BOUNCE_Actors and BOUNCE_AllActors: A missile with
+    # BOUNCE_Actors set will bounce off of reflective and "non-sentient" actors.
+    # A missile that also has BOUNCE_AllActors set will bounce off of any actor.
+    # For compatibility reasons when BOUNCE_Actors was implied by the bounce type
+    # being "Doom" or "Hexen" and BOUNCE_AllActors was the separate
+    # MF5_BOUNCEONACTORS you must set BOUNCE_Actors for BOUNCE_AllActors to have
+    # an effect.
+
+enum EThingSpecialActivationType:
+  THINGSPEC_Default = 0    # Normal behavior: a player must be the trigger and is the activator
+  THINGSPEC_ThingActs = 1    # The thing itself is the activator of the special
+  THINGSPEC_ThingTargets = 1<<1   # The thing changes its target to the trigger
+  THINGSPEC_TriggerTargets = 1<<2   # The trigger changes its target to the thing
+  THINGSPEC_MonsterTrigger = 1<<3   # The thing can be triggered by a monster
+  THINGSPEC_MissileTrigger = 1<<4   # The thing can be triggered by a projectile
+  THINGSPEC_ClearSpecial = 1<<5   # Clears special after successful activation
+  THINGSPEC_NoDeathSpecial = 1<<6   # Don't activate special on death
+  THINGSPEC_TriggerActs = 1<<7   # The trigger is the activator of the special (overrides LEVEL_ACTOWNSPECIAL Hexen hack)
+  THINGSPEC_Activate = 1<<8   # The thing is activated when triggered
+  THINGSPEC_Deactivate = 1<<9   # The thing is deactivated when triggered
+  THINGSPEC_Switch = 1<<10  # The thing is alternatively activated and deactivated when triggered
