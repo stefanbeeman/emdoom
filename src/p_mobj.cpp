@@ -67,6 +67,9 @@
 #include "r_data/colormaps.h"
 #include "r_renderer.h"
 
+#include <Python.h>
+#include "python/zdoom/zdactor.h"
+
 // MACROS ------------------------------------------------------------------
 
 #define WATER_SINK_FACTOR		3
@@ -4065,6 +4068,7 @@ void AActor::BeginPlay ()
 		flags2 &= ~MF2_DORMANT;
 		Deactivate (NULL);
 	}
+	Actor_Init(this);
 }
 
 void AActor::PostBeginPlay ()

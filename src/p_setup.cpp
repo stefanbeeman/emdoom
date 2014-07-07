@@ -3694,7 +3694,6 @@ void P_SetupLevel (const char *lumpname, int position)
 		{
 			ForceNodeBuild = true;
 		}
-		new PyThinker;
 		T_LoadScripts(map);
 
 		if (!map->HasBehavior || map->isText)

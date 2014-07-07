@@ -1166,7 +1166,7 @@ CCMD(secret)
 
 CCMD(interpret) {
 	if (argv.argc() < 2) {
-		Printf("Usage: interpret command");
+		Printf("Usage: interpret command\n");
 		return;
 	}
 
@@ -1175,14 +1175,14 @@ CCMD(interpret) {
 
 CCMD(python) {
 	if (argv.argc() < 2) {
-		Printf("Usage: python filename");
+		Printf("Usage: python filename\n");
 		return;
 	}
 
 	const char* filename = argv[1];
 	FILE* fp = fopen(filename, "r");
 	if (!fp) {
-		Printf("Cannot open file %s", filename);
+		Printf("Cannot open file %s\n", filename);
 		return;
 	}
 
@@ -1191,7 +1191,7 @@ CCMD(python) {
 
 CCMD(import) {
 	if (argv.argc() < 2) {
-		Printf("Usage: import filename");
+		Printf("Usage: import filename\n");
 		return;
 	}
 

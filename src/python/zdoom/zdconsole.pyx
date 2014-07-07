@@ -4,9 +4,6 @@ cdef extern from "c_console.h":
 cdef extern from "c_dispatch.h":
   void AddCommandString (char *text, int keynum)
 
-cdef public void __gzconsole__():
-  pass
-
 def log(message):
   encoded = encode(message, 'log')
   PrintString(0, encoded)
@@ -17,5 +14,12 @@ def command(command):
 
 def encode(string, name):
   if not isinstance(string, unicode):
-    raise ValueError("Command '%s' requires text input, got %s" % (name, type(string)))
+    if isinstance(string, str):
+      string = unicode(string)
+    else:
+      raise ValueError("Command '%s' requires text input, got %s" % (name, type(string)))
+
+  if string[-1] != u'\n':
+    string += u'\n'
+
   return string.encode('UTF-8')

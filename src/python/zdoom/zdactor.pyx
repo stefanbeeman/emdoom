@@ -1,5 +1,8 @@
 actors = []
 
+cdef extern from "Python.h":
+  pass
+
 cdef class Actor:
   cdef AActor* ptr
 

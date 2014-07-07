@@ -6,9 +6,15 @@
 #include "python/zdoom/zdactor.h"
 #include "python/zdoom/zdconsole.h"
 
+using std::cout;
+using std::cerr;
+using std::endl;
+
 static PyMethodDef nomethods[] = {{NULL, NULL}};
 
 void python_start() {
+  cout << "[Python] Starting interpreter..." << endl;
+
   //PyObject* package_gzconsole = PyImport_AddModule("gzconsole");
   //PyObject* gzdoom_package = Py_InitModule("gzdoom", nomethods);
   //PyObject* __path__ = PyList_New(1);
@@ -16,6 +22,9 @@ void python_start() {
   PyImport_AppendInittab("zdconsole", initzdconsole);
   PyImport_AppendInittab("zdactor", initzdactor);
   Py_Initialize();
+  initzdactor();
+
+  cout << "[Python] Interpreter started." << endl;
 }
 
 void python_run_string(const char *command) {
@@ -32,4 +41,5 @@ void python_import(const char *name) {
 
 void python_stop() {
   Py_Finalize();
+  cout << "[Python] Shut down interpreter." << endl;
 }
