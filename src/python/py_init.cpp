@@ -3,7 +3,8 @@
 
 #include <Python.h>
 
-#include "python/pyx/gzconsole.h"
+#include "python/zdoom/zdactor.h"
+#include "python/zdoom/zdconsole.h"
 
 static PyMethodDef nomethods[] = {{NULL, NULL}};
 
@@ -12,8 +13,8 @@ void python_start() {
   //PyObject* gzdoom_package = Py_InitModule("gzdoom", nomethods);
   //PyObject* __path__ = PyList_New(1);
   //PyList_SetItem(__path__, 0, PyString_FromString("gzdoom"));
-  //PyModule_AddObject(gzdoom_package, "__path__", __path__);
-  PyImport_AppendInittab("gzconsole", initgzconsole);
+  PyImport_AppendInittab("zdconsole", initzdconsole);
+  PyImport_AppendInittab("zdactor", initzdactor);
   Py_Initialize();
 }
 

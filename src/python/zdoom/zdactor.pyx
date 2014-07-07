@@ -1,13 +1,16 @@
-cimport zdtypes
-cimport zdflags
-
 actors = []
 
-class Actor:
-  def __init__(*AActor cActor):
-    print cActor
-    self.__pointer__ = cActor
+cdef class Actor:
+  cdef AActor* ptr
 
-cdef public create_actor(*AActor cActor):
-  pyActor = Actor(cActor)
-  actors.append(pyActor)
+  def __cinit__(self):
+    pass # Just a wrapper for now
+
+  def __dealloc__(self):
+    pass # For now, we don't want to screw around with ZDoom's memory...
+
+cdef public Actor_Init(AActor* ptr):
+  actor = Actor()
+  actor.ptr = ptr
+  actors.append(actor)
+  return actor

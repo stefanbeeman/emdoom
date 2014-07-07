@@ -1,34 +1,24 @@
-cimport zdtypes
-cimport zdflags
+from zdtypes cimport *
 
 cdef extern from 'actor.h':
-  enum replace_t:
-    NO_REPLACE = 0
-    ALLOW_REPLACE = 1
   cppclass FDecalBase:
     pass
+
   cppclass AInventory:
     pass
+
+  cdef enum replace_t:
+    pass
+
+  cdef enum EBounceFlags:
+    pass
+
+  cdef enum EThingSpecialActivationType:
+    pass
+
   AActor *GetDefaultByName(const char *name)
   AActor *GetDefaultByType(const PClass *type)
-  enum:
-    AMETA_BASE = 0x12000
-    AMETA_Obituary     # string (player was killed by this actor)
-    AMETA_HitObituary    # string (player was killed by this actor in melee)
-    AMETA_DeathHeight    # fixed (height on normal death)
-    AMETA_BurnHeight   # fixed (height on burning death)
-    AMETA_StrifeName   # string (for named Strife objects)
-    AMETA_BloodColor   # colorized blood
-    AMETA_GibHealth    # negative health below which this monster dies an extreme death
-    AMETA_WoundHealth    # health needed to enter wound state
-    AMETA_FastSpeed    # Speed in fast mode
-    AMETA_RDFactor     # Radius damage factor
-    AMETA_CameraHeight   # Height of camera when used as such
-    AMETA_HowlSound    # Sound being played when electrocuted or poisoned
-    AMETA_BloodType    # Blood replacement type
-    AMETA_BloodType2   # Bloodsplatter replacement type
-    AMETA_BloodType3   # AxeBlood replacement type
-  struct FDropItem:
+  cdef struct FDropItem:
     FName Name
     int probability
     int amount
@@ -77,7 +67,7 @@ cdef extern from 'actor.h':
     void SetPitch(int p, bool interpolate)
     void SetAngle(angle_t ang, bool interpolate)
     PClass *GetBloodType(int type)
-    void SetFriendPlayer(player_t *player)
+    #void SetFriendPlayer(player_t *player)
     bool IsVisibleToPlayer()
     int GetMissileDamage(int mask, int add)
     bool CanSeek(AActor *target)
@@ -117,6 +107,6 @@ cdef extern from 'actor.h':
     int args[5]
     int TIDtoHate
     int accuracy, stamina
-    FNameNoInit Species
+    #FNameNoInit Species
     SWORD movecount
     SWORD strafecount

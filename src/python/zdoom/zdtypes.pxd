@@ -1,9 +1,12 @@
+from libcpp cimport bool
+
 cdef extern from "basictypes.h":
   ctypedef int SBYTE
   ctypedef unsigned int BYTE
   ctypedef int SWORD
   ctypedef unsigned int WORD
   ctypedef int SDWORD
+  ctypedef unsigned int DWORD
   ctypedef unsigned int uint32
   ctypedef int SQWORD
   ctypedef unsigned int QWORD
@@ -23,10 +26,12 @@ cdef extern from "name.h":
     bool IsValidName()
 
 cdef extern from "dobjtype.h":
-  struct PClass:
+  cdef struct PClass:
     FName TypeName
     PClass *ParentClass
     bool bRuntimeClass
     bool IsAncestorOf(PClass *ti)
     bool IsDescendantOf(PClass *ti)
-    static const PClass *FindClass(char *name)
+
+cdef extern from "dobjtype.h" namespace "PClass":
+    const PClass *FindClass(char *name)
