@@ -5,21 +5,9 @@ cdef extern from "c_dispatch.h":
   void AddCommandString (char *text, int keynum)
 
 def log(message):
-  encoded = encode(message, 'log')
+  encoded = <char*>message
   PrintString(0, encoded)
 
 def command(command):
-  encoded = encode(command, 'command')
+  encoded = <char*>command
   AddCommandString(encoded, 0)
-
-def encode(string, name):
-  if not isinstance(string, unicode):
-    if isinstance(string, str):
-      string = unicode(string)
-    else:
-      raise ValueError("Command '%s' requires text input, got %s" % (name, type(string)))
-
-  if string[-1] != u'\n':
-    string += u'\n'
-
-  return string.encode('UTF-8')
