@@ -753,7 +753,7 @@ file( GLOB HEADER_FILES
 	gl/textures/*.h
 	gl/utility/*.h
   gl/xbr/*.h
-  python/pyx/*.h
+  python/zdoom/*.h
   python/*.h
 	*.h
 )
@@ -1218,7 +1218,8 @@ add_executable( zdoom WIN32
 	r_data/r_interpolate.cpp
 	r_data/r_translate.cpp
 	zzautozend.cpp
-	python/pyx/gzconsole.cpp
+	python/zdoom/zdactor.cpp
+	python/zdoom/zdconsole.cpp
 	python/py_init.cpp
 	python/py_thinker.cpp
 )
