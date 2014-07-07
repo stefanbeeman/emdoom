@@ -25,6 +25,9 @@ cdef extern from "name.h":
     int SetName(const char *text, bool noCreate=false)
     bool IsValidName()
 
+cdef extern from "dobject.h":
+  pass
+
 cdef extern from "dobjtype.h":
   cdef struct PClass:
     FName TypeName
