@@ -4068,7 +4068,7 @@ void AActor::BeginPlay ()
 		flags2 &= ~MF2_DORMANT;
 		Deactivate (NULL);
 	}
-	Actor_Init(this);
+	python_init_actor(this);
 }
 
 void AActor::PostBeginPlay ()

@@ -16,7 +16,7 @@ cdef extern from "basictypes.h":
   ctypedef int dsfixed_t
 
 cdef extern from "tables.h":
-  ctypedef float angle_t
+  ctypedef int angle_t
 
 cdef extern from "name.h":
   cppclass FName:
@@ -24,9 +24,12 @@ cdef extern from "name.h":
     int GetIndex()
     int SetName(const char *text, bool noCreate=false)
     bool IsValidName()
+  cppclass FNameNoInit:
+    pass
 
 cdef extern from "dobject.h":
-  pass
+  cppclass TObjPtr[T]:
+    pass
 
 cdef extern from "dobjtype.h":
   cdef struct PClass:

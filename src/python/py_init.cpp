@@ -3,6 +3,7 @@
 
 #include <Python.h>
 
+#include "python/zdoom/zdtypes.h"
 #include "python/zdoom/zdactor.h"
 #include "python/zdoom/zdconsole.h"
 
@@ -19,9 +20,12 @@ void python_start() {
   //PyObject* gzdoom_package = Py_InitModule("gzdoom", nomethods);
   //PyObject* __path__ = PyList_New(1);
   //PyList_SetItem(__path__, 0, PyString_FromString("gzdoom"));
+  PyImport_AppendInittab("zdtypes", initzdtypes);
   PyImport_AppendInittab("zdconsole", initzdconsole);
   PyImport_AppendInittab("zdactor", initzdactor);
   Py_Initialize();
+  initzdtypes();
+  initzdconsole();
   initzdactor();
 
   cout << "[Python] Interpreter started." << endl;

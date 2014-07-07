@@ -1,5 +1,18 @@
 from zdtypes cimport *
 
+cdef extern from 'info.h':
+  struct FState:
+    FState *NextState
+    WORD sprite
+    SWORD Tics
+    WORD TicRange
+    BYTE Frame
+    BYTE Fullbright
+    BYTE Fast
+    BYTE NoDelay
+    BYTE CanRaise
+    BYTE Slow
+
 cdef extern from 'actor.h':
   cppclass FDecalBase:
     pass
@@ -99,14 +112,70 @@ cdef extern from 'actor.h':
     SBYTE visdir
     SWORD movecount
     SWORD strafecount
+    TObjPtr[AActor] target
+    TObjPtr[AActor] lastenemy
+    TObjPtr[AActor] LastHeard
     int StartHealth
     BYTE WeaveIndexXY
     BYTE WeaveIndexZ
+    int TIDtoHate
+    SWORD movecount
+    SWORD strafecount
+    SDWORD reactiontime
+    TObjPtr[AActor] LastLookActor
+    int StartHealth
+    FNameNoInit Species
+    TObjPtr[AActor] tracer
+    TObjPtr[AActor] master
     int tid
     int special
     int args[5]
-    int TIDtoHate
     int accuracy, stamina
-    #FNameNoInit Species
-    SWORD movecount
-    SWORD strafecount
+    TObjPtr[AActor] goal
+    int waterlevel
+    BYTE boomwaterlevel
+    BYTE MinMissileChance
+    fixed_t meleerange
+    fixed_t meleethreshold
+    fixed_t maxtargetrange
+    fixed_t bouncefactor
+    fixed_t wallbouncefactor
+    fixed_t gravity
+    int Score
+    int DesignatedTeam
+    int PoisonDamage
+    FNameNoInit PoisonDamageType
+    int PoisonDuration
+    int PoisonPeriod
+    TObjPtr[AActor] Poisoner
+    TObjPtr[AInventory] Inventory
+    DWORD InventoryID
+    SDWORD id
+    fixed_t Speed
+    fixed_t FloatSpeed
+    fixed_t MaxDropOffHeight, MaxStepHeight
+    SDWORD Mass
+    SWORD PainChance
+    int PainThreshold
+    FNameNoInit DamageType
+    FNameNoInit DamageTypeReceived
+    fixed_t DamageFactor
+    FNameNoInit PainType
+    FNameNoInit DeathType
+    FState *SpawnState
+    FState *SeeState
+    FState *MeleeState
+    FState *MissileState
+    FDecalBase *DecalGenerator
+    void AdjustFloorClip()
+    void SetOrigin(fixed_t x, fixed_t y, fixed_t z)
+    bool InStateSequence(FState * newstate, FState * basestate)
+    int GetTics(FState * newstate)
+    bool SetState(FState *newstate, bool nofunction=false)
+    bool UpdateWaterLevel(fixed_t oldz, bool splash=true)
+    bool isFast()
+    bool isSlow()
+    void SetIdle()
+    void ClearCounters()
+    FState *GetRaiseState()
+    void Revive()
