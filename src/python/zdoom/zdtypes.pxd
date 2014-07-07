@@ -20,6 +20,7 @@ cdef extern from "tables.h":
 
 cdef extern from "name.h":
   cppclass FName:
+    FName()
     FName(const char *text)
     char *GetChars()
   cppclass FNameNoInit:
@@ -31,12 +32,13 @@ cdef extern from "dobject.h":
     pass
 
 cdef extern from "dobjtype.h":
-  cdef struct PClass:
+  cppclass PClass:
     FName TypeName
     PClass *ParentClass
     bool bRuntimeClass
     bool IsAncestorOf(PClass *ti)
     bool IsDescendantOf(PClass *ti)
+  PClass *FindClass "PClass::FindClass"(FName zaname)
 
 cdef extern from "dobjtype.h" namespace "PClass":
     const PClass *FindClass(char *name)

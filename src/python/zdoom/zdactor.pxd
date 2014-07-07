@@ -21,7 +21,8 @@ cdef extern from 'actor.h':
     pass
 
   cdef enum replace_t:
-    pass
+    NO_REPLACE = 0
+    ALLOW_REPLACE = 1
 
   cdef enum EBounceFlags:
     pass
@@ -38,7 +39,6 @@ cdef extern from 'actor.h':
     FDropItem * Next
   cppclass AActor:
     void Destroy()
-    AActor *StaticSpawn(const PClass *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement, bool SpawningMapThing = false)
     AActor *GetDefault()
     FDropItem *GetDropItems()
     bool SuggestMissileAttack(fixed_t dist)
@@ -179,3 +179,4 @@ cdef extern from 'actor.h':
     void ClearCounters()
     FState *GetRaiseState()
     void Revive()
+  AActor *StaticSpawn "AActor::StaticSpawn"(const PClass *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement, bool SpawningMapThing)
