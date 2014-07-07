@@ -12,3 +12,6 @@ def to_fixed_angle(angle):
 
 def from_fixed_angle(angle):
   return (angle/float(2 ** 32)) * 360
+
+cdef object from_fname(FName fname):
+  return str(fname.GetChars())

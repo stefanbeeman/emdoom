@@ -21,11 +21,10 @@ cdef extern from "tables.h":
 cdef extern from "name.h":
   cppclass FName:
     FName(const char *text)
-    int GetIndex()
-    int SetName(const char *text, bool noCreate=false)
-    bool IsValidName()
+    char *GetChars()
   cppclass FNameNoInit:
-    pass
+    FName(const char *text)
+    char *GetChars()
 
 cdef extern from "dobject.h":
   cppclass TObjPtr[T]:
