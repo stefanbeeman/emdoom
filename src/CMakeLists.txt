@@ -1219,6 +1219,7 @@ add_executable( zdoom WIN32
 	r_data/r_translate.cpp
 	zzautozend.cpp
 	python/zdoom/zdtypes.cpp
+	python/zdoom/zdmap.cpp
 	python/zdoom/zdactor.cpp
 	python/zdoom/zdconsole.cpp
 	python/py_init.cpp

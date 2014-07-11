@@ -89,7 +89,7 @@
 
 #include "g_hub.h"
 
-//#include "python/zdoom/zdmap.h"
+#include "python/zdoom/zdmap.h"
 
 void STAT_StartNewGame(const char *lev);
 void STAT_ChangeLevel(const char *newl);
@@ -965,6 +965,7 @@ void G_DoLoadLevel (int position, bool autosave)
 	{
 		DAutosaver GCCNOWARN *dummy = new DAutosaver;
 	}
+	python_init_map(&level);
 }
 
 

@@ -28,10 +28,10 @@ cdef extern from "name.h":
   cppclass FName:
     FName()
     FName(const char *text)
-    char *GetChars()
+    const char *GetChars()
   cppclass FNameNoInit:
     FName(const char *text)
-    char *GetChars()
+    const char *GetChars()
 
 cdef extern from "dobject.h":
   cppclass TObjPtr[T]:

@@ -4,7 +4,7 @@
 #include <Python.h>
 
 #include "python/zdoom/zdtypes.h"
-//#include "python/zdoom/zdmap.h"
+#include "python/zdoom/zdmap.h"
 #include "python/zdoom/zdactor.h"
 #include "python/zdoom/zdconsole.h"
 
@@ -21,12 +21,12 @@ void python_start() {
   //PyList_SetItem(__path__, 0, PyString_FromString("gzdoom"));
   PyImport_AppendInittab("zdtypes", initzdtypes);
   PyImport_AppendInittab("zdconsole", initzdconsole);
-  //PyImport_AppendInittab("zdmap", initzdmap);
+  PyImport_AppendInittab("zdmap", initzdmap);
   PyImport_AppendInittab("zdactor", initzdactor);
   Py_Initialize();
   initzdtypes();
   initzdconsole();
-  //initzdmap();
+  initzdmap();
   initzdactor();
 
   cout << "[Python] Interpreter started." << endl;
