@@ -4,14 +4,13 @@
 #include <Python.h>
 
 #include "python/zdoom/zdtypes.h"
+//#include "python/zdoom/zdmap.h"
 #include "python/zdoom/zdactor.h"
 #include "python/zdoom/zdconsole.h"
 
 using std::cout;
 using std::cerr;
 using std::endl;
-
-static PyMethodDef nomethods[] = {{NULL, NULL}};
 
 void python_start() {
   cout << "[Python] Starting interpreter..." << endl;
@@ -22,10 +21,12 @@ void python_start() {
   //PyList_SetItem(__path__, 0, PyString_FromString("gzdoom"));
   PyImport_AppendInittab("zdtypes", initzdtypes);
   PyImport_AppendInittab("zdconsole", initzdconsole);
+  //PyImport_AppendInittab("zdmap", initzdmap);
   PyImport_AppendInittab("zdactor", initzdactor);
   Py_Initialize();
   initzdtypes();
   initzdconsole();
+  //initzdmap();
   initzdactor();
 
   cout << "[Python] Interpreter started." << endl;

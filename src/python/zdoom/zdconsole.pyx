@@ -1,3 +1,5 @@
+cdef public void __fakeconsole__(): pass
+
 cdef extern from "c_console.h":
   int PrintString (int printlevel, const char *string)
 

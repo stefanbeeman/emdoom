@@ -2,9 +2,6 @@ from zdtypes import *
 
 actors = []
 
-cdef extern from "Python.h":
-  pass
-
 def spawn(actor_type, position):
   x, y, z = position
   actor_class = find_class(actor_type)

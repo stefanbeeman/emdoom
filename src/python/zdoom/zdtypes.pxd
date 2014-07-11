@@ -18,6 +18,12 @@ cdef extern from "basictypes.h":
 cdef extern from "tables.h":
   ctypedef int angle_t
 
+cdef extern from 'zstring.h':
+  cppclass FString:
+    FString()
+    FString(const char *copyStr)
+    const char *GetChars()
+
 cdef extern from "name.h":
   cppclass FName:
     FName()

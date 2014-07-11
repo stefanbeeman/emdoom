@@ -33,6 +33,7 @@
 */
 
 #include <assert.h>
+#include "Python.h"
 #include "templates.h"
 #include "d_main.h"
 #include "g_level.h"
@@ -87,6 +88,8 @@
 #include "gi.h"
 
 #include "g_hub.h"
+
+//#include "python/zdoom/zdmap.h"
 
 void STAT_StartNewGame(const char *lev);
 void STAT_ChangeLevel(const char *newl);
@@ -1061,7 +1064,8 @@ void G_DoWorldDone (void)
 	G_DoLoadLevel (startpos, true);
 	startpos = 0;
 	gameaction = ga_nothing;
-	viewactive = true; 
+	viewactive = true;
+	//python_init_map(&level);
 }
 
 //==========================================================================

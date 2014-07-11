@@ -1,4 +1,6 @@
 from zdtypes cimport *
+cdef extern from "Python.h":
+  pass
 
 cdef extern from 'info.h':
   struct FState:
