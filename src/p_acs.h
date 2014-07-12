@@ -823,6 +823,9 @@ protected:
 	void Unlink ();
 	void PutLast ();
 	void PutFirst ();
+
+// Make these methods public so python can steal them.
+public:
 	static int Random (int min, int max);
 	static int ThingCount (int type, int stringid, int tid, int tag);
 	static void ChangeFlat (int tag, int name, bool floorOrCeiling);
