@@ -191,6 +191,7 @@ static NSArray* GetKnownExtensions()
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	[openPanel setAllowsMultipleSelection:YES];
 	[openPanel setCanChooseFiles:YES];
+	[openPanel setCanChooseDirectories:YES];
 	[openPanel setResolvesAliases:YES];
 	[openPanel setAllowedFileTypes:GetKnownExtensions()];
 
@@ -202,7 +203,16 @@ static NSArray* GetKnownExtensions()
 		for (NSUInteger i = 0, ei = [files count]; i < ei; ++i)
 		{
 			NSString* filePath = [[files objectAtIndex:i] path];
-			[parameters appendKnownFileType:filePath];
+			BOOL isDirectory = false;
+
+			if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory] && isDirectory)
+			{
+				[parameters appendFormat:@"-file \"%@\" ", filePath];
+			}
+			else
+			{
+				[parameters appendKnownFileType:filePath];
+			}
 		}
 
 		if ([parameters length] > 0)
