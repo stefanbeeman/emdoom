@@ -26,7 +26,7 @@ cdef class Map:
       return from_fixed(self.ptr.aircontrol)
     def __set__(self, value):
       self.ptr.aircontrol = to_fixed(value)
-  
+
   property gravity:
     def __get__(self):
       return self.ptr.gravity

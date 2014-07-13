@@ -8,23 +8,11 @@ cdef const PClass *find_class(name):
   return FindClass(class_name)
 
 cdef class Actor:
-  cdef AActor* ptr
-
-  def __cinit__(self):
-    pass # Just a wrapper for now
-  def __dealloc__(self):
-    pass # For now, we don't want to screw around with ZDoom's memory...
+  def __cinit__(self): pass # Just a wrapper for now
+  def __dealloc__(self): pass # For now, we don't want to screw around with ZDoom's memory...
 
   def species(self):
     return str(self.ptr.GetSpecies().GetChars())
-
-  def get_ceiling(self): pass
-  def get_floor(self): pass  
-  def morph(self): pass
-  def unmorph(self): pass
-  def damage(self): pass
-
-  #property state
 
   property x:
     def __get__(self): return from_fixed(self.ptr.x)
@@ -85,13 +73,13 @@ cdef class Actor:
     def __set__(self, dropoff_height): self.ptr.MaxDropOffHeight = to_fixed(dropoff_height)
   property step_height:
     def __get__(self): return from_fixed(self.ptr.MaxStepHeight)
-    def __set__(self, step_height): self.ptr.MaxStepHeight = to_fixed(step_height)  
+    def __set__(self, step_height): self.ptr.MaxStepHeight = to_fixed(step_height)
   property mass:
     def __get__(self): return self.ptr.Mass
     def __set__(self, mass): self.ptr.Mass = mass
   property pain_threshold:
     def __get__(self): return self.ptr.PainThreshold
-    def __set__(self, pain_threshold): self.ptr.PainThreshold = pain_threshold   
+    def __set__(self, pain_threshold): self.ptr.PainThreshold = pain_threshold
 
   property angle:
     def __get__(self): return from_fixed_angle(self.ptr.angle)
@@ -114,7 +102,7 @@ cdef class Actor:
     def __set__(self, tid): self.ptr.tid = tid
   property hates:
     def __get__(self): return self.ptr.TIDtoHate
-    def __set__(self, hates): self.ptr.TIDtoHate = hates 
+    def __set__(self, hates): self.ptr.TIDtoHate = hates
   property accuracy:
     def __get__(self): return self.ptr.accuracy
     def __set__(self, accuracy): self.ptr.accuracy = accuracy
@@ -125,7 +113,7 @@ cdef class Actor:
     def __get__(self): return self.ptr.Score
     def __set__(self, stamina): self.ptr.Score = score
 
-cdef public python_init_actor(AActor* ptr):
+cdef Actor python_init_actor(AActor* ptr):
   actor = Actor()
   actor.ptr = ptr
   return actor

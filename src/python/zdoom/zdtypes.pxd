@@ -52,4 +52,5 @@ cdef extern from 'r_data/r_interpolate.h':
   # Seems to be a generalized interpolator.
   # Not sure how we would meaningfully
   # interact with it. - SMB
-  cppclass DInterpolation: pass
+  cppclass DInterpolation:
+    pass

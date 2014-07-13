@@ -1,4 +1,5 @@
 from zdtypes cimport *
+from zdactor cimport *
 
 cdef extern from 'g_level.h':
   struct level_info_t:

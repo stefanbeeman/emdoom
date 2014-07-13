@@ -1,4 +1,5 @@
 from zdtypes cimport *
+from zdsector cimport *
 
 cdef extern from 'r_defs.h':
   struct vertex_t:
@@ -37,8 +38,8 @@ cdef extern from 'r_defs.h':
     void MultiplyTextureYScale(int which, fixed_t delta)
     #DInterpolation *SetInterpolation(int position)
     void StopInterpolation(int position)
-    seg_t **segs
-    int numsegs
+    #seg_t **segs
+    #int numsegs
 
   struct line_t:
     vertex_t *v1
@@ -51,6 +52,6 @@ cdef extern from 'r_defs.h':
     int id # <--- same as tag or set with Line_SetIdentification
     int args[5] # <--- hexen-style arguments (expanded to ZDoom's full width)
     side_t *sidedef[2]
-    slopetype_t slopetype # To aid move clipping.
+    #slopetype_t slopetype # To aid move clipping.
     sector_t *frontsector
     sector_t *backsector

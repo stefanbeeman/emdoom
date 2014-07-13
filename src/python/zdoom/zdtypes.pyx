@@ -1,4 +1,4 @@
-cdef public void __fake__():
+cdef public void __faketypes__():
   pass
 
 def to_fixed(number):

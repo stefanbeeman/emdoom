@@ -179,3 +179,8 @@ cdef extern from 'actor.h':
     FState *GetRaiseState()
     void Revive()
   AActor *Spawn(const char *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement)
+
+cdef class Actor:
+  cdef AActor* ptr
+
+cdef Actor python_init_actor(AActor* ptr)

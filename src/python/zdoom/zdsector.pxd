@@ -2,8 +2,13 @@ from zdtypes cimport *
 from zdline cimport *
 from zdcolor cimport *
 from zdtexture cimport *
+from zdactor cimport *
 
 cdef extern from 'r_defs.h':
+  struct secplane_t:
+    fixed_t Zat0() # This finds the actual height of a plane, AFIACT.
+    void ChangeHeight(fixed_t hdiff)
+
   cppclass sector_t:
     fixed_t FindLowestFloorSurrounding(vertex_t **v)
     fixed_t FindHighestFloorSurrounding(vertex_t **v)
@@ -26,7 +31,7 @@ cdef extern from 'r_defs.h':
     int GetFloorLight()
     int GetCeilingLight()
     sector_t *GetHeightSec()
-    DInterpolation *SetInterpolation(int position, bool attach
+    DInterpolation *SetInterpolation(int position, bool attach)
     void StopInterpolation(int position)
     void SetXOffset(int pos, fixed_t o)
     void AddXOffset(int pos, fixed_t o)
@@ -52,14 +57,15 @@ cdef extern from 'r_defs.h':
     fixed_t GetPlaneTexZ(int pos)
     void SetPlaneTexZ(int pos, fixed_t val)
     void ChangePlaneTexZ(int pos, fixed_t val)
-    static inline short ClampLight(int level)
+    short ClampLight(int level)
     void ChangeLightLevel(int newval)
     void SetLightLevel(int newval)
     int GetLightLevel()
     bool PlaneMoving(int pos)
     fixed_t CenterFloor()
     fixed_t CenterCeiling()
-    #secplane_t floorplane, ceilingplane
+    secplane_t floorplane
+    secplane_t ceilingplane
     FDynamicColormap *ColorMap
     short special
     short tag
@@ -82,6 +88,3 @@ cdef extern from 'r_defs.h':
     int sectornum
     bool transdoor
     fixed_t transdoorheight  # for transparent door hacks
-
-  # struct secplane_t:
-  #   pass
