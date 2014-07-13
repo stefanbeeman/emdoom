@@ -33,7 +33,6 @@
 */
 
 #include <assert.h>
-#include "Python.h"
 #include "templates.h"
 #include "d_main.h"
 #include "g_level.h"
@@ -89,6 +88,7 @@
 
 #include "g_hub.h"
 
+#include <Python.h>
 #include "python/zdoom/zdmap.h"
 
 void STAT_StartNewGame(const char *lev);

@@ -1166,7 +1166,7 @@ add_executable( zdoom WIN32
 	textures/bitmap.cpp
 	textures/buildtexture.cpp
 	textures/canvastexture.cpp
-  textures/celtexture.cpp
+	textures/celtexture.cpp
 	textures/ddstexture.cpp
 	textures/flattexture.cpp
 	textures/imgztexture.cpp
