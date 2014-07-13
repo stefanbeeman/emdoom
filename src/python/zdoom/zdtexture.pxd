@@ -1,6 +1,6 @@
 from zdtypes cimport *
 
-cdef extern from 'texture/texture.h':
+cdef extern from 'textures.h':
     cppclass FTextureID:
         FTextureID()
         bool isNull()

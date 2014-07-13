@@ -4,9 +4,11 @@
 #include <Python.h>
 
 #include "python/zdoom/zdtypes.h"
+#include "python/zdoom/zdconsole.h"
 #include "python/zdoom/zdmap.h"
 #include "python/zdoom/zdactor.h"
-#include "python/zdoom/zdconsole.h"
+#include "python/zdoom/zdsector.h"
+#include "python/zdoom/zdevents.h"
 
 using std::cout;
 using std::cerr;
@@ -14,21 +16,19 @@ using std::endl;
 
 void python_start() {
   cout << "[Python] Starting interpreter..." << endl;
-
-  //PyObject* package_gzconsole = PyImport_AddModule("gzconsole");
-  //PyObject* gzdoom_package = Py_InitModule("gzdoom", nomethods);
-  //PyObject* __path__ = PyList_New(1);
-  //PyList_SetItem(__path__, 0, PyString_FromString("gzdoom"));
   PyImport_AppendInittab("zdtypes", initzdtypes);
   PyImport_AppendInittab("zdconsole", initzdconsole);
   PyImport_AppendInittab("zdmap", initzdmap);
   PyImport_AppendInittab("zdactor", initzdactor);
+  PyImport_AppendInittab("zdsector", initzdsector);
+  PyImport_AppendInittab("zdevents", initzdevents);
   Py_Initialize();
   initzdtypes();
   initzdconsole();
   initzdmap();
   initzdactor();
-
+  initzdsector();
+  initzdevents();
   cout << "[Python] Interpreter started." << endl;
 }
 

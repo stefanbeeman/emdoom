@@ -89,14 +89,14 @@ if( WIN32 )
 		set( WIN_TYPE Win32 )
 		set( XBITS x86 )
 	endif( X64 )
-	
+
 	add_definitions( -D_WIN32 )
-	
+
 	set( FMOD_SEARCH_PATHS
 		"C:/Program Files/FMOD SoundSystem/FMOD Programmers API ${WIN_TYPE}/api"
 		"C:/Program Files (x86)/FMOD SoundSystem/FMOD Programmers API ${WIN_TYPE}/api"
 		# This next one is for Randy.
-		"E:/Software/Dev/FMOD/${WIN_TYPE}/api" 
+		"E:/Software/Dev/FMOD/${WIN_TYPE}/api"
 		# .. and this one for Graf Zahl
 		"D:/portable/FMOD SoundSystem 4.26/FMOD Programmers API WIN32/api"
 		# GZDoom for OS X
@@ -105,7 +105,7 @@ if( WIN32 )
 	set( FMOD_INC_PATH_SUFFIXES PATH_SUFFIXES inc )
 	set( FMOD_LIB_PATH_SUFFIXES PATH_SUFFIXES lib )
 	set( NASM_NAMES nasmw nasm )
-	
+
 	find_path( D3D_INCLUDE_DIR d3d9.h
 		PATHS ENV DXSDK_DIR
 		PATH_SUFFIXES Include )
@@ -114,7 +114,7 @@ if( WIN32 )
 	else( NOT D3D_INCLUDE_DIR )
 		include_directories( ${D3D_INCLUDE_DIR} )
 	endif( NOT D3D_INCLUDE_DIR )
-	
+
 	find_path( XINPUT_INCLUDE_DIR xinput.h
 		PATHS ENV DXSDK_DIR
 		PATH_SUFFIXES Include )
@@ -156,7 +156,7 @@ if( WIN32 )
 		comdlg32
 		ws2_32
 		setupapi
-		oleaut32 
+		oleaut32
 		DelayImp )
 else( WIN32 )
 	if( APPLE )
@@ -209,11 +209,11 @@ else( WIN32 )
 		endif( XCURSOR_LIB )
 	endif( APPLE )
 	set( NASM_NAMES nasm )
-	
+
 	if( NO_GTK )
 		add_definitions( -DNO_GTK=1 )
 	endif( NO_GTK )
-	
+
 	# Non-Windows version also needs SDL
 	find_package( SDL )
 	if( NOT SDL_FOUND )
@@ -278,7 +278,7 @@ endif( NOT WIN32 OR APPLE )
 if( NOT GLEW_LIBRARY )
 	message( SEND_ERROR "Could not find GLEW library files" )
 endif( NOT GLEW_LIBRARY )
-	
+
 set( ZDOOM_LIBS ${ZDOOM_LIBS} ${GLEW_LIBRARY} )
 
 
@@ -345,7 +345,7 @@ find_package( FluidSynth )
 if( NOT NO_ASM )
 	if( UNIX AND X64 )
 		find_program( GAS_PATH as )
-		
+
 		if( GAS_PATH )
 			set( ASSEMBLER ${GAS_PATH} )
 		else( GAS_PATH )
@@ -376,7 +376,7 @@ if( NOT NO_ASM )
 	# I think the only reason there was a version requirement was because the
 	# executable name for Windows changed from 0.x to 2.0, right? This is
 	# how to do it in case I need to do something similar later.
-	
+
 	#	execute_process( COMMAND ${NASM_PATH} -v
 	#		OUTPUT_VARIABLE NASM_VER_STRING )
 	#	string( REGEX REPLACE ".*version ([0-9]+[.][0-9]+).*" "\\1" NASM_VER "${NASM_VER_STRING}" )
@@ -486,7 +486,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STRE
 		set( CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO} -pg" )
 		set( CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -pg" )
 	endif( PROFILE )
-	
+
 	set( REL_CXX_FLAGS "-fno-rtti" )
 	if( NOT PROFILE )
 		set( REL_CXX_FLAGS "${REL_CXX_FLAGS} -fomit-frame-pointer" )
@@ -637,7 +637,7 @@ if( WIN32 )
 	set( SYSTEM_SOURCES_DIR win32 )
 	set( SYSTEM_SOURCES ${PLAT_WIN32_SOURCES} )
 	set( OTHER_SYSTEM_SOURCES ${PLAT_SDL_SOURCES} ${PLAT_MAC_SOURCES} )
-	
+
 	if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" )
 		# CMake is not set up to compile and link rc files with GCC. :(
 		add_custom_command( OUTPUT zdoom-rc.o
@@ -1219,9 +1219,11 @@ add_executable( zdoom WIN32
 	r_data/r_translate.cpp
 	zzautozend.cpp
 	python/zdoom/zdtypes.cpp
+	python/zdoom/zdconsole.cpp
 	python/zdoom/zdmap.cpp
 	python/zdoom/zdactor.cpp
-	python/zdoom/zdconsole.cpp
+	python/zdoom/zdsector.cpp
+	python/zdoom/zdevents.cpp
 	python/py_init.cpp
 	python/py_thinker.cpp
 )

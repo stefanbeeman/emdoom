@@ -666,7 +666,7 @@ void ACSStringPool::ReadStrings(PNGHandle *png, DWORD id)
 void ACSStringPool::WriteStrings(FILE *file, DWORD id) const
 {
 	int32 i, poolsize = (int32)Pool.Size();
-	
+
 	if (poolsize == 0)
 	{ // No need to write if we don't have anything.
 		return;
@@ -2567,7 +2567,7 @@ inline bool FBehavior::CopyStringToArray(int arraynum, int index, int maxLength,
 	if ((unsigned)arraynum >= (unsigned)NumTotalArrays || index < 0)
 		return false;
 	const ArrayInfo *array = Arrays[arraynum];
-	
+
 	if ((signed)array->ArraySize - index < maxLength) maxLength = (signed)array->ArraySize - index;
 
 	while (maxLength-- > 0)
@@ -3227,9 +3227,9 @@ void DLevelScript::ReplaceTextures (int fromnamei, int tonamei, int flags)
 		{
 			sector_t *sec = &sectors[i];
 
-			if (!(flags & NOT_FLOOR) && sec->GetTexture(sector_t::floor) == picnum1) 
+			if (!(flags & NOT_FLOOR) && sec->GetTexture(sector_t::floor) == picnum1)
 				sec->SetTexture(sector_t::floor, picnum2);
-			if (!(flags & NOT_CEILING) && sec->GetTexture(sector_t::ceiling) == picnum1)	
+			if (!(flags & NOT_CEILING) && sec->GetTexture(sector_t::ceiling) == picnum1)
 				sec->SetTexture(sector_t::ceiling, picnum2);
 		}
 	}
@@ -3431,7 +3431,7 @@ int DoSetMaster (AActor *self, AActor *master)
                 AActor * attacker=master->player->attacker;
                 if (attacker)
                 {
-                    if (!(attacker->flags&MF_FRIENDLY) || 
+                    if (!(attacker->flags&MF_FRIENDLY) ||
                         (deathmatch && attacker->FriendPlayer!=0 && attacker->FriendPlayer!=self->FriendPlayer))
                     {
                         self->LastHeard = self->target = attacker;
@@ -3929,7 +3929,7 @@ int DLevelScript::CheckActorProperty (int tid, int property, int value)
 		case APROP_AttackSound:	string = actor->AttackSound; break;
 		case APROP_PainSound:	string = actor->PainSound; break;
 		case APROP_DeathSound:	string = actor->DeathSound; break;
-		case APROP_ActiveSound:	string = actor->ActiveSound; break; 
+		case APROP_ActiveSound:	string = actor->ActiveSound; break;
 		case APROP_Species:		string = actor->GetSpecies(); break;
 		case APROP_NameTag:		string = actor->GetTag(); break;
 	}
@@ -4288,7 +4288,7 @@ enum EACSFunctions
 int DLevelScript::SideFromID(int id, int side)
 {
 	if (side != 0 && side != 1) return -1;
-	
+
 	if (id == 0)
 	{
 		if (activationline == NULL) return -1;
@@ -4645,7 +4645,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 				activator = SingleActorFromTID(args[0], NULL);
 			}
 			return activator != NULL;
-		
+
 		case ACSF_SetActivatorToTarget:
 			// [KS] I revised this a little bit
 			actor = SingleActorFromTID(args[0], activator);
@@ -4689,7 +4689,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 			{
 				return p[args[1]];
 			}
-			else 
+			else
 			{
 				return 0;
 			}
@@ -4750,7 +4750,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 
 		case ACSF_CheckActorProperty:
 			return (CheckActorProperty(args[0], args[1], args[2]));
-        
+
         case ACSF_SetActorVelocity:
             if (args[0] == 0)
             {
@@ -4759,7 +4759,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
             else
             {
                 TActorIterator<AActor> iterator (args[0]);
-                
+
                 while ( (actor = iterator.Next ()) )
                 {
 					P_Thing_SetVelocity(actor, args[1], args[2], args[3], !!args[4], !!args[5]);
@@ -4784,7 +4784,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 				else
 				{
 					TActorIterator<AActor> iterator(args[0]);
-	                
+
 					while ( (actor = iterator.Next()) )
 					{
 						SetUserVariable(actor, varname, 0, args[2]);
@@ -4794,13 +4794,13 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 			}
 			return cnt;
 		}
-		
+
 		case ACSF_GetUserVariable:
 		{
 			FName varname(FBehavior::StaticLookupString(args[1]), true);
 			if (varname != NAME_None)
 			{
-				AActor *a = SingleActorFromTID(args[0], activator); 
+				AActor *a = SingleActorFromTID(args[0], activator);
 				return a != NULL ? GetUserVariable(a, varname, 0) : 0;
 			}
 			return 0;
@@ -4823,7 +4823,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 				else
 				{
 					TActorIterator<AActor> iterator(args[0]);
-	                
+
 					while ( (actor = iterator.Next()) )
 					{
 						SetUserVariable(actor, varname, args[2], args[3]);
@@ -4833,13 +4833,13 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 			}
 			return cnt;
 		}
-		
+
 		case ACSF_GetUserArray:
 		{
 			FName varname(FBehavior::StaticLookupString(args[1]), true);
 			if (varname != NAME_None)
 			{
-				AActor *a = SingleActorFromTID(args[0], activator); 
+				AActor *a = SingleActorFromTID(args[0], activator);
 				return a != NULL ? GetUserVariable(a, varname, args[2]) : 0;
 			}
 			return 0;
@@ -4936,7 +4936,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 				}
 			}
 			return FIXED_MAX;
-        
+
         case ACSF_CheckSight:
         {
 			AActor *source;
@@ -4947,7 +4947,7 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, SDWORD *args, const 
 			if (args[2] & 1) flags |= SF_IGNOREWATERBOUNDARY;
 			if (args[2] & 2) flags |= SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES;
 
-			if (args[0] == 0) 
+			if (args[0] == 0)
 			{
 				source = (AActor *) activator;
 
@@ -8602,7 +8602,7 @@ scriptwait:
 
 				STACK(7) = changes;
 				sp -= 6;
-			}	
+			}
 			break;
 
 		case PCD_UNMORPHACTOR:
@@ -8662,7 +8662,7 @@ scriptwait:
 
 				STACK(2) = changes;
 				sp -= 1;
-			}	
+			}
 			break;
 
 		case PCD_SAVESTRING:
@@ -8671,7 +8671,7 @@ scriptwait:
 				const int str = GlobalACSStrings.AddString(work, Stack, sp);
 				PushToStack(str);
 				STRINGBUILDER_FINISH(work);
-			}		
+			}
 			break;
 
 		case PCD_STRCPYTOMAPCHRANGE:
@@ -8693,9 +8693,9 @@ scriptwait:
 				}
 
 				index += STACK(6);
-				
+
 				lookup = FBehavior::StaticLookupString (STACK(2));
-				
+
 				if (!lookup) {
 					// no data, operation complete
 	STRCPYTORANGECOMPLETE:
@@ -8734,7 +8734,7 @@ scriptwait:
 								ACS_WorldArrays[a][index++] = *lookup;
 								if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
 							}
-							
+
 							Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
 						}
 						break;
@@ -8747,11 +8747,11 @@ scriptwait:
 								ACS_GlobalArrays[a][index++] = *lookup;
 								if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
 							}
-							
+
 							Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
 						}
 						break;
-					
+
 				}
 				sp -= 5;
 			}

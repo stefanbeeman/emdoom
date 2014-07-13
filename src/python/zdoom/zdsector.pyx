@@ -1,6 +1,8 @@
 from zdtypes import *
 from zdactor import *
 
+cdef public void __fakesector__(): pass
+
 cdef class Sector:
   cdef sector_t *ptr
 
