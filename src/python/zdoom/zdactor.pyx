@@ -2,12 +2,6 @@ from zdtypes import *
 
 actors = []
 
-def spawn(actor_type, position):
-  x, y, z = position
-  actor_class = find_class(actor_type)
-  cdef AActor *actor = StaticSpawn(actor_class, to_fixed(x), to_fixed(y), to_fixed(z), ALLOW_REPLACE, False)
-  return python_init_actor(actor)
-
 cdef const PClass *find_class(name):
   encoded = unicode(name)
   cdef FName class_name = FName(encoded)
@@ -134,5 +128,4 @@ cdef class Actor:
 cdef public python_init_actor(AActor* ptr):
   actor = Actor()
   actor.ptr = ptr
-  actors.append(actor)
   return actor

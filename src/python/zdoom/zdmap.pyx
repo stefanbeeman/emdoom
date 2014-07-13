@@ -1,4 +1,5 @@
 from zdtypes import *
+from zdactor import *
 
 cdef class Map:
   cdef FLevelLocals* ptr
@@ -6,6 +7,11 @@ cdef class Map:
   # We are not yet worthy of these functions.
   def __cinit__(self): pass
   def __dealloc__(self): pass
+
+  def __init__(self):
+    self.actors = []
+    self.sectors = []
+    self.lines = []
 
 #  property level_name:
 #    def __get__(self):
@@ -26,6 +32,14 @@ cdef class Map:
       return self.ptr.gravity
     def __set__(self, value):
       self.ptr.gravity = value
+
+  def spawn(self, archtype, position, angle=0.0, tid=None):
+    x, y, z = position
+    cdef AActor* ptr = Spawn(<char*>archtype, to_fixed(x), to_fixed(y), to_fixed(z), ALLOW_REPLACE)
+    actor = python_init_actor(ptr)
+    self.actors.append(actor)
+    actor.angle = angle
+    return actor
 
 current = Map()
 

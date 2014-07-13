@@ -38,7 +38,6 @@ cdef extern from 'actor.h':
     FName Name
     int probability
     int amount
-    FDropItem * Next
   cppclass AActor:
     void Destroy()
     AActor *GetDefault()
@@ -181,4 +180,4 @@ cdef extern from 'actor.h':
     void ClearCounters()
     FState *GetRaiseState()
     void Revive()
-  AActor *StaticSpawn "AActor::StaticSpawn"(const PClass *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement, bool SpawningMapThing)
+  AActor *Spawn(const char *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement)
