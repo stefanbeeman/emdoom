@@ -1,5 +1,4 @@
 from zdtypes import *
-cdef extern from 'Python.h': pass
 
 cdef extern from 'p_acs.h':
   cppclass DLevelScript:

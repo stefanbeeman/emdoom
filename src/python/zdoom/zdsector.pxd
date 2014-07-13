@@ -1,14 +1,14 @@
 from zdtypes cimport *
 from zdline cimport *
-cdef extern from "Python.h":
-  pass
+from zdcolor cimport *
+from zdtexture cimport *
 
 cdef extern from 'r_defs.h':
   cppclass sector_t:
-    fixed_t FindLowestFloorSurrounding (vertex_t **v)
-    fixed_t FindHighestFloorSurrounding (vertex_t **v)
-    fixed_t FindNextHighestFloor (vertex_t **v)
-    fixed_t FindNextLowestFloor (vertex_t **v)
+    fixed_t FindLowestFloorSurrounding(vertex_t **v)
+    fixed_t FindHighestFloorSurrounding(vertex_t **v)
+    fixed_t FindNextHighestFloor(vertex_t **v)
+    fixed_t FindNextLowestFloor(vertex_t **v)
     fixed_t FindLowestCeilingSurrounding(vertex_t **v)
     fixed_t FindHighestCeilingSurrounding(vertex_t **v)
     fixed_t FindNextLowestCeiling(vertex_t **v)
@@ -26,7 +26,7 @@ cdef extern from 'r_defs.h':
     int GetFloorLight()
     int GetCeilingLight()
     sector_t *GetHeightSec()
-    #DInterpolation *SetInterpolation(int position, bool attach
+    DInterpolation *SetInterpolation(int position, bool attach
     void StopInterpolation(int position)
     void SetXOffset(int pos, fixed_t o)
     void AddXOffset(int pos, fixed_t o)
@@ -47,8 +47,8 @@ cdef extern from 'r_defs.h':
     void ChangeFlags(int pos, int And, int Or)
     int GetPlaneLight(int pos)
     void SetPlaneLight(int pos, int level)
-    #FTextureID GetTexture(int pos)
-    #void SetTexture(int pos, FTextureID tex, bool floorclip = true)
+    FTextureID GetTexture(int pos)
+    void SetTexture(int pos, FTextureID tex, bool floorclip = true)
     fixed_t GetPlaneTexZ(int pos)
     void SetPlaneTexZ(int pos, fixed_t val)
     void ChangePlaneTexZ(int pos, fixed_t val)
@@ -59,8 +59,8 @@ cdef extern from 'r_defs.h':
     bool PlaneMoving(int pos)
     fixed_t CenterFloor()
     fixed_t CenterCeiling()
-    secplane_t floorplane, ceilingplane
-    #FDynamicColormap *ColorMap
+    #secplane_t floorplane, ceilingplane
+    FDynamicColormap *ColorMap
     short special
     short tag
     short lightlevel
@@ -83,5 +83,5 @@ cdef extern from 'r_defs.h':
     bool transdoor
     fixed_t transdoorheight  # for transparent door hacks
 
-  struct secplane_t:
-    pass
+  # struct secplane_t:
+  #   pass

@@ -1,6 +1,4 @@
 from zdtypes cimport *
-cdef extern from "Python.h":
-  pass
 
 cdef extern from 'r_defs.h':
   struct vertex_t:

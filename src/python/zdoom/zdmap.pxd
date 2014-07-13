@@ -1,6 +1,4 @@
 from zdtypes cimport *
-cdef extern from "Python.h":
-  pass
 
 cdef extern from 'g_level.h':
   struct level_info_t:
