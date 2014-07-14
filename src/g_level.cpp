@@ -88,9 +88,6 @@
 
 #include "g_hub.h"
 
-#include <Python.h>
-#include "python/zdoom/zdmap.h"
-
 void STAT_StartNewGame(const char *lev);
 void STAT_ChangeLevel(const char *newl);
 
@@ -495,7 +492,7 @@ void G_ChangeLevel(const char *levelname, int position, int flags, int nextSkill
 		{
 			nextlevel = level.NextMap;	// If there is already an end sequence please leave it alone!
 		}
-		else 
+		else
 		{
 			nextlevel.Format("enDSeQ%04x", int(gameinfo.DefaultEndSequence));
 		}
@@ -531,8 +528,8 @@ void G_ChangeLevel(const char *levelname, int position, int flags, int nextSkill
 
 	startpos = position;
 	gameaction = ga_completed;
-		
-	if (nextinfo != NULL) 
+
+	if (nextinfo != NULL)
 	{
 		if (thiscluster != nextcluster || (thiscluster && !(thiscluster->flags & CLUSTER_HUB)))
 		{
@@ -625,7 +622,7 @@ void G_ExitLevel (int position, bool keepFacing)
 	G_ChangeLevel(G_GetExitMap(), position, keepFacing ? CHANGELEVEL_KEEPFACING : 0);
 }
 
-void G_SecretExitLevel (int position) 
+void G_SecretExitLevel (int position)
 {
 	G_ChangeLevel(G_GetSecretExitMap(), position, 0);
 }
@@ -637,7 +634,7 @@ void G_SecretExitLevel (int position)
 
 void G_DoCompleted (void)
 {
-	int i; 
+	int i;
 
 	gameaction = ga_nothing;
 
@@ -812,14 +809,14 @@ void DAutosaver::Tick ()
 
 //==========================================================================
 //
-// G_DoLoadLevel 
+// G_DoLoadLevel
 //
 //==========================================================================
 
-extern gamestate_t 	wipegamestate; 
- 
+extern gamestate_t 	wipegamestate;
+
 void G_DoLoadLevel (int position, bool autosave)
-{ 
+{
 	static int lastposition = 0;
 	gamestate_t oldgs = gamestate;
 	int i;
@@ -859,7 +856,7 @@ void G_DoLoadLevel (int position, bool autosave)
 
 	if (gamestate != GS_TITLELEVEL)
 	{
-		gamestate = GS_LEVEL; 
+		gamestate = GS_LEVEL;
 	}
 
 	// Set the sky map.
@@ -879,7 +876,7 @@ void G_DoLoadLevel (int position, bool autosave)
 	R_InitSkyMap ();
 
 	for (i = 0; i < MAXPLAYERS; i++)
-	{ 
+	{
 		if (playeringame[i] && (deathmatch || players[i].playerstate == PST_DEAD))
 			players[i].playerstate = PST_ENTER;	// [BC]
 		memset (players[i].frags,0,sizeof(players[i].frags));
@@ -911,14 +908,14 @@ void G_DoLoadLevel (int position, bool autosave)
 		P_StartLightning ();
 	}
 
-	gameaction = ga_nothing; 
+	gameaction = ga_nothing;
 
 	// clear cmd building stuff
 	ResetButtonStates ();
 
 	SendItemUse = NULL;
 	SendItemDrop = NULL;
-	mousex = mousey = 0; 
+	mousex = mousey = 0;
 	sendpause = sendsave = sendturn180 = SendLand = false;
 	LocalViewAngle = 0;
 	LocalViewPitch = 0;
@@ -954,7 +951,7 @@ void G_DoLoadLevel (int position, bool autosave)
 	}
 	StatusBar->AttachToPlayer (&players[consoleplayer]);
 	P_DoDeferedScripts ();	// [RH] Do script actions that were triggered on another map.
-	
+
 	if (demoplayback || oldgs == GS_STARTUP || oldgs == GS_TITLELEVEL)
 		C_HideConsole ();
 
@@ -965,22 +962,21 @@ void G_DoLoadLevel (int position, bool autosave)
 	{
 		DAutosaver GCCNOWARN *dummy = new DAutosaver;
 	}
-	python_init_map(&level);
 }
 
 
 //==========================================================================
 //
-// G_WorldDone 
+// G_WorldDone
 //
 //==========================================================================
 
-void G_WorldDone (void) 
-{ 
+void G_WorldDone (void)
+{
 	cluster_info_t *nextcluster;
 	cluster_info_t *thiscluster;
 
-	gameaction = ga_worlddone; 
+	gameaction = ga_worlddone;
 
 	if (level.flags & LEVEL_CHANGEMAPCHEAT)
 		return;
@@ -1042,15 +1038,15 @@ void G_WorldDone (void)
 			}
 		}
 	}
-} 
- 
+}
+
 //==========================================================================
 //
 //
 //==========================================================================
 
-void G_DoWorldDone (void) 
-{		 
+void G_DoWorldDone (void)
+{
 	gamestate = GS_LEVEL;
 	if (wminfo.next[0] == 0)
 	{
@@ -1199,7 +1195,7 @@ void G_FinishTravel ()
 		}
 	}
 }
- 
+
 //==========================================================================
 //
 //
@@ -1380,7 +1376,7 @@ void G_AirControlChanged ()
 void G_SerializeLevel (FArchive &arc, bool hubLoad)
 {
 	int i = level.totaltime;
-	
+
 	Renderer->StartSerialize(arc);
 
 	arc << level.flags
@@ -1632,7 +1628,7 @@ void G_WriteSnapshots (FILE *file)
 	}
 
 	FPNGChunkArchive *arc = NULL;
-	
+
 	// Write out which levels have been visited
 	for (i = 0; i < wadlevelinfos.Size(); ++i)
 	{
@@ -1947,7 +1943,3 @@ CCMD(listmaps)
 		}
 	}
 }
-
-
-
-
