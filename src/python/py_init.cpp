@@ -27,9 +27,9 @@ using std::vector;
 
 template <typename F, typename FS, typename M>
 void add_module(const string& name, F initptr, FS& init_funcs, M& modules) {
-  PyImport_AppendInittab(name.c_str(), initptr);
-  init_funcs.push_back(initptr);
-  modules.push_back(name);
+    PyImport_AppendInittab(name.c_str(), initptr);
+    init_funcs.push_back(initptr);
+    modules.push_back(name);
 }
 
 /* ================= *
@@ -66,32 +66,32 @@ string modules_list(const T& modules) {
 }
 
 void python_start() {
-  cout << "[Python] Starting interpreter..." << endl;
+    cout << "[Python] Starting interpreter..." << endl;
 
-  vector<string> modules;
-  vector<void(*)()> init_funcs;
+    vector<string> modules;
+    vector<void(*)()> init_funcs;
 
-  init_modules(modules, init_funcs);
-  Py_Initialize();
-  run_init_funcs(init_funcs);
+    init_modules(modules, init_funcs);
+    Py_Initialize();
+    run_init_funcs(init_funcs);
 
-  cout << "[Python] Interpreter started, available modules: "
-       << modules_list(modules) << endl;
+    cout << "[Python] Interpreter started, available modules: "
+         << modules_list(modules) << endl;
 }
 
 void python_run_string(const char *command) {
-  PyRun_SimpleString(command);
+    PyRun_SimpleString(command);
 }
 
 void python_run_file(FILE *fp, const char *filename) {
-  PyRun_SimpleFile(fp, filename);
+    PyRun_SimpleFile(fp, filename);
 }
 
 void python_import(const char *name) {
-  PyImport_ImportModule(name);
+    PyImport_ImportModule(name);
 }
 
 void python_stop() {
-  Py_Finalize();
-  cout << "[Python] Shut down interpreter." << endl;
+    Py_Finalize();
+    cout << "[Python] Shut down interpreter." << endl;
 }
