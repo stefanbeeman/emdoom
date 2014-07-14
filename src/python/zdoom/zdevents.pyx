@@ -1,6 +1,5 @@
 from zdtypes import *
-from zdactor import *
-from zdplayer import *
+from zdmap import *
 
 from enum import Enum
 from itertools import ifilter
@@ -45,9 +44,10 @@ cdef public void python_execute_events():
 class EventType(Enum):
   player = Player
   actor = Actor
-  line = Line
-  sector = Sector
   map = Map
+  # TODO:
+  #line = Line
+  #sector = Sector
 
   @classmethod
   def of(cls, value):
