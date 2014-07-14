@@ -1222,6 +1222,7 @@ add_executable( zdoom WIN32
 	python/zdoom/zdconsole.cpp
 	python/zdoom/zdmap.cpp
 	python/zdoom/zdactor.cpp
+	python/zdoom/zdplayer.cpp
 	python/zdoom/zdsector.cpp
 	python/zdoom/zdevents.cpp
 	python/py_init.cpp

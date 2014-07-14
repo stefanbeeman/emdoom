@@ -1,6 +1,7 @@
 from zdtypes import *
 
-actors = []
+# Cython won't generate headers without at least one 'public' function ಠ_ಠ
+cdef public void __fakeactor__(): pass
 
 cdef const PClass *find_class(name):
   encoded = unicode(name)

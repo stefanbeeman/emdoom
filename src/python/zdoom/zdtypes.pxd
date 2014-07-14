@@ -1,4 +1,6 @@
+import cython
 from libcpp cimport bool
+
 cdef extern from "Python.h":
   pass
 

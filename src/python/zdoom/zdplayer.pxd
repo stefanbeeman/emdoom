@@ -159,3 +159,9 @@ cdef extern from 'd_player.h':
     void Uncrouch()
     bool CanCrouch()
     int GetSpawnClass()
+
+
+cdef class Player:
+  cdef player_t* ptr
+
+cdef Player python_init_player(player_t* ptr)
