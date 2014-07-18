@@ -3694,6 +3694,7 @@ void P_SetupLevel (const char *lumpname, int position)
 		{
 			ForceNodeBuild = true;
 		}
+		new PyThinker;
 		T_LoadScripts(map);
 
 		if (!map->HasBehavior || map->isText)
@@ -4054,9 +4055,6 @@ void P_SetupLevel (const char *lumpname, int position)
 	delete[] sidetemp;
 	sidetemp = NULL;
 
-	// Start python thinker
-	new PyThinker;
-	
 	// if deathmatch, randomly spawn the active players
 	if (deathmatch)
 	{
