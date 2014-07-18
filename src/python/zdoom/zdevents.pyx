@@ -4,9 +4,10 @@ from zdmap import *
 import sys
 
 from enum import Enum
-from itertools import ifilter
+from itertools import ifilter, imap
+from Queue import Queue
 
-cdef events
+events = Queue()
 
 class EventType(Enum):
   player = Player
@@ -21,24 +22,25 @@ class EventType(Enum):
     if value is None:
       return cls.player
 
-    members = cls.__members__
-    instance = lambda x: isinstance(x, value)
-    result = next(ifilter(instance, members.iterkeys()), None)
+    classes = imap(lambda x: x.value, cls.__members__.itervalues())
+    instance = lambda x: isinstance(value, x)
+    result = next(ifilter(instance, classes), None)
     if result is None:
       raise ValueError('Type %s does not subclass any of %s' % (type(value), members.keys()))
 
     return result
 
 
-cdef class Event(object):
+class Event(object):
   def __init__(self, event, activator, target=None):
     self._event = event
     self._activator = activator
     self._target = target
     self._type = EventType.of(target)
 
-  # TODO(apaine)
-  # def __str__(self):
+  def __repr__(self):
+    cls = type(self).__name__
+    return "<%s: %s '%s' %s>" % (cls, self.activator, self.event, self.target)
 
   @property
   def event(self):
@@ -70,10 +72,9 @@ cdef bool init_event(char* c_event, AActor* c_activator, eventable_t* c_target):
   if c_target != NULL:
     target = python_init_eventable_t(c_target)
 
-  global events
-  if events is None: events = []
-  print len(events)
-  events.append(Event(event_str, activator, target))
+  print events.qsize()
+  cdef object event = Event(event_str, activator, target)
+  events.put(event)
 
 cdef public bool python_actor_event(char* c_event, AActor* c_activator, AActor* c_target):
   print 'actor event'
@@ -84,8 +85,9 @@ cdef public bool python_player_event(char* c_event, AActor* c_activator, player_
   return init_event[player_t](c_event, c_activator, c_target)
 
 cdef public void python_execute_events():
-  global events
-  if events is None: events = []
-  while len(events) > 0:
-    event = events.pop()
-    print event
+  while events.qsize() > 0:
+    try:
+      event = events.get_nowait()
+      print event
+    except Empty:
+      break
