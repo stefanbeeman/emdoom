@@ -24,6 +24,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
+#include "Python.h"
 #include "templates.h"
 #include "i_system.h"
 #include "m_random.h"
@@ -66,6 +67,7 @@
 #include "farchive.h"
 #include "r_data/colormaps.h"
 #include "r_renderer.h"
+#include "python/zdoom/zdevents.h"
 
 // MACROS ------------------------------------------------------------------
 
@@ -3973,6 +3975,9 @@ AActor *AActor::StaticSpawn (const PClass *type, fixed_t ix, fixed_t iy, fixed_t
 	{
 		level.total_secrets++;
 	}
+
+	// Fire python spawn event.
+	python_actor_event("spawn", actor, actor);
 	return actor;
 }
 
