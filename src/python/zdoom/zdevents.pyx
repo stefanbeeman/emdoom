@@ -9,6 +9,7 @@ from Queue import Queue
 
 events = Queue()
 
+
 class EventType(Enum):
   player = Player
   actor = Actor
@@ -37,10 +38,15 @@ class Event(object):
     self._activator = activator
     self._target = target
     self._type = EventType.of(target)
+    self._on_self = (target is None) or (activator.same_as(target))
 
   def __repr__(self):
     cls = type(self).__name__
-    return "<%s: %s '%s' %s>" % (cls, self.activator, self.event, self.target)
+
+    if self.on_self:
+      return "<%s: '%s' %s>" % (cls, self.event, self.activator)
+    else:
+      return "<%s: %s '%s' %s>" % (cls, self.activator, self.event, self.target)
 
   @property
   def event(self):
@@ -54,6 +60,15 @@ class Event(object):
   def target(self):
     return self._target
 
+  @property
+  def on_self(self):
+    return self._on_self
+
+
+######################
+# Internal C helpers #
+######################
+
 cdef object python_init_eventable_t(eventable_t* val):
   if eventable_t is AActor:
     return python_init_actor(val)
@@ -64,7 +79,6 @@ cdef object python_init_eventable_t(eventable_t* val):
   #raise ValueError('Value given is not an eventable_t')
 
 cdef bool init_event(char* c_event, AActor* c_activator, eventable_t* c_target):
-  print 'init event'
   event_str = str(c_event)
   cdef Actor activator = python_init_actor(c_activator)
 
@@ -72,16 +86,18 @@ cdef bool init_event(char* c_event, AActor* c_activator, eventable_t* c_target):
   if c_target != NULL:
     target = python_init_eventable_t(c_target)
 
-  print events.qsize()
   cdef object event = Event(event_str, activator, target)
   events.put(event)
 
+
+#########
+# C API #
+#########
+
 cdef public bool python_actor_event(char* c_event, AActor* c_activator, AActor* c_target):
-  print 'actor event'
   return init_event[AActor](c_event, c_activator, c_target)
 
 cdef public bool python_player_event(char* c_event, AActor* c_activator, player_t* c_target):
-  print 'player event'
   return init_event[player_t](c_event, c_activator, c_target)
 
 cdef public void python_execute_events():
@@ -91,3 +107,4 @@ cdef public void python_execute_events():
       print event
     except Empty:
       break
+

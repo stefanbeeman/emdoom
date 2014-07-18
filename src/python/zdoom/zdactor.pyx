@@ -19,6 +19,12 @@ cdef class Actor:
     cls = type(self).__name__
     return "<%s[%s]: %d>" % (cls, self.species(), self.tid)
 
+  def same_as(self, other):
+    if not isinstance(other, Actor):
+      return False
+
+    return self.ptr is (<Actor>other).ptr
+
   property x:
     def __get__(self): return from_fixed(self.ptr.x)
     def __set__(self, x): self.ptr.x = to_fixed(x)
