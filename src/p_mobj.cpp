@@ -3980,8 +3980,6 @@ AActor *AActor::StaticSpawn (const PClass *type, fixed_t ix, fixed_t iy, fixed_t
 		level.total_secrets++;
 	}
 
-	// Fire python spawn event.
-	python_actor_event("spawn", actor, Py_None);
 	return actor;
 }
 
@@ -4084,6 +4082,8 @@ void AActor::PostBeginPlay ()
 	}
 	PrevAngle = angle;
 	flags7 |= MF7_HANDLENODELAY;
+	// Fire python spawn event.
+	python_actor_event("spawn", this, Py_None);
 }
 
 void AActor::MarkPrecacheSounds() const
