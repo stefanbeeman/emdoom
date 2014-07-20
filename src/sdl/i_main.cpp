@@ -314,7 +314,7 @@ int main (int argc, char **argv)
 		vid_defheight = videoInfo->current_h;
 		vid_defbits   = videoInfo->vfmt->BitsPerPixel;
 		vid_vsync     = 1;
-		fullscreen    = True;
+		fullscreen    = true;
 	}
 	
 #endif // __APPLE__

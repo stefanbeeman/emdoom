@@ -1381,7 +1381,7 @@ void D_DoAdvanceDemo (void)
 		break;
 	}
 
-	if (pagename)
+	if (pagename.IsNotEmpty())
 	{
 		if (Page != NULL)
 		{
@@ -1660,7 +1660,7 @@ void D_AddConfigWads (TArray<FString> &wadfiles, const char *section)
 			{
 				// D_AddWildFile resets GameConfig's position, so remember it
 				GameConfig->GetPosition (pos);
-				D_AddWildFile (wadfiles, value);
+				D_AddWildFile (wadfiles, ExpandEnvVars(value));
 				// Reset GameConfig's position to get next wad
 				GameConfig->SetPosition (pos);
 			}
@@ -2049,8 +2049,6 @@ static void D_DoomInit()
 	Args->CollectFiles("-playdemo", ".lmp");
 	Args->CollectFiles("-file", NULL);	// anything left goes after -file
 
-	atterm (C_DeinitConsole);
-
 	gamestate = GS_STARTUP;
 
 	SetLanguageIDs ();
@@ -2299,7 +2297,7 @@ void D_DoomMain (void)
 
 	// +logfile gets checked too late to catch the full startup log in the logfile so do some extra check for it here.
 	FString logfile = Args->TakeValue("+logfile");
-	if (logfile != NULL)
+	if (logfile.IsNotEmpty())
 	{
 		execLogfile(logfile);
 	}
@@ -2337,7 +2335,7 @@ void D_DoomMain (void)
 
 		// The IWAD selection dialogue does not show in fullscreen so if the
 		// restart is initiated without a defined IWAD assume for now that it's not going to change.
-		if (iwad.Len() == 0) iwad = lastIWAD;
+		if (iwad.IsEmpty()) iwad = lastIWAD;
 
 		FIWadManager *iwad_man = new FIWadManager;
 		const FIWADInfo *iwad_info = iwad_man->FindIWAD(allwads, iwad, basewad);
