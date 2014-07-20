@@ -1631,9 +1631,39 @@ void SDL_WM_SetCaption( const char* title, const char* icon )
 	// Window title is set in SDL_SetVideoMode()
 }
 
-int SDL_WM_ToggleFullScreen( SDL_Surface* surface )
+static void ResetSoftwareViewport()
 {
-	GZ_UNUSED( surface );
+	// For an unknown reason the following call to glClear() is needed
+	// to avoid drawing of garbage in fullscreen mode
+	// when game video resolution's aspect ratio is different from display one
+
+	GLint viewport[2];
+	glGetIntegerv(GL_MAX_VIEWPORT_DIMS, viewport);
+
+	glViewport(0, 0, viewport[0], viewport[1]);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	const GLAuxilium::BackBuffer::Parameters& viewportParameters = GLAuxilium::BackBuffer::GetParameters();
+	glViewport(viewportParameters.shiftX, viewportParameters.shiftY,
+			   viewportParameters.width,  viewportParameters.height);
+
+}
+
+int SDL_WM_ToggleFullScreen(SDL_Surface* surface)
+{
+	if (surface->flags & SDL_FULLSCREEN)
+	{
+		surface->flags &= ~SDL_FULLSCREEN;
+	}
+	else
+	{
+		surface->flags |= SDL_FULLSCREEN;
+	}
+
+	[s_applicationDelegate changeVideoResolution:(SDL_FULLSCREEN & surface->flags)
+										   width:surface->w
+										  height:surface->h];
+	ResetSoftwareViewport();
 	
 	return 1;
 }
@@ -1745,21 +1775,9 @@ static void SetupSoftwareRendering( SDL_Surface* screen )
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	glOrtho( 0.0, screen->w, screen->h, 0.0, -1.0, 1.0 );
-	
-	// For an unknown reason the following call to glClear() is needed
-	// to avoid drawing of garbage in fullscreen mode 
-	// when game video resolution's aspect ratio is different from display one
-	
-	GLint viewport[2];
-	glGetIntegerv( GL_MAX_VIEWPORT_DIMS, viewport );
-	
-	glViewport( 0, 0, viewport[0], viewport[1] );
-	glClear( GL_COLOR_BUFFER_BIT );
 
-	const GLAuxilium::BackBuffer::Parameters& viewportParameters = GLAuxilium::BackBuffer::GetParameters();
-	glViewport( viewportParameters.shiftX, viewportParameters.shiftY, 
-				 viewportParameters.width,  viewportParameters.height );
-	
+	ResetSoftwareViewport();
+
 	glEnable( GL_TEXTURE_2D );
 	
 	s_softwareTexture = new GLAuxilium::Texture2D;
