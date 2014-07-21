@@ -1,8 +1,10 @@
 from zdtypes import *
 from zdmap import *
 
+import json
 import sys
 
+from collections import OrderedDict
 from enum import Enum
 from itertools import ifilter, imap
 from Queue import Queue
@@ -32,15 +34,16 @@ class EventType(Enum):
 
 
 class Event(object):
-  def __init__(self, event, emitter, data={}):
+  def __init__(self, event, emitter, data=()):
     self._event = event
     self._emitter = emitter
-    self._data = data
+    self._data = OrderedDict(data)
     self._type = EventType.of(emitter)
 
   def __repr__(self):
     cls = type(self).__name__
-    return "<%s: '%s' %s>" % (cls, self.event, self.emitter)
+    data = json.dumps(self.data)
+    return "<%s: '%s' %s %s>" % (cls, self.event, self.emitter, data)
 
   @property
   def event(self):

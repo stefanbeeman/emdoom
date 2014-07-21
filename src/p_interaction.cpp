@@ -59,6 +59,7 @@
 #include "d_net.h"
 #include "d_netinf.h"
 
+#include "python/zdoom/zdactor.h"
 #include "python/zdoom/zdevents.h"
 
 static FRandom pr_obituary ("Obituary");
@@ -745,7 +746,17 @@ void AActor::Die (AActor *source, AActor *inflictor, int dmgflags)
 	}
 
 	//Fire python death event.
-	python_actor_event("death", this, Py_None);
+	PyObject* python_data = PyDict_New();
+	PyDict_SetItem(python_data, PyString_FromString("source"), python_actor(source));
+	PyDict_SetItem(python_data, PyString_FromString("inflictor"), python_actor(inflictor));
+	PyDict_SetItem(python_data, PyString_FromString("type"), PyString_FromString(DamageType.GetChars()));
+	if (extremelydead) {
+		PyDict_SetItem(python_data, PyString_FromString("gib"), Py_True);
+	} else {
+		PyDict_SetItem(python_data, PyString_FromString("gib"), Py_False);
+	}
+	python_actor_event("death", this, python_data);
+
 	if (diestate != NULL)
 	{
 		SetState (diestate);
