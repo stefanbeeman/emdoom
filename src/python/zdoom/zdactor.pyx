@@ -128,3 +128,6 @@ cdef Actor python_init_actor(AActor* ptr):
   actor = Actor()
   actor.ptr = ptr
   return actor
+
+cdef public object python_actor(AActor* ptr):
+  return python_init_actor(ptr)
