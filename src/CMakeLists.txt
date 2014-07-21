@@ -1225,6 +1225,8 @@ add_executable( zdoom WIN32
 	python/zdoom/zdplayer.cpp
 	python/zdoom/zdsector.cpp
 	python/zdoom/zdevents.cpp
+	python/zdoom/zdwardens.cpp
+	python/zdoom/zddispatch.cpp
 	python/py_init.cpp
 	python/py_thinker.cpp
 )

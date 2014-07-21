@@ -67,7 +67,7 @@
 #include "farchive.h"
 #include "r_data/colormaps.h"
 #include "r_renderer.h"
-#include "python/zdoom/zdevents.h"
+#include "python/zdoom/zddispatch.h"
 
 // MACROS ------------------------------------------------------------------
 

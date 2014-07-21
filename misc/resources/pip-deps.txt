@@ -1,2 +1,3 @@
 cython>=0.20
 enum34>=1.0
+bintrees>=2.0

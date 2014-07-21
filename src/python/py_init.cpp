@@ -15,6 +15,8 @@
 #include "python/zdoom/zdplayer.h"
 #include "python/zdoom/zdsector.h"
 #include "python/zdoom/zdevents.h"
+#include "python/zdoom/zdwardens.h"
+#include "python/zdoom/zddispatch.h"
 
 using std::cout;
 using std::cerr;
@@ -37,13 +39,15 @@ void add_module(const string& name, F initptr, FS& init_funcs, M& modules) {
  * ================= */
 template <typename M, typename F>
 void init_modules(M& modules, F& init_funcs) {
-    add_module("zdtypes",   initzdtypes,    init_funcs, modules);
-    add_module("zdconsole", initzdconsole,  init_funcs, modules);
-    add_module("zdmap",     initzdmap,      init_funcs, modules);
-    add_module("zdactor",   initzdactor,    init_funcs, modules);
-    add_module("zdplayer",  initzdplayer,   init_funcs, modules);
-    add_module("zdsector",  initzdsector,   init_funcs, modules);
-    add_module("zdevents",  initzdevents,   init_funcs, modules);
+    add_module("zdtypes",    initzdtypes,    init_funcs, modules);
+    add_module("zdconsole",  initzdconsole,  init_funcs, modules);
+    add_module("zdmap",      initzdmap,      init_funcs, modules);
+    add_module("zdactor",    initzdactor,    init_funcs, modules);
+    add_module("zdplayer",   initzdplayer,   init_funcs, modules);
+    add_module("zdsector",   initzdsector,   init_funcs, modules);
+    add_module("zdevents",   initzdevents,   init_funcs, modules);
+    add_module("zdwardens",  initzdwardens,  init_funcs, modules);
+    add_module("zddispatch", initzddispatch, init_funcs, modules);
 }
 
 template <typename T>
