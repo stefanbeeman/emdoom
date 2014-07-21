@@ -1,5 +1,3 @@
-from zdevents import Event, events
-
 from bintrees import FastRBTree
 from collections import defaultdict
 from itertools import imap
@@ -9,24 +7,12 @@ from Queue import Queue, Empty
 cdef public void __fakewardens__(): pass
 
 
-class Warden:
+cdef class Warden(object):
   def __init__(self, pred, action, priority=None, name=None):
     self._pred = pred
     self._action = action
     self._priority = priority
     self._name = name
-
-  def __eq__(self, other):
-    return self.priority == other.priority \
-       and self._pred == other._pred \
-       and self._action == other._action
-
-  def __cmp__(self, other):
-    """
-    NOTE: this comparator is a "reverse" comparator, in that it returns 1 if
-    self < other and -1 if self > other.
-    """
-    return -cmp(self.priority, other.priority)
 
   @property
   def priority(self):
@@ -68,10 +54,11 @@ class Warden:
     return False
 
 
-class Commander:
+cdef class Commander(object):
   def __init__(self):
-    self._trees = defaultdict(FastRBTree)
+    self._trees = defaultdict()
     self._events = Queue()
+    print "Started commander"
 
   def clear(self):
     self._trees.clear()
@@ -80,25 +67,29 @@ class Commander:
   def add_warden(self, event_name, warden):
     """ Add a Warden to the list of handlers for a given event name. """
     tree = self._trees[event_name]
-    tree[warden.priority] = warden
+    wardens = tree.setdefault(warden.priority, [])
+    wardens.append(warden)
 
   def dispatch(self, event):
-    """ Dispatch the given event """
-    def handle(item):
-      (priority, watcher) = item
-      return watcher.handle(event)
+    """ Dispatch the given event. """
 
-    values = imap(handle, self._trees[event.name].items())
-    return sum(values)
+    def handle(leaf):
+      (priority, watchers) = leaf
+      return sum(imap(lambda w: w.handle(event), watchers))
+
+    # We want to do a reverse inorder traversal of the tree, as we want to
+    # evaluate the highest-priority elements first.
+    leaves = self._trees[event.name].items(reverse=True)
+    return sum(imap(handle, leaves))
 
   def push(self, event):
     self._events.put(event)
 
   def execute(self):
     dispatched = []
-    while events.qsize() > 0:
+    while self._events.qsize() > 0:
       try:
-        event = events.get_nowait()
+        event = self._events.get_nowait()
         print "dispatching %s" % event
         dispatched.append(self.dispatch(event))
       except Empty:

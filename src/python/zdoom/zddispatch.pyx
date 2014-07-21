@@ -1,9 +1,8 @@
-from zdwardens import Commander
-from zdevents import Event
-
 from Queue import Queue
+from zdevents import *
+from zdwardens import *
 
-commander = Commander()
+cpdef Commander commander = Commander()
 
 ######################
 # Internal C helpers #
@@ -38,4 +37,5 @@ cdef public void python_init_dispatch():
   commander.clear()
 
 cdef public int python_dispatch_events():
-  return len(commander.execute())
+  cdef int length = <int?>len(commander.execute())
+  return length

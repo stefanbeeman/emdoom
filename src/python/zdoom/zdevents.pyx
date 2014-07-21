@@ -9,6 +9,7 @@ from itertools import ifilter, imap
 # Cython won't generate headers without at least one 'public' function ಠ_ಠ
 cdef public void __fakeevents__(): pass
 
+
 class EventType(Enum):
   player = Player
   actor = Actor
@@ -31,7 +32,7 @@ class EventType(Enum):
     return result
 
 
-class Event(object):
+cdef class Event(object):
   def __init__(self, name, emitter, data={}):
     self._name = name
     self._emitter = emitter
