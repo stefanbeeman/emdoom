@@ -7,7 +7,7 @@ import sys
 from collections import OrderedDict
 from enum import Enum
 from itertools import ifilter, imap
-from Queue import Queue
+from Queue import Queue, Empty
 
 events = Queue()
 
@@ -34,10 +34,15 @@ class EventType(Enum):
 
 
 class Event(object):
-  def __init__(self, event, emitter, data=()):
+  def __init__(self, event, emitter, data=None):
     self._event = event
     self._emitter = emitter
-    self._data = OrderedDict(data)
+
+    if data is not None:
+        self._data = OrderedDict(data)
+    else:
+        self._data = OrderedDict()
+
     self._type = EventType.of(emitter)
 
   def __repr__(self):
