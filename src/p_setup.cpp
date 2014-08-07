@@ -313,7 +313,6 @@ MapData *P_OpenMapData(const char * mapname, bool justcheck)
 
 			if (map->Encrypted)
 			{ // If it's encrypted, then it's a Blood file, presumably a map.
-				map->MapLumps[0].Reader = map->file = Wads.ReopenLumpNum(lump_name);
 				if (!P_IsBuildMap(map))
 				{
 					delete map;
@@ -1889,6 +1888,7 @@ void P_AdjustLine (line_t *ld)
 
 	ld->dx = v2->x - v1->x;
 	ld->dy = v2->y - v1->y;
+<<<<<<< HEAD
 
 	if (ld->dx == 0)
 		ld->slopetype = ST_VERTICAL;
@@ -1897,6 +1897,9 @@ void P_AdjustLine (line_t *ld)
 	else
 		ld->slopetype = ((ld->dy ^ ld->dx) >= 0) ? ST_POSITIVE : ST_NEGATIVE;
 
+=======
+	
+>>>>>>> master
 	if (v1->x < v2->x)
 	{
 		ld->bbox[BOXLEFT] = v1->x;
