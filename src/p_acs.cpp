@@ -8922,7 +8922,7 @@ scriptwait:
 							localarrays->Set(locals, a, index++, *lookup);
 							if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
 						}
-						
+
 						Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
 					}
 					break;
@@ -8932,19 +8932,7 @@ scriptwait:
 						if (a < NUM_MAPVARS && a > 0 &&
 							activeBehavior->MapVars[a])
 						{
-<<<<<<< HEAD
-							int a = STACK(5);
-
-							while (capacity-- > 0)
-							{
-								ACS_WorldArrays[a][index++] = *lookup;
-								if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
-							}
-
-							Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
-=======
 							Stack[sp-6] = activeBehavior->CopyStringToArray(*(activeBehavior->MapVars[a]), index, capacity, lookup);
->>>>>>> master
 						}
 					}
 					break;
@@ -8957,36 +8945,22 @@ scriptwait:
 							ACS_WorldArrays[a][index++] = *lookup;
 							if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
 						}
-						
+
 						Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
 					}
 					break;
 				case PCD_STRCPYTOGLOBALCHRANGE:
 					{
 						int a = STACK(5);
-
-<<<<<<< HEAD
-							while (capacity-- > 0)
-							{
-								ACS_GlobalArrays[a][index++] = *lookup;
-								if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
-							}
-
-							Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
-						}
-						break;
-
-=======
 						while (capacity-- > 0)
 						{
 							ACS_GlobalArrays[a][index++] = *lookup;
 							if (! (*(lookup++))) goto STRCPYTORANGECOMPLETE; // complete with terminating 0
 						}
-						
+
 						Stack[sp-6] = !(*lookup); // true/success if only terminating 0 was not copied
 					}
 					break;
->>>>>>> master
 				}
 				sp -= 5;
 			}

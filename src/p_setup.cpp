@@ -1888,18 +1888,7 @@ void P_AdjustLine (line_t *ld)
 
 	ld->dx = v2->x - v1->x;
 	ld->dy = v2->y - v1->y;
-<<<<<<< HEAD
 
-	if (ld->dx == 0)
-		ld->slopetype = ST_VERTICAL;
-	else if (ld->dy == 0)
-		ld->slopetype = ST_HORIZONTAL;
-	else
-		ld->slopetype = ((ld->dy ^ ld->dx) >= 0) ? ST_POSITIVE : ST_NEGATIVE;
-
-=======
-	
->>>>>>> master
 	if (v1->x < v2->x)
 	{
 		ld->bbox[BOXLEFT] = v1->x;
