@@ -60,7 +60,7 @@
 #include "d_netinf.h"
 
 #include "python/zdoom/zdactor.h"
-#include "python/zdoom/zdevents.h"
+#include "python/zdoom/zddispatch.h"
 
 static FRandom pr_obituary ("Obituary");
 static FRandom pr_botrespawn ("BotRespawn");

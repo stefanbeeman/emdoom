@@ -1,9 +1,8 @@
 from zdtypes cimport *
-from zdactor cimport *
-from zdplayer cimport *
-from zdmap cimport *
-from libcpp cimport bool
+from zddispatch cimport *
 
-ctypedef fused eventable_t:
-  AActor
-  player_t
+cdef class Event(object):
+  cdef object _name
+  cdef object _emitter
+  cdef object _data
+  cdef object _type

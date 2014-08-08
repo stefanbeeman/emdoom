@@ -7,14 +7,15 @@ import sys
 from collections import OrderedDict
 from enum import Enum
 from itertools import ifilter, imap
-from Queue import Queue, Empty
 
-events = Queue()
+# Cython won't generate headers without at least one 'public' function ಠ_ಠ
+cdef public void __fakeevents__(): pass
+
 
 class EventType(Enum):
   player = Player
   actor = Actor
-  map = Map
+  # map = Map
   # TODO:
   #line = Line
   #sector = Sector
@@ -32,27 +33,27 @@ class EventType(Enum):
 
     return result
 
-
-class Event(object):
-  def __init__(self, event, emitter, data=None):
-    self._event = event
+cdef class Event(object):
+  def __init__(self, name, emitter, data={}):
+    self._name = name
     self._emitter = emitter
-
     if data is not None:
         self._data = OrderedDict(data)
     else:
         self._data = OrderedDict()
-
     self._type = EventType.of(emitter)
 
   def __repr__(self):
     cls = type(self).__name__
-    data = json.dumps(self.data)
-    return "<%s: '%s' %s %s>" % (cls, self.event, self.emitter, data)
+    if self.data:
+      data = json.dumps(self.data.keys())
+    else:
+      data = 'None'
+    return "<%s: '%s' %s %s>" % (cls, self.name, self.emitter, data)
 
   @property
-  def event(self):
-    return self._event
+  def name(self):
+    return self._name
 
   @property
   def emitter(self):
@@ -61,40 +62,3 @@ class Event(object):
   @property
   def data(self):
     return self._data
-
-######################
-# Internal C helpers #
-######################
-
-cdef object python_init_eventable_t(eventable_t* val):
-  if eventable_t is AActor:
-    return python_init_actor(val)
-
-  if eventable_t is player_t:
-    return python_init_player(val)
-
-  #raise ValueError('Value given is not an eventable_t')
-
-cdef bool init_event(char* c_event, eventable_t* c_emitter, object data):
-  event_str = str(c_event)
-  emitter = python_init_eventable_t(c_emitter)
-  cdef object event = Event(event_str, emitter, data)
-  events.put(event)
-
-#########
-# C API #
-#########
-
-cdef public bool python_actor_event(char* c_event, AActor* c_emitter, object data):
-  return init_event[AActor](c_event, c_emitter, data)
-
-cdef public bool python_player_event(char* c_event, player_t* c_emitter, object data):
-  return init_event[player_t](c_event, c_emitter, data)
-
-cdef public void python_execute_events():
-  while events.qsize() > 0:
-    try:
-      event = events.get_nowait()
-      print event
-    except Empty:
-      break
