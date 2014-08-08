@@ -6,7 +6,6 @@ from Queue import Queue, Empty
 # Cython won't generate headers without at least one 'public' function ಠ_ಠ
 cdef public void __fakewardens__(): pass
 
-
 cdef class Warden(object):
   def __init__(self, pred, action, priority=None, name=None):
     self._pred = pred
@@ -96,4 +95,3 @@ cdef class Commander(object):
         break
 
     return dispatched
-

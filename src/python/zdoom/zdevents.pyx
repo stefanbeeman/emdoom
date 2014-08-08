@@ -13,7 +13,7 @@ cdef public void __fakeevents__(): pass
 class EventType(Enum):
   player = Player
   actor = Actor
-  map = Map
+  # map = Map
   # TODO:
   #line = Line
   #sector = Sector
@@ -54,4 +54,3 @@ cdef class Event(object):
   @property
   def data(self):
     return self._data
-
