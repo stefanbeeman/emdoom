@@ -74,11 +74,15 @@ void python_start() {
 
     vector<string> modules;
     vector<void(*)()> init_funcs;
-
+    // Let everyone know this is GZDoom's Python
+    Py_SetProgramName("GZDoom");
     init_modules(modules, init_funcs);
     Py_Initialize();
+    // Add current dir to the path
+    PyObject* sysPath = PySys_GetObject((char*)"path");
+    PyList_Append(sysPath, PyString_FromString("."));
+    // Call module initialization functions.
     run_init_funcs(init_funcs);
-
     cout << "[Python] Interpreter started, available modules: "
          << modules_list(modules) << endl;
 }
