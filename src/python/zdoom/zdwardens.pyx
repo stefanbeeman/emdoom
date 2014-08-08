@@ -78,8 +78,11 @@ cdef class Commander(object):
 
     # We want to do a reverse inorder traversal of the tree, as we want to
     # evaluate the highest-priority elements first.
-    leaves = self._trees[event.name].items(reverse=True)
-    return sum(imap(handle, leaves))
+    if event.name in self._trees:
+      leaves = self._trees[event.name].items(reverse=True)
+      return sum(imap(handle, leaves))
+    else:
+      return 0
 
   def push(self, event):
     self._events.put(event)

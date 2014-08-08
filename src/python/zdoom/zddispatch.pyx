@@ -41,5 +41,6 @@ cdef public void python_init_dispatch():
   commander.clear()
 
 cdef public int python_dispatch_events():
+  global commander
   cdef int length = <int?>len(commander.execute())
   return length
