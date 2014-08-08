@@ -71,6 +71,7 @@
 #include "v_text.h"
 #include "p_lnspec.h"
 #include "v_video.h"
+#include "snakes_in_a_game/call_python.h"
 
 extern FILE *Logfile;
 extern bool insave;
@@ -1153,4 +1154,21 @@ CCMD(secret)
 			else inlevel = false;
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+//
+// Oh boy!
+//
+//-----------------------------------------------------------------------------
+
+CCMD(python) {
+
+	if (argv.argc() != 3)
+    {
+        printf("Usage: filename method\n");
+        return;
+    }
+
+	gzpy_runscript(argv.argc(), argv[1], argv[2]);
 }

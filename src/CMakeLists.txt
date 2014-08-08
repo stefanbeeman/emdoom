@@ -281,6 +281,10 @@ endif( NOT GLEW_LIBRARY )
 	
 set( ZDOOM_LIBS ${ZDOOM_LIBS} ${GLEW_LIBRARY} )
 
+# check for Python
+find_package(PythonLibs 2.7.8 EXACT REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
+set( ZDOOM_LIBS ${ZDOOM_LIBS} ${PYTHON_LIBRARIES} )
 
 # Decide on the name of the FMOD library we want to use.
 
@@ -718,6 +722,7 @@ else( WIN32 )
 endif( WIN32 )
 file( GLOB HEADER_FILES
 	${EXTRA_HEADER_DIRS}
+	snakes_in_a_game/*.h
 	fragglescript/*.h
 	g_doom/*.h
 	g_heretic/*.h
@@ -1212,6 +1217,7 @@ add_executable( zdoom WIN32
 	r_data/r_interpolate.cpp
 	r_data/r_translate.cpp
 	zzautozend.cpp
+	snakes_in_a_game/call_python.cpp
 )
 
 set_source_files_properties( xlat/parse_xlat.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c" )
@@ -1225,6 +1231,7 @@ endif(${CMAKE_SYSTEM_NAME} STREQUAL "SunOS")
 
 target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa dumb lzma )
 include_directories( .
+	snakes_in_a_game
 	g_doom
 	g_heretic
 	g_hexen
@@ -1296,6 +1303,7 @@ if( ZD_CMAKE_COMPILER_IS_GNUCXX_COMPATIBLE )
 	endif( SSE_MATTERS )
 endif( ZD_CMAKE_COMPILER_IS_GNUCXX_COMPATIBLE )
 
+source_group("Python" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/snakes_in_a_game/.+")
 source_group("Assembly Files\\ia32" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/asm_ia32/.+")
 source_group("Assembly Files\\x86_64" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/asm_x86_64/.+")
 source_group("Audio Files" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/sound/.+")

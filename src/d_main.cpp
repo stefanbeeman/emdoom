@@ -1,4 +1,4 @@
-// Emacs style mode select	 -*- C++ -*- 
+// Emacs style mode select	 -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -107,6 +107,7 @@
 #include "resourcefiles/resourcefile.h"
 #include "r_renderer.h"
 #include "p_local.h"
+#include "snakes_in_a_game/call_python.h"
 
 EXTERN_CVAR(Bool, hud_althud)
 void DrawHUD();
@@ -237,6 +238,7 @@ bool nospriterename;
 FStartupInfo DoomStartupInfo;
 FString lastIWAD;
 int restart = 0;
+const char *python_module_root;
 
 cycle_t FrameCycles;
 
@@ -261,7 +263,7 @@ static int pagetic;
 void D_ProcessEvents (void)
 {
 	event_t *ev;
-		
+
 	// [RH] If testing mode, do not accept input until test is over
 	if (testingmode)
 	{
@@ -342,7 +344,7 @@ void D_PostEvent (const event_t *ev)
 // there are dead chars involved, so those should be removed, too. We do
 // this by changing the message type to EV_None rather than by actually
 // removing the event from the queue.
-// 
+//
 //==========================================================================
 
 void D_RemoveNextCharEvent()
@@ -689,9 +691,9 @@ void D_Display ()
 
 	if (nodrawers || screen == NULL)
 		return; 				// for comparative timing / profiling
-	
+
 	cycle_t cycles;
-	
+
 	cycles.Reset();
 	cycles.Clock();
 
@@ -842,7 +844,7 @@ void D_Display ()
 				StatusBar->Draw (HUD_AltHud);
 				StatusBar->DrawTopStuff (HUD_AltHud);
 			}
-			else 
+			else
 			if (viewheight == SCREENHEIGHT && viewactive && screenblocks > 10)
 			{
 				EHudState state = DrawFSHUD ? HUD_Fullscreen : HUD_None;
@@ -915,7 +917,7 @@ void D_Display ()
 	{
 		FTexture* const texture = TexMan.ByIndex(texture_browse_index);
 
-		screen->DrawTexture(texture, 0, 0, 
+		screen->DrawTexture(texture, 0, 0,
 			DTA_320x200, true, DTA_TopOffset, 0, DTA_LeftOffset, 0, TAG_DONE);
 		screen->DrawText(ConFont, CR_WHITE, 0, SCREENHEIGHT - ConFont->GetHeight(), texture->Name, TAG_DONE);
 	}
@@ -1029,7 +1031,7 @@ void D_DoomLoop ()
 				lasttic = gametic;
 				I_StartFrame ();
 			}
-			
+
 			// process one or more tics
 			if (singletics)
 			{
@@ -1948,7 +1950,7 @@ static FString CheckGameInfo(TArray<FString> & pwads)
 				wadinfo = new FileReader(filename);
 			}
 			catch (CRecoverableError &)
-			{ 
+			{
 				// Didn't find file
 				continue;
 			}
@@ -2046,12 +2048,11 @@ static void D_DoomInit()
 		rngseed = I_MakeRNGSeed();
 		use_staticrng = false;
 	}
-		
+
 	FRandom::StaticClearRandom ();
 
 	Printf ("M_LoadDefaults: Load system defaults.\n");
 	M_LoadDefaults ();			// load before initing other systems
-
 }
 
 //==========================================================================
@@ -2074,7 +2075,7 @@ static void AddAutoloadFiles(const char *gamesection)
 		const char *wad = BaseFileSearch ("zvox.wad", NULL);
 		if (wad)
 			D_AddFile (allwads, wad);
-	
+
 		// [RH] Add any .wad files in the skins directory
 #ifdef __unix__
 		file = SHARE_DIR;
@@ -2087,7 +2088,7 @@ static void AddAutoloadFiles(const char *gamesection)
 #ifdef __unix__
 		file = NicePath("~/" GAME_DIR "/skins");
 		D_AddDirectory (allwads, file);
-#endif	
+#endif
 
 		// Add common (global) wads
 		D_AddConfigWads (allwads, "Global.Autoload");
@@ -2149,7 +2150,7 @@ static void CheckCmdLine()
 		startmap = "&wt@01";
 	}
 	autostart = StoredWarp.IsNotEmpty();
-				
+
 	const char *val = Args->CheckValue ("-skill");
 	if (val)
 	{
@@ -2167,7 +2168,7 @@ static void CheckCmdLine()
 			ep = 1;
 			map = atoi (Args->GetArg(p+1));
 		}
-		else 
+		else
 		{
 			ep = atoi (Args->GetArg(p+1));
 			map = p < Args->NumArgs() - 2 ? atoi (Args->GetArg(p+2)) : 10;
@@ -2243,6 +2244,18 @@ static void CheckCmdLine()
 		temp.Format ("Warp to map %s, Skill %d ", startmap.GetChars(), gameskill + 1);
 		StartScreen->AppendStatusLine(temp);
 	}
+
+	//
+	//	Add custom python directory
+	//
+	if (Args->CheckParm("-pyroot"))
+	{
+		python_module_root = Args->CheckValue ("-pyroot");
+	}
+	else
+	{
+		python_module_root = "../python_scripts";
+	}
 }
 
 //==========================================================================
@@ -2308,7 +2321,7 @@ void D_DoomMain (void)
 		}
 		nospriterename = false;
 
-		// Load zdoom.pk3 alone so that we can get access to the internal gameinfos before 
+		// Load zdoom.pk3 alone so that we can get access to the internal gameinfos before
 		// the IWAD is known.
 
 		GetCmdLineFiles(pwads);
@@ -2400,6 +2413,9 @@ void D_DoomMain (void)
 		ParseCompatibility();
 
 		CheckCmdLine();
+
+		// Initialize python
+		gzpy_initialize(python_module_root);
 
 		// [RH] Load sound environments
 		S_ParseReverbDef ();
@@ -2607,7 +2623,7 @@ void D_DoomMain (void)
 			{
 				G_BeginRecording (NULL);
 			}
-						
+
 			atterm (D_QuitNetGame);		// killough
 		}
 		else
