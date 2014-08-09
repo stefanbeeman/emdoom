@@ -3820,6 +3820,10 @@ AActor *AActor::StaticSpawn (const PClass *type, fixed_t ix, fixed_t iy, fixed_t
 
 	actor = static_cast<AActor *>(const_cast<PClass *>(type)->CreateNew ());
 
+	// Initialize python data
+	actor->pydata = PyDict_New();
+	Py_IncRef(actor->pydata);
+
 	// Set default dialogue
 	actor->ConversationRoot = GetConversation(actor->GetClass()->TypeName);
 	if (actor->ConversationRoot != -1)
@@ -4172,6 +4176,9 @@ void AActor::Destroy ()
 
 	// Transform any playing sound into positioned, non-actor sounds.
 	S_RelinkSound (this, NULL);
+
+	// Remove python data.
+	Py_DecRef(this->pydata);
 
 	Super::Destroy ();
 }

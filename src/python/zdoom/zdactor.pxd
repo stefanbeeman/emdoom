@@ -166,6 +166,7 @@ cdef extern from 'actor.h':
     FState *MeleeState
     FState *MissileState
     FDecalBase *DecalGenerator
+    void* pydata
     void AdjustFloorClip()
     void SetOrigin(fixed_t x, fixed_t y, fixed_t z)
     bool InStateSequence(FState * newstate, FState * basestate)

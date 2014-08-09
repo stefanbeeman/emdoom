@@ -25,6 +25,9 @@ cdef class Actor:
 
     return self.ptr is (<Actor>other).ptr
 
+  property data:
+    def __get__(self): return <object>self.ptr.pydata
+
   property x:
     def __get__(self): return from_fixed(self.ptr.x)
     def __set__(self, x): self.ptr.x = to_fixed(x)
